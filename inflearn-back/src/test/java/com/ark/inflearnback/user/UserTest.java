@@ -1,8 +1,7 @@
 package com.ark.inflearnback.user;
 
-import com.ark.inflearnback.domain.user.Role;
+import com.ark.inflearnback.domain.enums.Role;
 import com.ark.inflearnback.domain.user.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,9 +17,9 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Hashtag {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @NotNull
+    @Column(name = "hashtag_id")
     private Long id;
 
     @NotBlank

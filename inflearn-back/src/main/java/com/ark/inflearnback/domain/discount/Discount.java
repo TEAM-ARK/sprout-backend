@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.ark.inflearnback.domain.lecture.Lecture;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -22,12 +20,13 @@ public class Discount {
     @NotNull
     private Long id;
 
-    //관계매핑
-    private Lecture lecture_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_id")
+    private Lecture lecture;
 
     @NotNull
-    private Integer discount_percent;
+    private Integer discountPercent;
 
     @NotNull
-    private LocalDateTime discount_period;
+    private LocalDateTime discountPeriod;
 }

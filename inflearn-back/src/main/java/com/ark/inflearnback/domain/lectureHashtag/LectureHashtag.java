@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import com.ark.inflearnback.domain.hashtag.Hashtag;
 import com.ark.inflearnback.domain.lecture.Lecture;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +22,11 @@ public class LectureHashtag {
     @NotNull
     private Long id;
 
-    //관계매핑?
-    private List<Lecture> lectures = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_id")
+    private Lecture lecture;
 
-    //관계매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 }

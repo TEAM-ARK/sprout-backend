@@ -1,5 +1,7 @@
 package com.ark.inflearnback.domain.lecture;
 
+import com.ark.inflearnback.domain.enums.Difficulty;
+import com.ark.inflearnback.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,8 +9,7 @@ import lombok.NoArgsConstructor;
 import com.ark.inflearnback.domain.discount.Discount;
 import com.ark.inflearnback.domain.lectureHashtag.LectureHashtag;
 import com.ark.inflearnback.domain.review.Review;
-import com.ark.inflearnback.domain.user.Role;
-import com.ark.inflearnback.domain.user.User;
+import com.ark.inflearnback.domain.enums.Role;
 import com.ark.inflearnback.domain.video.Video;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Lecture {
     @Id
     @GeneratedValue
     @NotNull
+    @Column(name = "lecture_id")
     private Long id;
 
     @NotEmpty
@@ -54,20 +56,20 @@ public class Lecture {
 
     private String child_category;
 
-    private List<Role> students = new ArrayList<Role>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User instructor;
 
-    @NotNull
-    private Role instructor = Role.SHARER;
+    @OneToMany(mappedBy = "lecture",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
-    //관계매핑
-    private List<Review> reviews = new ArrayList<>();;
 
-    //관계매핑
-    private List<Video> videos = new ArrayList<>();;
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Video> videos = new ArrayList<>();
 
-    //관계매핑
-    private List<LectureHashtag> hashtags = new ArrayList<>();;
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<LectureHashtag> hashtags = new ArrayList<>();
 
-    //관계매핑
+    @OneToOne(mappedBy = "lecture",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Discount discount;
 }

@@ -1,13 +1,12 @@
 package com.ark.inflearnback.domain.video;
 
+import com.ark.inflearnback.domain.lecture.Lecture;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,4 +22,8 @@ public class Video {
 
     @NotBlank
     private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_id")
+    private Lecture lecture;
 }

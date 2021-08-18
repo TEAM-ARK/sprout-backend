@@ -1,14 +1,13 @@
 package com.ark.inflearnback.domain.review;
 
+import com.ark.inflearnback.domain.lecture.Lecture;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.ark.inflearnback.domain.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -23,9 +22,9 @@ public class Review {
      * - REVIEW에서만 USER를 참조가능하다는 의미
      *
      */
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @NotNull
+    @Column(name = "review_id")
     private Long id;
 
     @NotEmpty
@@ -34,6 +33,7 @@ public class Review {
     @NotEmpty
     private Long rating;
 
-    //관계 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User student;
 }

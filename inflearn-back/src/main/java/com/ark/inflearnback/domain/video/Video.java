@@ -1,10 +1,8 @@
 package com.ark.inflearnback.domain.video;
 
+import com.ark.inflearnback.common.BaseTimeEntity;
 import com.ark.inflearnback.domain.lecture.Lecture;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +12,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Video {
+@AllArgsConstructor
+public class Video extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @NotNull

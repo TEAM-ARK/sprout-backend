@@ -1,9 +1,7 @@
 package com.ark.inflearnback.domain.discount;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ark.inflearnback.common.BaseTimeEntity;
+import lombok.*;
 import com.ark.inflearnback.domain.lecture.Lecture;
 
 import javax.persistence.*;
@@ -14,7 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Discount {
+@AllArgsConstructor
+public class Discount extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @NotNull

@@ -1,11 +1,9 @@
 package com.ark.inflearnback.domain.lecture;
 
+import com.ark.inflearnback.common.BaseTimeEntity;
 import com.ark.inflearnback.domain.enums.Difficulty;
 import com.ark.inflearnback.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.ark.inflearnback.domain.discount.Discount;
 import com.ark.inflearnback.domain.lectureHashtag.LectureHashtag;
 import com.ark.inflearnback.domain.review.Review;
@@ -22,7 +20,8 @@ import java.util.List;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Lecture {
+@AllArgsConstructor
+public class Lecture extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @NotNull
@@ -60,7 +59,7 @@ public class Lecture {
     @JoinColumn(name = "user_id")
     private User instructor;
 
-    @OneToMany(mappedBy = "lecture",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
 

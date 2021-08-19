@@ -1,9 +1,7 @@
 package com.ark.inflearnback.domain.category;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ark.inflearnback.common.BaseTimeEntity;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,7 +13,8 @@ import java.util.List;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category {
+@AllArgsConstructor
+public class Category extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @NotNull

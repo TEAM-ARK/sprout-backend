@@ -1,9 +1,7 @@
 package com.ark.inflearnback.domain.hashtag;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ark.inflearnback.common.BaseTimeEntity;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +14,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Hashtag {
+@AllArgsConstructor
+public class Hashtag extends BaseTimeEntity {
     @Id @GeneratedValue
     @NotNull
     @Column(name = "hashtag_id")

@@ -1,5 +1,6 @@
 package com.ark.inflearnback.domain.user;
 
+import com.ark.inflearnback.common.BaseTimeEntity;
 import com.ark.inflearnback.domain.course.Course;
 import com.ark.inflearnback.domain.enums.Role;
 import com.ark.inflearnback.domain.lecture.Lecture;
@@ -17,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @NotNull

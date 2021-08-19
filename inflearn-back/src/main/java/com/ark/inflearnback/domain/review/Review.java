@@ -1,10 +1,8 @@
 package com.ark.inflearnback.domain.review;
 
+import com.ark.inflearnback.common.BaseTimeEntity;
 import com.ark.inflearnback.domain.lecture.Lecture;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.ark.inflearnback.domain.user.User;
 
 import javax.persistence.*;
@@ -15,7 +13,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+@AllArgsConstructor
+public class Review extends BaseTimeEntity {
 
     /** TODO : 엔티티 클래스 생성
      * - User : Reivew = 1 : N (단방향 연관관계)

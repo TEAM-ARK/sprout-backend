@@ -4,8 +4,6 @@ import com.ark.inflearnback.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +13,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Category extends BaseTimeEntity {
+
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
 
-    @NotEmpty
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

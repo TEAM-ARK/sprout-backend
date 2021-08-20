@@ -6,9 +6,6 @@ import com.ark.inflearnback.domain.hashtag.Hashtag;
 import com.ark.inflearnback.domain.lecture.Lecture;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -18,7 +15,6 @@ import java.util.List;
 public class LectureHashtag extends BaseTimeEntity {
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

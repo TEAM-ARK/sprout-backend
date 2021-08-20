@@ -5,7 +5,6 @@ import lombok.*;
 import com.ark.inflearnback.domain.lecture.Lecture;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,18 +13,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Discount extends BaseTimeEntity {
+
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
+
+    private Integer discountPercent;
+    private LocalDateTime discountPeriod;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
-    @NotNull
-    private Integer discountPercent;
-
-    @NotNull
-    private LocalDateTime discountPeriod;
 }

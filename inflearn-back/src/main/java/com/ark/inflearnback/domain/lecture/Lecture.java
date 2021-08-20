@@ -15,9 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Lecture extends BaseTimeEntity {
 
     @Id
@@ -56,4 +54,18 @@ public class Lecture extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "lecture",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Discount discount;
+
+    @Builder(builderMethodName = "createLectureByBuilder")
+    public Lecture(String name, String intro, Integer price, boolean isExclusive, String cover_image, String description, String parent_category, String child_category, Difficulty difficulty, User instructor) {
+        this.name = name;
+        this.intro = intro;
+        this.price = price;
+        this.isExclusive = isExclusive;
+        this.cover_image = cover_image;
+        this.description = description;
+        this.parent_category = parent_category;
+        this.child_category = child_category;
+        this.difficulty = difficulty;
+        this.instructor = instructor;
+    }
 }

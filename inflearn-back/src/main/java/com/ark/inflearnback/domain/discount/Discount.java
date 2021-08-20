@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Discount extends BaseTimeEntity {
 
     @Id
@@ -25,4 +23,9 @@ public class Discount extends BaseTimeEntity {
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
+    public Discount(Integer discountPercent, LocalDateTime discountPeriod, Lecture lecture) {
+        this.discountPercent = discountPercent;
+        this.discountPeriod = discountPeriod;
+        this.lecture = lecture;
+    }
 }

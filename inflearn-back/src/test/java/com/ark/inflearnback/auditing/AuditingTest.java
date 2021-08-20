@@ -19,12 +19,7 @@ public class AuditingTest {
     @Test
     @DisplayName("auditing이 적용되는지 생성일을 출력")
     void jpaAuditing() {
-        User user = User.builder()
-                .name("민철이")
-                .email("smc5236@naver.com")
-                .password("1234")
-                .isSubscribed(true)
-                .build();
+        User user = new User("민철", "smc5236@naver.com", "1234", true);
 
         userRepository.save(user);
 

@@ -10,8 +10,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor
 public class Course extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -25,4 +23,9 @@ public class Course extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
+
+    public Course(User student, Lecture lecture) {
+        this.student = student;
+        this.lecture = lecture;
+    }
 }

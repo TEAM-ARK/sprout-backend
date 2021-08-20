@@ -8,9 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Video extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -21,4 +19,9 @@ public class Video extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
+
+    public Video(String url, Lecture lecture) {
+        this.url = url;
+        this.lecture = lecture;
+    }
 }

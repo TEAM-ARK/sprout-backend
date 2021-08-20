@@ -12,9 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -27,7 +25,6 @@ public class User extends BaseTimeEntity {
     private Boolean isSubscribed;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private Role role = Role.GENERAL_USER; // 처음 회원가입할 때는 모두 일반회원으로 생성!
 
 
@@ -36,4 +33,12 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Course> courses = new ArrayList<>();
+
+
+    public User(String name, String email, String password, Boolean isSubscribed) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.isSubscribed = isSubscribed;
+    }
 }

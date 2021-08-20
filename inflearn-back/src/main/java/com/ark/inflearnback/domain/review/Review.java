@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Review extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -24,4 +22,10 @@ public class Review extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User student;
+
+    public Review(String content, Long rating, User student) {
+        this.content = content;
+        this.rating = rating;
+        this.student = student;
+    }
 }

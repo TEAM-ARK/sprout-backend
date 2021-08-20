@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class LectureHashtag extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -24,4 +22,9 @@ public class LectureHashtag extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
+
+    public LectureHashtag(Lecture lecture, Hashtag hashtag) {
+        this.lecture = lecture;
+        this.hashtag = hashtag;
+    }
 }

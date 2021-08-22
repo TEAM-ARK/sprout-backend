@@ -1,4 +1,6 @@
 spring:
+#  messages:
+#    basename: errors
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/INFLEARN_BACK?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: backend_developer

@@ -53,17 +53,42 @@
 
 ------------------------------------------
 ## 엔티티 연관 관계
-* user와 review : 단방향 연관관계 1:N 
-	- user테이블에서 review를 알고 있을 필요가 없음(실제로 인프런에 내가 쓴 후기보는 기능은 없음)
-* user와 lecture : 양방향 연관관계 1:N
+### user와 lecture(지식 공유자)
+`1:N 양방향 관계`, `lecture`의 `instructor`를 위한 관계
 
-* review와 lecture : 양방향 연관관계 N:1
+### user와 lecture(일반 회원)
+`N:M 양방향 관계`, `course`라는 매핑 테이블을 중간에 두고 `1:N + N:1`로 풀어서 설계, 수강 중인 강좌를 위한 관계
 
-* lecture와 video : 단방향 연관관계 1:N
+### user와 review
+`1:N 단방향 관계`
 
-* lecture와 lecture_hashtag : 양방향 연관관계 1:N
+`review`에서만 `user`를 참조가능(리뷰글에 user의 이름)
 
-* lecture_hashtag와 hashtag : 단방향 연관관계 1:1
+### lecture와 video
+`1:N 단방향 관계`
+
+`lecture`에서만 `video`을 참조가능
+
+### lecture와 review
+`1:N 단방향 관계`
+
+`lecture`에서만 `review`를 참조가능
+
+### lecture와 discount
+`1:1 양방향 관계`
+
+### category
+다른 테이블과 관계를 맺지 않음. `계층형 테이블 구조`로써 상위 카테고리에 하위 카테고리가 포함됨
+
+### lecture와 lecture_hashtag
+`N:M 관계`를 풀어서 사용하기 위한 `중간 관계`
+
+`1:N 양방향 관계`
+
+### lecture_hashtag와 hashtag
+`N:1 단방향 관계`
+
+`lecture_hashtag`에서만 `hashtag`를 참조가능
 
 
 

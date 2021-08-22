@@ -33,7 +33,5 @@ class LectureTest {
                 .build();
 
         assertThat(newLecture.getName()).isEqualTo("스프링 정복기");
-
-
     }
 }

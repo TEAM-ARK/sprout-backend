@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.badRequest().body(HttpResponse.of(String.valueOf(BAD_REQUEST.value()), getResultMessage(ex)));
+        return ResponseEntity.badRequest().body(HttpResponse.of(BAD_REQUEST, getResultMessage(ex)));
     }
 
     protected String getResultMessage(final MethodArgumentNotValidException ex) {

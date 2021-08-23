@@ -1,0 +1,58 @@
+spring:
+  profiles:
+    active: dev
+
+  main:
+    allow-bean-definition-overriding: true
+
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+
+logging:
+  level:
+    org.hibernate.SQL: info
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/INFLEARN_BACK?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: backend_developer
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

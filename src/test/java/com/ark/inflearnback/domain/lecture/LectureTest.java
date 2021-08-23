@@ -6,9 +6,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 class LectureTest {
 
     @Test
@@ -32,6 +29,6 @@ class LectureTest {
                 .instructor(instructor)
                 .build();
 
-        assertThat(newLecture.getName()).isEqualTo("스프링 정복기");
+        Assertions.assertThat(newLecture.getName()).isEqualTo("스프링 정복기");
     }
 }

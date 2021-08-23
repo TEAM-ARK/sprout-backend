@@ -13,6 +13,7 @@ import java.util.Objects;
 
 @Getter
 @MappedSuperclass
+@Access(AccessType.FIELD)
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity implements Serializable {
     @Id

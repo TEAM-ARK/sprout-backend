@@ -5,7 +5,7 @@ on:
     types: [opened]
 
 jobs:
-  link_jira_issue:  # 작업 이름
+  link_jira_issue:
     runs-on: ubuntu-latest
     steps:
       - name: Find Jira Issue

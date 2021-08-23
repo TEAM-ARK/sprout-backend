@@ -1,4 +1,4 @@
-package com.ark.inflearnback.config;
+package com.ark.inflearnback.config.persistence;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

@@ -1,4 +1,4 @@
-package com.ark.inflearnback.config;
+package com.ark.inflearnback.config.persistence;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;

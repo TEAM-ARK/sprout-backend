@@ -43,8 +43,8 @@ dependencies {
             'org.springframework.restdocs:spring-restdocs-mockmvc'
     )
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude group: "junit", module: "junit"
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
     }
 
     compileOnly(
@@ -52,7 +52,12 @@ dependencies {
     )
 
     runtimeOnly(
-            'mysql:mysql-connector-java'
+            'mysql:mysql-connector-java',
+            'com.h2database:h2'
+    )
+
+    testRuntimeOnly(
+            'com.h2database:h2'
     )
 }
 
@@ -119,7 +124,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.30
+                minimum = 0.20
             }
             excludes = excludeFilter
         }

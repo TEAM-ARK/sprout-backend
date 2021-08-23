@@ -11,12 +11,21 @@ public class HttpResponse<T> {
     private String responseMessage;
     private T responseBody;
 
-    private HttpResponse(String responseCode, String responseMessage) {
-        this.responseCode = responseCode;
-        this.responseMessage = responseMessage;
+    private HttpResponse(final String responseCode, final String responseMessage) {
+        this(responseCode, responseMessage, null);
     }
 
-    public static HttpResponse of(String resCode, String resMessage) {
-        return new HttpResponse(resCode, resMessage);
+    private HttpResponse(final String responseCode, final String responseMessage, final T responseBody) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.responseBody = responseBody;
+    }
+
+    public static <T> HttpResponse<T> of(final String responseCode, final String responseMessage) {
+        return new HttpResponse<T>(responseCode, responseMessage);
+    }
+
+    public static <T> HttpResponse<T> of(final String responseCode, final String responseMessage, final T responseBody) {
+        return new HttpResponse<T>(responseCode, responseMessage, responseBody);
     }
 }

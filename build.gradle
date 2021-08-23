@@ -1,0 +1,127 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'com.ark'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_11
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor(
+            'org.projectlombok:lombok',
+            'org.springframework.boot:spring-boot-configuration-processor',
+            'jakarta.persistence:jakarta.persistence-api',
+            'jakarta.annotation:jakarta.annotation-api',
+            "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa",
+    )
+
+    implementation(
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-data-jpa',
+            'org.springframework.boot:spring-boot-starter-validation',
+            'com.querydsl:querydsl-jpa',
+            'org.modelmapper:modelmapper:2.4.4',
+            'commons-io:commons-io:2.8.0',
+            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+    )
+
+    testImplementation(
+            'org.springframework.boot:spring-boot-starter-test',
+            'org.springframework.restdocs:spring-restdocs-mockmvc'
+    )
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "junit", module: "junit"
+    }
+
+    compileOnly(
+            'org.projectlombok:lombok'
+    )
+
+    runtimeOnly(
+            'mysql:mysql-connector-java'
+    )
+}
+
+test {
+    useJUnitPlatform()
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}
+
+tasks.withType(JavaCompile) {
+    options.fork = true
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
+}
+
+build {
+    dependsOn(':jacoco')
+}
+
+ext {
+    set('reportDir', file('src/report'))
+    excludeFilter = [
+            '**/Q*.class',
+            '**/dto/**',
+            '**/exception/**',
+            '**/test/**',
+    ]
+}
+
+task jacoco(type: Test) {
+    group 'verification'
+    description 'Runs the unit tests and verify coverage using jacoco'
+
+
+    dependsOn(
+            ':jacocoTestReport',
+            ':jacocoTestCoverageVerification'
+    )
+
+    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        html.destination file("$reportDir/")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: excludeFilter)
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.30
+            }
+            excludes = excludeFilter
+        }
+    }
+}

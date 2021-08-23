@@ -10,7 +10,7 @@
 
 <br />
 
-## 🎯 목표(Objectives)
+## 🎯 목표(Objectives) 
 
 - 팀프로젝트 및 협업 경험
 - Hard skill 및 Soft skill 향상

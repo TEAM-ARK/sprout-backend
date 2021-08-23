@@ -1,5 +1,5 @@
 HELP.md
-.gradle
+inflearn-back/.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

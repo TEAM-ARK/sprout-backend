@@ -1,4 +1,4 @@
-package com.ark.inflearnback.config.logger;
+package com.ark.inflearnback.config.logger.datasource;
 
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;

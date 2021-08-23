@@ -24,7 +24,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     protected String getResultMessage(final MethodArgumentNotValidException ex) {
         final Iterator<ObjectError> iterator = ex.getBindingResult().getAllErrors().iterator();
         final StringBuilder resultMessageBuilder = new StringBuilder();
-        while (iterator.hasNext() == true) {
+        while (iterator.hasNext()) {
             final ObjectError objectError = iterator.next();
             resultMessageBuilder
                     .append("[")

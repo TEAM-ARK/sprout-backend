@@ -1,9 +1,15 @@
 name: Java CI with Gradle
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+      - release
+      - develop
+      
+  pull_request:
+    branches:
+      - mian
       - release
       - develop
 
@@ -28,7 +34,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
+            
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -37,21 +43,21 @@ jobs:
 
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
+        if: ${{ always() }}
         with:
           files: build/test-results/**/*.xml
 
       - name: Cleanup Gradle Cache
-        if: always()
+        if: ${{ always() }}
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
-
+          
       - name: action-slack
         uses: 8398a7/action-slack@v3.9.2
         with:
           status: ${{ job.status }}
-          author_name: CI-BOT
+          author_name: Github Action Test
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

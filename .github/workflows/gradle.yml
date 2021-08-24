@@ -1,6 +1,12 @@
 name: Java CI with Gradle
 
 on:
+  push:
+    branches:
+      - main
+      - release
+      - develop
+      
   pull_request:
     branches:
       - main
@@ -37,12 +43,12 @@ jobs:
 
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: ${{ always() }}
+        if: always()
         with:
-          files: build/test-results/**/*.xml
+          files: test-results/**/*.xml
 
       - name: Cleanup Gradle Cache
-        if: ${{ always() }}
+        if: always()
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
@@ -55,4 +61,4 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ always() }}
+        if: always()

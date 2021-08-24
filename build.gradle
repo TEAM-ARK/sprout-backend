@@ -117,16 +117,17 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            element = 'CLASS'
-
-            limit {
-                counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.20
-            }
-            excludes = excludeFilter
-        }
-    }
+//    테스트 코드 작성에 익숙해질 때까지 임시 비활성화
+//    violationRules {
+//        rule {
+//            element = 'CLASS'
+//
+//            limit {
+//                counter = 'LINE'
+//                value = 'COVEREDRATIO'
+//                minimum = 0.20
+//            }
+//            excludes = excludeFilter
+//        }
+//    }
 }

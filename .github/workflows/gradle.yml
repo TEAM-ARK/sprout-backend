@@ -1,7 +1,14 @@
 name: Java CI with Gradle
 
 on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+      -
   pull_request:
+    branches-ignore:
+      - 'dependabot/**'
+      -
     branches:
       - main
       - release

@@ -12,7 +12,7 @@ import static com.ark.inflearnback.config.logger.http.QHttpLog.httpLog;
 import static com.querydsl.core.types.dsl.Expressions.stringTemplate;
 
 @RequiredArgsConstructor
-public class HttpLogCustomRepositoryImpl implements HttpLogCustomRepository {
+public class HttpLogQueryRepositoryImpl implements HttpLogQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override

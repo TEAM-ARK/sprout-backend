@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan = "true" scanPeriod = "60 seconds" >
 
-	<property name = "LOG_PATH" value = "${user.home}/app/logs/" />
+	<property name = "LOG_PATH" value = "${user.home}/app/logs" />
 	<property name = "LOG_LEVEL" value = "INFO" />
 	<property name = "LOG_FILE_NAME" value = "inflearn-clone-back" />
 	<property name = "ERR_LOG_FILE_NAME" value = "inflearn-clone-back-err" />

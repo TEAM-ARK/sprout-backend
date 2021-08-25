@@ -4,8 +4,8 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/app/
-    
+
 hooks:
   AfterInstall:
-    - location: /deploy.sh
+    - location: deploy.sh
       runas: root

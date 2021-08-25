@@ -1,4 +1,4 @@
-REPOSITORY=/home/ubuntu/app
+REPOSITORY=/home/ubuntu/app/
 cd $REPOSITORY
 
 APP_NAME=inflearn-clone-back
@@ -17,6 +17,6 @@ else
 fi
 
 echo "> $JAR_PATH deployed !"
-nohup java -jar -Dspring.profiles.active=prod $JAR_PATH >> /dev/null &
+nohup java -jar -Duser.timezone=KST -Dspring.profiles.active=prod $JAR_PATH >> /dev/null &
 
 echo "[$(date)] server deployed !" >> /home/ubuntu/deploy.log

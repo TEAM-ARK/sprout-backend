@@ -1,4 +1,5 @@
-name: Github CD
+name: gradle CD
+
 on:
   push:
     branches:
@@ -7,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -15,33 +21,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build
-
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: build/test-results/**/*.xml
-
-      - name: Cleanup Gradle Cache
-        if: always()
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+        run: ./gradlew build
 
       - name: Set up AWS
         uses: aws-actions/configure-aws-credentials@v1
@@ -51,17 +35,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: S3 upload
-        run: aws deploy push --application-name team-ark-inflearn-back --description "team-ark-inflearn-back" --s3-location s3://team-ark/server/build.zip --source .
+        run: aws deploy push --application-name study-app-codedeploy-server --description "study-app server" --s3-location s3://study-codedeploy/server/build.zip --source .
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name team-ark-inflearn-back --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name team-ark --s3-location bucket=team-ark,bundleType=zip,key=server/build.zip
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3.9.2
-        with:
-          status: ${{ job.status }}
-          author_name: CD-BOT
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+        run: aws deploy create-deployment --application-name study-app-codedeploy-server --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=study-codedeploy,bundleType=zip,key=server/build.zip

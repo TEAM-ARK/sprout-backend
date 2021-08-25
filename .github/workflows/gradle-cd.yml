@@ -20,15 +20,12 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - uses: actions/checkout@v2
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - uses: actions/checkout@v2
       - name: Build with Gradle
         run: ./gradlew build
 
-      - uses: actions/checkout@v2
       - name: Set up AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -36,15 +33,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - uses: actions/checkout@v2
       - name: S3 upload
         run: aws deploy push --application-name team-ark-inflearn-back --description "team-ark-inflearn-back" --s3-location s3://team-ark/server/build.zip --source .
 
-      - uses: actions/checkout@v2
       - name: Code Deploy
         run: aws deploy create-deployment --application-name team-ark-inflearn-back --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name team-ark --s3-location bucket=team-ark,bundleType=zip,key=server/build.zip
 
-      - uses: actions/checkout@v2
       - name: action-slack
         uses: 8398a7/action-slack@v3.9.2
         with:

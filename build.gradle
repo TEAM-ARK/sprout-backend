@@ -6,8 +6,11 @@ plugins {
 }
 
 group = 'com.ark'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
+
+jar {
+    enabled = false
+}
 
 configurations {
     compileOnly {

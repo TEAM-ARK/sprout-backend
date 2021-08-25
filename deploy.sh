@@ -2,8 +2,7 @@ REPOSITORY=/home/ubuntu/app
 cd $REPOSITORY
 
 APP_NAME=inflearn-clone-back
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep '.jar' | tail -n 1)
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+JAR_PATH=$REPOSITORY/build/libs/$APP_NAME
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
 

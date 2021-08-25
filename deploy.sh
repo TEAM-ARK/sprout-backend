@@ -3,7 +3,7 @@ cd $REPOSITORY
 
 APP_NAME=inflearn-clone-back
 JAR_NAME=inflearn-clone-back.jar
-JAR_PATH=$REPOSITORY/build/libs/JAR_NAME
+JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
 
@@ -11,8 +11,8 @@ if [ -z "$CURRENT_PID" ]
 then
   echo "> No processes found to terminate !" >> /home/ubuntu/deploy.log
 else
-  echo "> sudo kill -15 $CURRENT_PID" >> /home/ubuntu/deploy.log
-  kill -15 "$CURRENT_PID" >> /home/ubuntu/deploy.log 2>&1
+  echo "> sudo kill -9 $CURRENT_PID" >> /home/ubuntu/deploy.log
+  sudo kill -9 "$CURRENT_PID" >> /home/ubuntu/deploy.log 2>&1
   sleep 5
 fi
 

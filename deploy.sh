@@ -1,21 +1,18 @@
-REPOSITORY="/home/ubuntu/app"
-cd $REPOSITORY
-
 JAR_NAME="inflearn-clone-back.jar"
-JAR_PATH="$REPOSITORY/build/libs/$JAR_NAME"
+
+echo "> 현재 구동중인 애플리케이션 확인 중..." >> /home/ubuntu/deploy.log
 
 CURRENT_PID=$(ps -ef | grep $JAR_NAME | grep -v grep | awk '{print $2}')
 
-if [ -z "$CURRENT_PID" ]
-then
-  echo "> No processes found to terminate !" >> /home/ubuntu/deploy.log
+echo "$CURRENT_PID"
+if [ -z $CURRENT_PID ]; then
+        echo "> 현재 구동중인 애플리케이션이 없습니다 !" >> /home/ubuntu/deploy.log
 else
-  echo "> sudo kill -9 $CURRENT_PID" >> /home/ubuntu/deploy.log
-  sudo kill -9 "$CURRENT_PID" >> /home/ubuntu/deploy.log 2>&1
-  sleep 5
+        echo "> 구동중인 애플리케이션을 종료합니다 !" >> /home/ubuntu/deploy.log
+        echo "> kill -9 $CURRENT_PID" >> /home/ubuntu/deploy.log
+        kill -9 $CURRENT_PID
+        sleep 3
 fi
 
-echo "> $JAR_PATH deployed !"
-sudo nohup java -jar -Dspring.profiles.active=prod $JAR_PATH >> /dev/null &
-
-echo "[$(date)] server deployed !" >> /home/ubuntu/deploy.log
+nohup java -jar -Duser.timezone=KST -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME >> /dev/null &
+echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log

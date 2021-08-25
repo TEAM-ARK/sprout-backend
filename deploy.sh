@@ -1,8 +1,8 @@
-REPOSITORY=/home/ubuntu/app
+REPOSITORY="/home/ubuntu/app"
 cd $REPOSITORY
 
-JAR_NAME=inflearn-clone-back.jar
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+JAR_NAME="inflearn-clone-back.jar"
+JAR_PATH="$REPOSITORY/build/libs/$JAR_NAME"
 
 CURRENT_PID=$(ps -ef | grep $JAR_NAME | grep -v grep | awk '{print $2}')
 
@@ -16,6 +16,6 @@ else
 fi
 
 echo "> $JAR_PATH deployed !"
-nohup java -jar -Dspring.profiles.active=prod $JAR_PATH >> /dev/null &
+sudo nohup java -jar -Dspring.profiles.active=prod $JAR_PATH >> /dev/null &
 
 echo "[$(date)] server deployed !" >> /home/ubuntu/deploy.log

@@ -38,12 +38,12 @@ jobs:
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name team-ark-inflearn-back --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name team-ark --s3-location bucket=team-ark,bundleType=zip,key=server/build.zip
-        
+
       - name: action-slack
         uses: 8398a7/action-slack@v3.9.2
         with:
           status: ${{ job.status }}
-          author_name: Github Action
+          author_name: CD-BOT
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,11 +1,10 @@
 REPOSITORY=/home/ubuntu/app
 cd $REPOSITORY
 
-APP_NAME=inflearn-clone-back
 JAR_NAME=inflearn-clone-back.jar
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -f JAR_NAME)
 
 if [ -z "$CURRENT_PID" ]
 then

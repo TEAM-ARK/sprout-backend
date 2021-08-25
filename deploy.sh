@@ -4,7 +4,7 @@ cd $REPOSITORY
 JAR_NAME=inflearn-clone-back.jar
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f JAR_NAME)
+CURRENT_PID=$(ps -ef | grep $JAR_NAME | grep -v grep | awk '{print $2}')
 
 if [ -z "$CURRENT_PID" ]
 then

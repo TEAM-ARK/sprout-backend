@@ -6,12 +6,13 @@ files:
     destination: /home/ubuntu/app
 
 permissions:
-  - object: /home/ubuntu/app
+  - object: /
+    pattern: "**"
     owner: ubuntu
     group: ubuntu
-    mode: 755
 
 hooks:
   AfterInstall:
-    - location: /deploy.sh
-      runas: root
+    - location: deploy.sh
+      timeout: 60
+      runas: ubuntu

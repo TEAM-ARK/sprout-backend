@@ -1,5 +1,4 @@
 name: gradle CD
-
 on:
   push:
     branches:
@@ -35,7 +34,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: S3 upload
-        run: aws deploy push --application-name study-app-codedeploy-server --description "study-app server" --s3-location s3://study-codedeploy/server/build.zip --source .
+        run: aws deploy push --application-name team-ark --description "team-ark" --s3-location s3://team-ark/server/build.zip --source .
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name study-app-codedeploy-server --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=study-codedeploy,bundleType=zip,key=server/build.zip
+        run: aws deploy create-deployment --application-name 	team-ark-inflearn-back --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name team-ark --s3-location bucket=team-ark,bundleType=zip,key=server/build.zip

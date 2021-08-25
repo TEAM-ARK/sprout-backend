@@ -3,14 +3,14 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/build/
+    destination: /home/ubuntu/app/
 permissions:
-  - object: /home/ubuntu/build/
+  - object: /home/ubuntu/app/
     owner: ubuntu
     group: ubuntu
     mode: 755
 hooks:
   AfterInstall:
-    - location: /home/ubuntu/build/deploy.sh
+    - location: /home/ubuntu/app/deploy.sh
       timeout: 60
       runas: root

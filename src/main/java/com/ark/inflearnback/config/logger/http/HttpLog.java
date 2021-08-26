@@ -82,7 +82,7 @@ public class HttpLog extends AbstractEntity {
     }
 
     private static boolean isReadableResponse(final ContentCachingResponseWrapper cachingResponse) {
-        return Objects.nonNull(cachingResponse.getContentType()) && cachingResponse.getContentType().contains("application/json") && cachingResponse.getContentAsByteArray().length != 0;
+        return Objects.nonNull(cachingResponse.getContentType()) && isJson(cachingResponse.getContentType()) && cachingResponse.getContentAsByteArray().length != 0;
     }
 
     private static Optional<JsonNode> readTree(final ObjectMapper objectMapper, final ContentCachingResponseWrapper cachingResponse) {
@@ -103,7 +103,11 @@ public class HttpLog extends AbstractEntity {
     }
 
     private static boolean isReadableRequest(final ContentCachingRequestWrapper cachingRequest) {
-        return Objects.nonNull(cachingRequest.getContentType()) && cachingRequest.getContentType().contains("application/json") && cachingRequest.getContentAsByteArray().length != 0;
+        return Objects.nonNull(cachingRequest.getContentType()) && isJson(cachingRequest.getContentType()) && cachingRequest.getContentAsByteArray().length != 0;
+    }
+
+    private static boolean isJson(final String contentType) {
+        return contentType.contains("application/json");
     }
 
     private static String readTree(final ObjectMapper objectMapper, final ContentCachingRequestWrapper cachingRequest) {
@@ -111,7 +115,7 @@ public class HttpLog extends AbstractEntity {
             return objectMapper.readTree(cachingRequest.getContentAsByteArray()).toString();
         } catch (IOException e) {
             log.warn("ContentCachingRequestWrapper parse error! returns null. info : {}", e.getMessage());
-            return null;
+            return "";
         }
     }
 

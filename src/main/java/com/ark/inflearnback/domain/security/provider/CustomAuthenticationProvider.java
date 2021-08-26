@@ -21,9 +21,7 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
         final String encryptedPassword = context.getPassword();
         final String enteredPassword = (String) authentication.getCredentials();
         verifyCredentials(encryptedPassword, enteredPassword);
-        return new UsernamePasswordAuthenticationToken(context.getMember(),
-                null,
-                context.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(context.getMember(), null, context.getAuthorities());
     }
 
     private void verifyCredentials(final String encryptedPassword, final String enteredPassword) {
@@ -34,7 +32,6 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
 
     @Override
     public boolean supports(final Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class
-                .isAssignableFrom(authentication);
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

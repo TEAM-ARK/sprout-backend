@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,7 +33,7 @@ public class HttpLog extends AbstractEntity {
     private int httpStatusCode;
 
     @Builder(access = AccessLevel.PUBLIC)
-    private HttpLog(String clientIp, String httpMethod, String requestUri, String requestBody, String responseBody, String token, Integer httpStatusCode) {
+    private HttpLog(final String clientIp, final String httpMethod, final String requestUri, final String requestBody, final String responseBody, final String token, final Integer httpStatusCode) {
         this.clientIp = clientIp;
         this.httpMethod = httpMethod;
         this.requestUri = requestUri;
@@ -41,53 +43,79 @@ public class HttpLog extends AbstractEntity {
         this.httpStatusCode = httpStatusCode;
     }
 
-    public static HttpLog of(String httpMethod, String uri, String requestBody, String ip, String token, Integer httpStatusCode) {
+    public static HttpLog of(final String httpMethod, final String uri, final String requestBody, final String ip, final String token, final Integer httpStatusCode) {
         return of(httpMethod, uri, requestBody, null, ip, token, httpStatusCode);
     }
 
-    public static HttpLog of(String httpMethod, String uri, String requestBody, String responseBody, String ip,
-                             String token, Integer httpStatusCode) {
-        return new HttpLog(ip, httpMethod, uri, requestBody, responseBody,
-                token, httpStatusCode);
+    public static HttpLog of(final String httpMethod, final String uri, final String requestBody, final String responseBody, final String ip, final String token, final Integer httpStatusCode) {
+        return new HttpLog(ip, httpMethod, uri, requestBody, responseBody, token, httpStatusCode);
     }
 
-    public static HttpLog of(HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper) {
+    public static HttpLog of(final HttpServletRequest request, final HttpServletResponse response, final ObjectMapper objectMapper) {
         return getResponseBody(response, objectMapper)
-                .map(responseBody -> of(request.getMethod(), request.getRequestURI(), getRequestBody(request, objectMapper),
-                        responseBody.toString(), getClientIp(request), getToken(request), response.getStatus()))
-                .orElse(of(request.getMethod(), request.getRequestURI(), getRequestBody(request, objectMapper),
-                        getClientIp(request), getToken(request), response.getStatus()));
+                .map(responseBody -> HttpLog.builder()
+                        .httpMethod(request.getMethod())
+                        .requestUri(request.getRequestURI())
+                        .requestBody(getRequestBody(request, objectMapper))
+                        .responseBody(responseBody.toString())
+                        .clientIp(getClientIp(request))
+                        .token(getToken(request))
+                        .httpStatusCode(response.getStatus())
+                        .build()
+                )
+                .orElse(HttpLog.builder()
+                        .httpMethod(request.getMethod())
+                        .requestUri(request.getRequestURI())
+                        .requestBody(getRequestBody(request, objectMapper))
+                        .clientIp(getClientIp(request))
+                        .token(getToken(request))
+                        .httpStatusCode(response.getStatus())
+                        .build());
     }
 
-    private static String getToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
-    }
-
-    private static Optional<JsonNode> getResponseBody(HttpServletResponse response, ObjectMapper objectMapper) {
+    private static Optional<JsonNode> getResponseBody(final HttpServletResponse response, final ObjectMapper objectMapper) {
         final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
-        if (Objects.nonNull(cachingResponse.getContentType()) && cachingResponse.getContentType().contains("application/json") && cachingResponse.getContentAsByteArray().length != 0) {
-            try {
-                return Optional.of(objectMapper.readTree(cachingResponse.getContentAsByteArray()));
-            }
-            catch (IOException o_O) {
-            }
+        if (isReadableResponse(cachingResponse)) {
+            return readTree(objectMapper, cachingResponse);
         }
         return Optional.empty();
     }
 
-    private static String getRequestBody(HttpServletRequest request, ObjectMapper objectMapper) {
+    private static boolean isReadableResponse(final ContentCachingResponseWrapper cachingResponse) {
+        return Objects.nonNull(cachingResponse.getContentType()) && cachingResponse.getContentType().contains("application/json") && cachingResponse.getContentAsByteArray().length != 0;
+    }
+
+    private static Optional<JsonNode> readTree(final ObjectMapper objectMapper, final ContentCachingResponseWrapper cachingResponse) {
+        try {
+            return Optional.of(objectMapper.readTree(cachingResponse.getContentAsByteArray()));
+        } catch (IOException e) {
+            log.warn("ContentCachingResponseWrapper parse error! returns null. info : {}", e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private static String getRequestBody(final HttpServletRequest request, final ObjectMapper objectMapper) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-        if (Objects.nonNull(cachingRequest.getContentType()) && cachingRequest.getContentType().contains("application/json") && cachingRequest.getContentAsByteArray().length != 0) {
-            try {
-                return objectMapper.readTree(cachingRequest.getContentAsByteArray()).toString();
-            }
-            catch (IOException o_O) {
-            }
+        if (isReadableRequest(cachingRequest)) {
+            return readTree(objectMapper, cachingRequest);
         }
         return "";
     }
 
-    private static String getClientIp(HttpServletRequest request) {
+    private static boolean isReadableRequest(final ContentCachingRequestWrapper cachingRequest) {
+        return Objects.nonNull(cachingRequest.getContentType()) && cachingRequest.getContentType().contains("application/json") && cachingRequest.getContentAsByteArray().length != 0;
+    }
+
+    private static String readTree(final ObjectMapper objectMapper, final ContentCachingRequestWrapper cachingRequest) {
+        try {
+            return objectMapper.readTree(cachingRequest.getContentAsByteArray()).toString();
+        } catch (IOException e) {
+            log.warn("ContentCachingRequestWrapper parse error! returns null. info : {}", e.getMessage());
+            return null;
+        }
+    }
+
+    private static String getClientIp(final HttpServletRequest request) {
         String clientIp = request.getHeader("X-Forwarded-For");
         if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
             clientIp = request.getHeader("Proxy-Client-IP");
@@ -105,5 +133,9 @@ public class HttpLog extends AbstractEntity {
             clientIp = request.getRemoteAddr();
         }
         return clientIp;
+    }
+
+    private static String getToken(final HttpServletRequest request) {
+        return request.getHeader("Authorization");
     }
 }

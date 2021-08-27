@@ -1,6 +1,7 @@
 package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
+import javax.persistence.Column;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +13,11 @@ import javax.persistence.Entity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role extends AbstractEntity {
+    @Column(unique = true, nullable = false)
     private String authority;
+
     private String description;
+
     private boolean deleted;
 
     private Role(final String authority, final String description, final boolean deleted) {

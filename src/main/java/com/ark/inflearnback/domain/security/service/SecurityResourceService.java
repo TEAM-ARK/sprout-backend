@@ -6,6 +6,10 @@ import com.ark.inflearnback.domain.security.model.RoleResource;
 import com.ark.inflearnback.domain.security.repository.ResourceRepository;
 import com.ark.inflearnback.domain.security.repository.RoleHierarchiesRepository;
 import com.ark.inflearnback.domain.security.repository.RoleResourceRepository;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.ConfigAttribute;
@@ -15,11 +19,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -59,8 +58,11 @@ public class SecurityResourceService {
     }
 
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
-        log.info("⚙ Resource List: " + System.lineSeparator());
+        log.info("#################################################################################");
+        log.info("################################# Resource List #################################");
+        log.info("#################################################################################");
         resourceList.forEach((key, value) -> log.info(key + " : " + value));
+        log.info("#################################################################################");
         return resourceList;
     }
 

@@ -69,6 +69,7 @@ dependencies {
 
     testRuntimeOnly(
             'mysql:mysql-connector-java',
+            'com.h2database:h2'
     )
 }
 

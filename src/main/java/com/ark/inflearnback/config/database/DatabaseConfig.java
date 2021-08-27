@@ -1,19 +1,18 @@
 package com.ark.inflearnback.config.database;
 
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-
 @Configuration
-@RequiredArgsConstructor
 @EnableTransactionManagement
 public class DatabaseConfig {
-    private final DatabaseProperties databaseProperties;
+    @Autowired(required = false)
+    private DatabaseProperties databaseProperties;
 
     @Bean
     @Profile("prod")

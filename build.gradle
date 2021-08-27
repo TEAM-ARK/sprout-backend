@@ -43,7 +43,8 @@ dependencies {
             'com.querydsl:querydsl-jpa',
             'org.modelmapper:modelmapper:2.4.4',
             'commons-io:commons-io:2.8.0',
-            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
+            'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.17'
     )
 
     testImplementation(
@@ -59,7 +60,8 @@ dependencies {
     }
 
     compileOnly(
-            'org.projectlombok:lombok'
+            'org.projectlombok:lombok',
+            'org.springframework.boot:spring-boot-starter-oauth2-client',
     )
 
     testCompileOnly(

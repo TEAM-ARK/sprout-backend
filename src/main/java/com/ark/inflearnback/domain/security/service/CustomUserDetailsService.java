@@ -3,6 +3,8 @@ package com.ark.inflearnback.domain.security.service;
 import com.ark.inflearnback.domain.security.dto.MemberAuthenticationContext;
 import com.ark.inflearnback.domain.security.model.Member;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,18 +13,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("username not found !"));
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+        final Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("email not found !"));
         return MemberAuthenticationContext.of(member, getGrantedAuthorities(member));
     }
 

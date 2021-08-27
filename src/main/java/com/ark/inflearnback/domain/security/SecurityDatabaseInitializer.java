@@ -135,9 +135,9 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
                     .build();
         }
 
-        private Member createMember(final String username, final String password, final Role role) {
+        private Member createMember(final String email, final String password, final Role role) {
             return Member.builder()
-                    .username(username)
+                    .email(email)
                     .password(password)
                     .role(role)
                     .build();

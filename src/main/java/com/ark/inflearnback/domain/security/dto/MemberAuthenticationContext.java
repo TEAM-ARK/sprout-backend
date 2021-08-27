@@ -12,7 +12,7 @@ public class MemberAuthenticationContext extends User {
     private final Member member;
 
     private MemberAuthenticationContext(final Member member, final Collection<? extends GrantedAuthority> authorities) {
-        super(member.getUsername(), member.getPassword(), authorities);
+        super(member.getEmail(), member.getPassword(), authorities);
         this.member = member;
     }
 

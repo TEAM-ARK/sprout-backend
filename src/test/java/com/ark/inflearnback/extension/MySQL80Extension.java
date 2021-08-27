@@ -23,8 +23,7 @@ public class MySQL80Extension implements BeforeAllCallback, AfterAllCallback {
 
         MYSQL.start();
 
-        String jdbcUrl = String.format("jdbc:mysql://localhost:%d/%s", MYSQL.getFirstMappedPort(), DATABASE_NAME);
-        System.setProperty("spring.datasource.url", jdbcUrl);
+        System.setProperty("spring.datasource.url", getJdbcUrl());
         System.setProperty("spring.datasource.username", USERNAME);
         System.setProperty("spring.datasource.password", PASSWORD);
     }
@@ -32,5 +31,10 @@ public class MySQL80Extension implements BeforeAllCallback, AfterAllCallback {
     @Override
     public void afterAll(final ExtensionContext context) {
         MYSQL.stop();
+    }
+
+    private String getJdbcUrl() {
+        String jdbcUrl = String.format("jdbc:mysql://localhost:%d/%s", MYSQL.getFirstMappedPort(), DATABASE_NAME);
+        return jdbcUrl;
     }
 }

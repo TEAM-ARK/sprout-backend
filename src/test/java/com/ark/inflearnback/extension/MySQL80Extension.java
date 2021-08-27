@@ -34,7 +34,6 @@ public class MySQL80Extension implements BeforeAllCallback, AfterAllCallback {
     }
 
     private String getJdbcUrl() {
-        String jdbcUrl = String.format("jdbc:mysql://localhost:%d/%s", MYSQL.getFirstMappedPort(), DATABASE_NAME);
-        return jdbcUrl;
+        return String.format("jdbc:mysql://localhost:%d/%s", MYSQL.getFirstMappedPort(), DATABASE_NAME);
     }
 }

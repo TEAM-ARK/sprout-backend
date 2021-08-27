@@ -1,11 +1,13 @@
 package com.ark.inflearnback.config.handler;
 
 import com.ark.inflearnback.config.model.HttpResponse;
+import com.ark.inflearnback.domain.member.exception.DuplicateEmailException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -17,7 +19,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RestControllerAdvice
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         return ResponseEntity.badRequest().body(HttpResponse.of(BAD_REQUEST, getResultMessage(ex)));
     }
 
@@ -26,12 +28,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         final StringBuilder resultMessageBuilder = new StringBuilder();
         while (iterator.hasNext()) {
             final ObjectError objectError = iterator.next();
-            resultMessageBuilder
-                    .append("[")
-                    .append(getPropertyName(objectError.getCodes()[0]))
-                    .append("] ")
-                    .append(objectError.getDefaultMessage());
-
+            resultMessageBuilder.append(objectError.getDefaultMessage());
             if (iterator.hasNext()) {
                 resultMessageBuilder.append(", ");
             }
@@ -39,7 +36,8 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         return resultMessageBuilder.toString();
     }
 
-    private String getPropertyName(final String propertyPath) {
-        return propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
+    @ExceptionHandler
+    public ResponseEntity<HttpResponse<String>> errorHandler(final DuplicateEmailException e) {
+        return ResponseEntity.badRequest().body(HttpResponse.of(HttpStatus.CONFLICT, e.getMessage()));
     }
 }

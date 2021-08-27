@@ -1,5 +1,11 @@
 name: "CodeQL"
 on:
+  push:
+    branches:
+      - main
+      - release
+      - develop
+      -
   pull_request:
     branches:
       - main

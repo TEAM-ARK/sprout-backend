@@ -7,6 +7,8 @@ import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvide
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -30,9 +32,6 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @EnableWebSecurity
@@ -60,21 +59,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable();
-
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .expressionHandler(expressionHandler());
-
-        http
-                .formLogin()
-                .failureUrl("/login")
-                .defaultSuccessUrl("/")
-                .permitAll();
-
-        http
+        http.httpBasic().disable()
+                .authorizeRequests(authorize ->
+                        authorize.anyRequest().authenticated()
+                                .expressionHandler(expressionHandler())
+                )
+                .formLogin(login ->
+                        login.failureUrl("/login")
+                                .defaultSuccessUrl("/")
+                                .permitAll())
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 

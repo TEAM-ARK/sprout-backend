@@ -12,6 +12,10 @@ jar {
     enabled = false
 }
 
+ext {
+    testContainersVersion = '1.16.0'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -45,6 +49,8 @@ dependencies {
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.security:spring-security-test',
+            "org.testcontainers:junit-jupiter:$testContainersVersion",
+            "org.testcontainers:mysql:$testContainersVersion",
             'org.springframework.restdocs:spring-restdocs-mockmvc'
     )
 
@@ -62,7 +68,7 @@ dependencies {
     )
 
     testRuntimeOnly(
-            'com.h2database:h2'
+            'mysql:mysql-connector-java',
     )
 }
 

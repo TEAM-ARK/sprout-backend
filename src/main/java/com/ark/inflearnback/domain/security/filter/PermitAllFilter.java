@@ -20,6 +20,11 @@ public class PermitAllFilter extends FilterSecurityInterceptor {
 
     public PermitAllFilter(final String... permitAllResources) {
         for (String resource : permitAllResources) {
+            String[] strings = resource.split(",");
+            if (strings.length == 2) {
+                permitAllRequestMatchers.add(new AntPathRequestMatcher(strings[0], strings[1]));
+                continue;
+            }
             permitAllRequestMatchers.add(new AntPathRequestMatcher(resource));
         }
     }

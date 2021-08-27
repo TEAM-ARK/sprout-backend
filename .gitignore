@@ -36,3 +36,6 @@ out/
 .vscode/
 /.idea/
 /src/report/
+
+src/main/resources/application-oauth.yml
+.gradle/*

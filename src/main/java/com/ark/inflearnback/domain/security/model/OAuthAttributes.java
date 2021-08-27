@@ -21,10 +21,10 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String nameAttributeKey, Map<String, Object> attributes) {
-        return Google(nameAttributeKey, attributes);
+        return ofGoogle(nameAttributeKey, attributes);
     }
 
-    private static OAuthAttributes Google(String nameAttributeKey, Map<String, Object> attributes) {
+    private static OAuthAttributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .name((String) attributes.get("email"))

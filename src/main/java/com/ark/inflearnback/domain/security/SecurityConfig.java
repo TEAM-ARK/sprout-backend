@@ -5,10 +5,9 @@ import com.ark.inflearnback.domain.security.filter.PermitAllFilter;
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
 import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.service.CustomOauth2UserService;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -33,12 +32,16 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PERMIT_ALL_RESOURCES = {"/", "/sign-up", "/login", "/logout"};
 
+    private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
 
@@ -64,7 +67,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         login.failureUrl("/login")
                                 .defaultSuccessUrl("/")
                                 .permitAll())
+                .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+
     }
 
     @Bean

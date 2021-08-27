@@ -1,19 +1,10 @@
 package com.ark.inflearnback.domain.security;
 
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
-import com.ark.inflearnback.domain.security.model.Member;
-import com.ark.inflearnback.domain.security.model.Resource;
-import com.ark.inflearnback.domain.security.model.Role;
-import com.ark.inflearnback.domain.security.model.RoleHierarchies;
-import com.ark.inflearnback.domain.security.model.RoleResource;
-import com.ark.inflearnback.domain.security.repository.MemberRepository;
-import com.ark.inflearnback.domain.security.repository.ResourceRepository;
-import com.ark.inflearnback.domain.security.repository.RoleHierarchiesRepository;
-import com.ark.inflearnback.domain.security.repository.RoleRepository;
-import com.ark.inflearnback.domain.security.repository.RoleResourceRepository;
+import com.ark.inflearnback.domain.security.model.*;
+import com.ark.inflearnback.domain.security.repository.*;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
-import java.util.HashMap;
-import java.util.Map;
+import com.ark.inflearnback.domain.security.type.RoleType;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +16,9 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -121,15 +115,15 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
         private Map<String, Role> createRoles() {
             return new HashMap<>() {{
-                put("sys", createRole("ROLE_SYS_ADMIN", "시스템관리자"));
-                put("admin", createRole("ROLE_ADMIN", "관리자"));
-                put("member", createRole("ROLE_MEMBER", "사용자"));
+                put("sys", createRole(RoleType.ROLE_SYS_ADMIN, "시스템관리자"));
+                put("admin", createRole(RoleType.ROLE_ADMIN, "관리자"));
+                put("member", createRole(RoleType.ROLE_MEMBER, "사용자"));
             }};
         }
 
-        private Role createRole(final String role, final String description) {
+        private Role createRole(final RoleType roleType, final String description) {
             return Role.builder()
-                    .authority(role)
+                    .roleType(roleType)
                     .description(description)
                     .deleted(false)
                     .build();

@@ -3,7 +3,6 @@ package com.ark.inflearnback.domain.security.model;
 import com.ark.inflearnback.domain.AbstractEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoleResource extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,5 +29,9 @@ public class RoleResource extends AbstractEntity {
     @Builder
     public static RoleResource of(final Role role, final Resource resource, final boolean deleted) {
         return new RoleResource(role, resource, deleted);
+    }
+
+    public String getRole() {
+        return role.get();
     }
 }

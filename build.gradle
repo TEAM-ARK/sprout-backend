@@ -64,6 +64,10 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-oauth2-client',
     )
 
+    testCompileOnly(
+            'org.projectlombok:lombok'
+    )
+
     runtimeOnly(
             'mysql:mysql-connector-java',
             'com.h2database:h2'
@@ -100,6 +104,7 @@ ext {
             '**/Q*.class',
             '**/dto/**',
             '**/exception/**',
+            '**/config/**',
             '**/test/**',
     ]
 }

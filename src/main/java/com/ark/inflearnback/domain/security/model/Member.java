@@ -1,15 +1,12 @@
 package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -34,5 +31,10 @@ public class Member extends AbstractEntity {
     @Builder
     public static Member of(final String email, final String password, final Role role) {
         return new Member(email, password, role);
+    }
+
+    public Member update(String email) {
+        this.email = email;
+        return this;
     }
 }

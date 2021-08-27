@@ -2,6 +2,7 @@ package com.ark.inflearnback.config.handler;
 
 import com.ark.inflearnback.config.model.HttpResponse;
 import com.ark.inflearnback.domain.member.exception.DuplicateEmailException;
+import com.ark.inflearnback.domain.member.exception.RoleNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,10 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<HttpResponse<String>> errorHandler(final DuplicateEmailException e) {
         return ResponseEntity.badRequest().body(HttpResponse.of(HttpStatus.CONFLICT, e.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<HttpResponse<String>> errorHandler(final RoleNotFoundException e) {
+        return ResponseEntity.internalServerError().body(HttpResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }

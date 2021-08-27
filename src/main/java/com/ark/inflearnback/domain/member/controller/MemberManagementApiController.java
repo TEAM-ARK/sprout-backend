@@ -1,6 +1,6 @@
-package com.ark.inflearnback.domain.security.controller;
+package com.ark.inflearnback.domain.member.controller;
 
-import com.ark.inflearnback.domain.security.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

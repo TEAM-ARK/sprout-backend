@@ -50,11 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final WebSecurity web) {
-        web.ignoring()
-                .requestMatchers(PathRequest
-                        .toStaticResources()
-                        .atCommonLocations()
-                );
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override

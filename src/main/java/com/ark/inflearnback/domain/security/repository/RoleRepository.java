@@ -3,4 +3,8 @@ package com.ark.inflearnback.domain.security.repository;
 import com.ark.inflearnback.domain.security.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {}
+import java.util.Optional;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findByAuthority(final String authority);
+}

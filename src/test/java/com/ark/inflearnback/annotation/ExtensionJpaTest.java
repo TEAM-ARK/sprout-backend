@@ -16,5 +16,5 @@ import org.springframework.context.annotation.Import;
 @Inherited
 @DataJpaTest
 @Import(QuerydslConfig.class)
-public @interface DataQueryJpaTest {
+public @interface ExtensionJpaTest {
 }

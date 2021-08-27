@@ -1,13 +1,13 @@
 package com.ark.inflearnback.domain.security.repository;
 
-import com.ark.inflearnback.annotation.DataQueryJpaTest;
+import com.ark.inflearnback.annotation.ExtensionJpaTest;
 import com.ark.inflearnback.annotation.EnableContainers;
 import com.ark.inflearnback.domain.security.model.Member;
 import com.ark.inflearnback.domain.security.model.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@DataQueryJpaTest
+@ExtensionJpaTest
 @EnableContainers
 class MemberRepositoryTest {
     private final RoleRepository roleRepository;

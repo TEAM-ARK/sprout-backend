@@ -1,6 +1,7 @@
 package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
+import java.util.Objects;
 import javax.persistence.Column;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,5 +30,18 @@ public class Role extends AbstractEntity {
     @Builder
     public static Role of(final String authority, final String description, final boolean deleted) {
         return new Role(authority, description, deleted);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        final Role role = (Role) o;
+        return Objects.equals(authority, role.authority);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(authority);
     }
 }

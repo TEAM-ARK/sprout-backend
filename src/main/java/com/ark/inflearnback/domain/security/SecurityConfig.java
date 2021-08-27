@@ -63,7 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin(login ->
                         login.failureUrl("/login")
                                 .defaultSuccessUrl("/")
-                                .permitAll())
+                                .permitAll()
+                )
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 

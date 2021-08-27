@@ -21,6 +21,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
         private final RoleResourceRepository roleResourceRepository;
         private final SecurityResourceService securityResourceService;
         private final RoleHierarchiesRepository roleHierarchiesRepository;
-        private final UrlFilterInvocationSecurityMetadataSource metadataSource;
+        private final FilterInvocationSecurityMetadataSource metadataSource;
 
         @Transactional
         public void setUp() {
@@ -102,8 +103,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
             createHierarchy();
             securityResourceService.assembleAuthorityHierarchy();
-            metadataSource.reload();
-
+            ((UrlFilterInvocationSecurityMetadataSource) this.metadataSource).reload();
         }
 
         private void createHierarchy() {

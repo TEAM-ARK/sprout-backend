@@ -1,9 +1,19 @@
 package com.ark.inflearnback.domain.security;
 
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
-import com.ark.inflearnback.domain.security.model.*;
-import com.ark.inflearnback.domain.security.repository.*;
+import com.ark.inflearnback.domain.security.model.Member;
+import com.ark.inflearnback.domain.security.model.Resource;
+import com.ark.inflearnback.domain.security.model.Role;
+import com.ark.inflearnback.domain.security.model.RoleHierarchies;
+import com.ark.inflearnback.domain.security.model.RoleResource;
+import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.repository.ResourceRepository;
+import com.ark.inflearnback.domain.security.repository.RoleHierarchiesRepository;
+import com.ark.inflearnback.domain.security.repository.RoleRepository;
+import com.ark.inflearnback.domain.security.repository.RoleResourceRepository;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +25,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 @Component
 @Profile("dev")
 @RequiredArgsConstructor
 public class SecurityDatabaseInitializer implements ApplicationListener<ContextRefreshedEvent> {
     private final InitService initService;
+
     private boolean alreadySetup = false;
 
     @Override
@@ -60,37 +68,37 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
             roleRepository.save(roles.get("sys"));
             roleRepository.save(roles.get("admin"));
-            roleRepository.save(roles.get("user"));
+            roleRepository.save(roles.get("member"));
 
-            final Member aSys = createAdmin("sys", encryptedPassword, roles.get("sys"));
-            final Member aMember = createAdmin("admin", encryptedPassword, roles.get("admin"));
-            final Member aUser = createAdmin("user", encryptedPassword, roles.get("user"));
+            final Member sysadmin = createMember("sys", encryptedPassword, roles.get("sys"));
+            final Member admin = createMember("admin", encryptedPassword, roles.get("admin"));
+            final Member member = createMember("member", encryptedPassword, roles.get("member"));
 
-            memberRepository.save(aSys);
-            memberRepository.save(aMember);
-            memberRepository.save(aUser);
+            memberRepository.save(sysadmin);
+            memberRepository.save(admin);
+            memberRepository.save(member);
 
-            final Resource rHome = createResource("/", "GET");
-            final Resource rUser = createResource("/user", "GET");
-            final Resource rAdmin = createResource("/admin", "GET");
-            final Resource rSys = createResource("/sys", "GET");
+            final Resource resourceHome = createResource("/", "GET");
+            final Resource resourceMember = createResource("/member", "GET");
+            final Resource resourceAdmin = createResource("/admin", "GET");
+            final Resource resourceSysadmin = createResource("/sys", "GET");
 
-            resourceRepository.save(rHome);
-            resourceRepository.save(rUser);
-            resourceRepository.save(rAdmin);
-            resourceRepository.save(rSys);
+            resourceRepository.save(resourceHome);
+            resourceRepository.save(resourceMember);
+            resourceRepository.save(resourceAdmin);
+            resourceRepository.save(resourceSysadmin);
 
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), rSys));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), rAdmin));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), rUser));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), rHome));
+            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceSysadmin));
+            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceAdmin));
+            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceHome));
 
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), rAdmin));
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), rUser));
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), rHome));
+            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceAdmin));
+            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceHome));
 
-            roleResourceRepository.save(createRoleResource(roles.get("user"), rUser));
-            roleResourceRepository.save(createRoleResource(roles.get("user"), rHome));
+            roleResourceRepository.save(createRoleResource(roles.get("member"), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get("member"), resourceHome));
 
             createHierarchy();
             securityResourceService.assembleAuthorityHierarchy();
@@ -101,23 +109,22 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
         private void createHierarchy() {
             roleHierarchiesRepository.save(createRoleHierarchies("ROLE_SYS_ADMIN", 1));
             roleHierarchiesRepository.save(createRoleHierarchies("ROLE_ADMIN", 2));
-            roleHierarchiesRepository.save(createRoleHierarchies("ROLE_USER", 3));
+            roleHierarchiesRepository.save(createRoleHierarchies("ROLE_MEMBER", 3));
         }
 
-        private RoleHierarchies createRoleHierarchies(final String role_sys_admin, final int i) {
+        private RoleHierarchies createRoleHierarchies(final String authority, final int orders) {
             return RoleHierarchies.builder()
-                    .authority(role_sys_admin)
-                    .orders(i)
+                    .authority(authority)
+                    .orders(orders)
                     .build();
         }
 
         private Map<String, Role> createRoles() {
-            final Map<String, Role> roles = new HashMap<>();
-            roles.put("sys", createRole("ROLE_SYS_ADMIN", "시스템관리자"));
-            roles.put("admin", createRole("ROLE_ADMIN", "관리자"));
-            roles.put("user", createRole("ROLE_USER", "유저"));
-            return roles;
-
+            return new HashMap<>() {{
+                put("sys", createRole("ROLE_SYS_ADMIN", "시스템관리자"));
+                put("admin", createRole("ROLE_ADMIN", "관리자"));
+                put("member", createRole("ROLE_MEMBER", "사용자"));
+            }};
         }
 
         private Role createRole(final String role, final String description) {
@@ -128,7 +135,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
                     .build();
         }
 
-        private Member createAdmin(String username, String password, Role role) {
+        private Member createMember(final String username, final String password, final Role role) {
             return Member.builder()
                     .username(username)
                     .password(password)
@@ -136,7 +143,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
                     .build();
         }
 
-        private RoleResource createRoleResource(Role role, Resource resource) {
+        private RoleResource createRoleResource(final Role role, final Resource resource) {
             return RoleResource.builder()
                     .role(role)
                     .resource(resource)
@@ -144,7 +151,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
                     .build();
         }
 
-        private Resource createResource(String url, String method) {
+        private Resource createResource(final String url, final String method) {
             return Resource.builder()
                     .url(url)
                     .method(method)

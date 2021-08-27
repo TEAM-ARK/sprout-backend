@@ -38,7 +38,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/", "/sign-up", "/login", "/logout", "/member,POST"};
+    private static final String[] PERMIT_ALL_RESOURCES = {"/api/v1/member,POST"};
 
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
@@ -61,11 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorize ->
                         authorize.anyRequest().authenticated()
                                 .expressionHandler(expressionHandler())
-                )
-                .formLogin(login ->
-                        login.failureUrl("/login")
-                                .defaultSuccessUrl("/")
-                                .permitAll()
                 )
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }

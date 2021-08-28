@@ -42,7 +42,7 @@ class MemberManagementApiControllerTest {
     void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
         webTestClient = MockMvcWebTestClient.bindToApplicationContext(context)
                 .configureClient()
-                .filter(documentationConfiguration(restDocumentation))
+                .filter(documentationConfiguration(restDocumentation).snippets().withEncoding("UTF-8"))
                 .build();
     }
 
@@ -51,10 +51,10 @@ class MemberManagementApiControllerTest {
     void signUp() throws Exception {
         // given
         Mono<String> request = Mono.just(objectMapper.writeValueAsString(
-                SignRequestDto.of("test@email.com", "AASHFKHQWFQYWqwhfgqwf123!"))
+                SignRequestDto.of("test@email.com", "AASHFKHQWFQYW#qwhfgqwf123!"))
         );
 
-        String expected = objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.OK, "회원가입 완료."));
+        String expected = objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.OK, "sign-up successful"));
 
         // when
         ResponseSpec exchange = webTestClient.post()
@@ -75,7 +75,7 @@ class MemberManagementApiControllerTest {
                                         .tag("회원")
                                         .summary("신규 회원 정보 생성")
                                         .description("신규 회원 정보를 생성한다")
-                                        .requestSchema(schema("SignUpRequestDto"))
+                                        .requestSchema(schema("SignRequestDto"))
                                         .responseSchema(schema("HttpResponse"))
                                         .requestFields(
                                                 fieldWithPath("email").description("이메일"),

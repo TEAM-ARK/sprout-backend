@@ -38,19 +38,15 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        Member member = saveOrUpdate(attributes);
-
-        httpSession.setAttribute("user", new SessionMember(member));
+        httpSession.setAttribute("user", new SessionMember(save(attributes)));
         Role role = Role.of("ROLE_USER", "사용자", false);
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(role.getAuthority())),
                 attributes.getAttributes(), attributes.getNameAttributeKey());
     }
 
-    private Member saveOrUpdate(OAuthAttributes attributes){
-        Member member = memberRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getEmail()))
-                .orElse(attributes.toEntity());
-        return memberRepository.save(member);
+    private Member save(OAuthAttributes attributes){
+        return memberRepository.save(memberRepository.findByEmail(attributes.getEmail())
+                                                     .orElse(attributes.toEntity()));
     }
 }

@@ -32,9 +32,4 @@ public class Member extends AbstractEntity {
     public static Member of(final String email, final String password, final Role role) {
         return new Member(email, password, role);
     }
-
-    public Member update(String email) {
-        this.email = email;
-        return this;
-    }
 }

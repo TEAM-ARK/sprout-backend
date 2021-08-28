@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 @Getter
 public class SessionMember implements Serializable {
-    private String email;
+    private final String email;
 
-    public SessionMember(Member member) {
+    public SessionMember(final Member member) {
         this.email = member.getEmail();
     }
 }

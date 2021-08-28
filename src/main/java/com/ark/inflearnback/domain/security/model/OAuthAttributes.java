@@ -1,5 +1,6 @@
 package com.ark.inflearnback.domain.security.model;
 
+import com.ark.inflearnback.domain.security.type.RoleType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,7 +37,7 @@ public class OAuthAttributes {
     public Member toEntity() {
         return Member.builder()
                 .email(email)
-                .role(Role.of("ROLE_USER", "사용자", false))
+                .role(Role.of(RoleType.ROLE_MEMBER, "사용자", false))
                 .build();
     }
 }

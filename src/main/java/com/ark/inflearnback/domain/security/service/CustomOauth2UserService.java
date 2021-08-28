@@ -5,6 +5,7 @@ import com.ark.inflearnback.domain.security.model.OAuthAttributes;
 import com.ark.inflearnback.domain.security.model.Role;
 import com.ark.inflearnback.domain.security.model.SessionMember;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -39,9 +40,9 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         httpSession.setAttribute("user", new SessionMember(save(attributes)));
-        Role role = Role.of("ROLE_USER", "사용자", false);
+        Role role = Role.of(RoleType.ROLE_MEMBER, "사용자", false);
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(role.getAuthority())),
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(role.getRoleType().get())),
                 attributes.getAttributes(), attributes.getNameAttributeKey());
     }
 

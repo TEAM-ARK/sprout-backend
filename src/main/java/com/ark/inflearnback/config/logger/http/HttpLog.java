@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -112,10 +114,22 @@ public class HttpLog extends AbstractEntity {
 
     private static String readTree(final ObjectMapper objectMapper, final ContentCachingRequestWrapper cachingRequest) {
         try {
-            return objectMapper.readTree(cachingRequest.getContentAsByteArray()).toString();
-        } catch (IOException e) {
+            final JsonNode jsonNode = objectMapper.readTree(cachingRequest.getContentAsByteArray());
+            removeSecurityInformation(jsonNode);
+            return jsonNode.toString();
+        }
+        catch (IOException e) {
             log.warn("ContentCachingRequestWrapper parse error! returns null. info : {}", e.getMessage());
             return "";
+        }
+    }
+
+    private static void removeSecurityInformation(final JsonNode jsonNode) {
+        Iterator<Map.Entry<String, JsonNode>> fields = jsonNode.fields();
+        while (fields.hasNext()) {
+            if (fields.next().toString().contains("password")) {
+                fields.remove();
+            }
         }
     }
 

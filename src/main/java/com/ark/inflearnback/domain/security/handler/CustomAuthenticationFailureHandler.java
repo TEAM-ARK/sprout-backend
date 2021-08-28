@@ -4,6 +4,7 @@ import com.ark.inflearnback.config.model.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -24,6 +25,13 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.UNAUTHORIZED, "이메일이나 비밀번호가 유효한 값이 아닙니다."));
+
+        String errMsg = "Email or password is invalid.";
+
+        if (exception instanceof BadCredentialsException) {
+            errMsg = "Email or password is invalid.";
+        }
+
+        objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
     }
 }

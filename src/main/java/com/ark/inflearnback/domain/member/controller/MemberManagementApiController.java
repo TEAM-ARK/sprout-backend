@@ -24,7 +24,7 @@ public class MemberManagementApiController {
     @PostMapping
     public ResponseEntity<?> signUp(@Valid @RequestBody final SignRequestDto request) {
         memberManagementService.signUp(request);
-        return ResponseEntity.ok(HttpResponse.of(HttpStatus.OK, "회원가입 완료."));
+        return ResponseEntity.ok(HttpResponse.of(HttpStatus.OK, "sign-up successful"));
     }
 }
 

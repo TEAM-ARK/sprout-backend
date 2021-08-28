@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import reactor.core.publisher.Mono;
 
@@ -57,17 +58,18 @@ class RestLoginTest {
                 .configureClient()
                 .filter(documentationConfiguration(restDocumentation).snippets().withEncoding("UTF-8"))
                 .build();
+    }
 
+    @Test
+    @Transactional
+    @DisplayName("로그인")
+    void signUp() throws Exception {
+        // given
         final String email = "test@email.com";
         final String password = passwordEncoder.encode("AASHFKHQWFQYW#qwhfgqwf123!");
         final Role role = roleRepository.findByRoleType(RoleType.ROLE_MEMBER).get();
         memberRepository.saveAndFlush(Member.of(email, password, role));
-    }
 
-    @Test
-    @DisplayName("로그인")
-    void signUp() throws Exception {
-        // given
         Mono<String> request = Mono.just(objectMapper.writeValueAsString(
                 SignRequestDto.of("test@email.com", "AASHFKHQWFQYW#qwhfgqwf123!"))
         );

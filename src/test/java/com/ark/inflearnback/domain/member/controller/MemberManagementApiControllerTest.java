@@ -15,6 +15,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +48,7 @@ class MemberManagementApiControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("회원가입")
     void signUp() throws Exception {
         // given

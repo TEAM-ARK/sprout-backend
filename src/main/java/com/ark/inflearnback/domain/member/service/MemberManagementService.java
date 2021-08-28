@@ -10,6 +10,7 @@ import com.ark.inflearnback.domain.security.repository.RoleRepository;
 import com.ark.inflearnback.domain.security.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 public class MemberManagementService {
     private final RoleRepository roleRepository;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signUp(final SignUpRequestDto request) throws DuplicateEmailException {
@@ -36,7 +38,7 @@ public class MemberManagementService {
     }
 
     private void signUpComplete(final SignUpRequestDto request) {
-        memberRepository.save(Member.of(request, findRoleMember()));
+        memberRepository.save(Member.of(request.getEmail(), passwordEncoder.encode(request.getPassword()), findRoleMember()));
     }
 
     private Role findRoleMember() {

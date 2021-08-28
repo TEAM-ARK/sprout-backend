@@ -6,10 +6,6 @@ import com.ark.inflearnback.domain.security.model.RoleResource;
 import com.ark.inflearnback.domain.security.repository.ResourceRepository;
 import com.ark.inflearnback.domain.security.repository.RoleHierarchiesRepository;
 import com.ark.inflearnback.domain.security.repository.RoleResourceRepository;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.ConfigAttribute;
@@ -19,6 +15,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -52,8 +53,8 @@ public class SecurityResourceService {
 
     private void assemblyConfigAttribute(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList, final Resource resource, final List<ConfigAttribute> configAttributes) {
         for (RoleResource roleResource : roleResourceRepository.findByResource(resource)) {
-            configAttributes.add(new SecurityConfig(roleResource.getRole().getAuthority()));
-            resourceList.put(new AntPathRequestMatcher(resource.getUrl()), configAttributes);
+            configAttributes.add(new SecurityConfig(roleResource.getRole()));
+            resourceList.put(new AntPathRequestMatcher(resource.getUrl(), resource.getMethod()), configAttributes);
         }
     }
 

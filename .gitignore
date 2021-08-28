@@ -38,3 +38,5 @@ out/
 /src/report/
 
 .gradle/*
+/src/main/resources/static/report/
+/src/main/resources/static/api/open-api-3.0.1.json

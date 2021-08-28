@@ -39,7 +39,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/", "/sign-up", "/login", "/logout"};
+    private static final String[] PERMIT_ALL_RESOURCES = {"/api/v1/member,POST"};
 
     private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;
@@ -58,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http.csrf().disable()
+                .httpBasic().disable()
                 .authorizeRequests(authorize ->
                         authorize.anyRequest().authenticated()
                                 .expressionHandler(expressionHandler())

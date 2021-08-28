@@ -1,6 +1,7 @@
 package com.ark.inflearnback.domain.security.provider;
 
 import com.ark.inflearnback.domain.security.dto.MemberAuthenticationContext;
+import com.ark.inflearnback.domain.security.token.RestAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,6 +33,6 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
 
     @Override
     public boolean supports(final Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication) || RestAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

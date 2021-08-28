@@ -7,8 +7,6 @@ import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvide
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -33,11 +31,14 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/", "/sign-up", "/login", "/logout"};
+    private static final String[] PERMIT_ALL_RESOURCES = {"/api/v1/member,POST"};
 
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
@@ -55,15 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http.csrf().disable()
+                .httpBasic().disable()
                 .authorizeRequests(authorize ->
                         authorize.anyRequest().authenticated()
                                 .expressionHandler(expressionHandler())
                 )
-                .formLogin(login ->
-                        login.failureUrl("/login")
-                                .defaultSuccessUrl("/")
-                                .permitAll())
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 

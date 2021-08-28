@@ -39,7 +39,7 @@ public class MemberManagementService {
     }
 
     private void signUpComplete(final SignRequestDto request) {
-        memberRepository.save(Member.of(request.getEmail(), passwordEncoder.encode(request.getPassword()), findRoleMember()));
+        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember()));
     }
 
     private Role findRoleMember() {

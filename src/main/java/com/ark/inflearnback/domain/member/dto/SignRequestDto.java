@@ -1,9 +1,9 @@
 package com.ark.inflearnback.domain.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -27,5 +27,10 @@ public class SignRequestDto {
 
     public static SignRequestDto of(final String email, final String password) {
         return new SignRequestDto(email, password);
+    }
+
+    public SignRequestDto encodePassword(final PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+        return this;
     }
 }

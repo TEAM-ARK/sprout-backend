@@ -1,6 +1,6 @@
 package com.ark.inflearnback.domain.security.filter;
 
-import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import com.ark.inflearnback.domain.security.token.RestAuthenticationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class RestLoginProcessingFilter extends AbstractAuthenticationProcessingF
             throw new IllegalStateException("REST 요청이 아닙니다.");
         }
 
-        final SignUpRequestDto memberDto = objectMapper.readValue(request.getReader(), SignUpRequestDto.class);
+        final SignRequestDto memberDto = objectMapper.readValue(request.getReader(), SignRequestDto.class);
 
         if (!StringUtils.hasText(memberDto.getEmail()) || !StringUtils.hasText(memberDto.getPassword())) {
             throw new IllegalStateException("이메일이나 비밀번호가 입력되지 않았습니다.");

@@ -1,7 +1,7 @@
 package com.ark.inflearnback.domain.member.controller;
 
 import com.ark.inflearnback.config.model.HttpResponse;
-import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +51,7 @@ class MemberManagementApiControllerTest {
     void signUp() throws Exception {
         // given
         Mono<String> request = Mono.just(objectMapper.writeValueAsString(
-                SignUpRequestDto.of("test@email.com", "AASHFKHQWFQYWqwhfgqwf123!"))
+                SignRequestDto.of("test@email.com", "AASHFKHQWFQYWqwhfgqwf123!"))
         );
 
         String expected = objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.OK, "회원가입 완료."));

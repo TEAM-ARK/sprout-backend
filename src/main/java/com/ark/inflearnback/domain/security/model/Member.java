@@ -7,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class Member extends AbstractEntity {
         return new Member(email, password, role);
     }
 
-    public static Member of(final SignUpRequestDto request, final Role role){
+    public static Member of(final SignRequestDto request, final Role role){
         return new Member(request.getEmail(), request.getEmail(), role);
     }
 

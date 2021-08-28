@@ -1,8 +1,10 @@
 package com.ark.inflearnback.domain.security;
 
 import com.ark.inflearnback.domain.security.factory.UrlResourcesMapFactoryBean;
+import com.ark.inflearnback.domain.security.filter.JsonLoginFilter;
 import com.ark.inflearnback.domain.security.filter.PermitAllFilter;
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
+import com.ark.inflearnback.domain.security.handler.AuthenticationHandler;
 import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
@@ -17,6 +19,7 @@ import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.RoleHierarchyVoter;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +33,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +66,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         authorize.anyRequest().authenticated()
                                 .expressionHandler(expressionHandler())
                 )
-                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+                .formLogin().disable()
+                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class)
+                .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    protected JsonLoginFilter getAuthenticationFilter() {
+        JsonLoginFilter filter = new JsonLoginFilter();
+        try {
+            filter.setFilterProcessesUrl("/api/v1/member/login");
+            filter.setAuthenticationManager(this.authenticationManagerBean());
+            filter.setUsernameParameter("email");
+            filter.setPasswordParameter("password");
+            filter.setAuthenticationSuccessHandler(new AuthenticationHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filter;
     }
 
     @Bean

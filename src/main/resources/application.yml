@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: dev
-    include: oauth
 
   main:
     allow-bean-definition-overriding: true
@@ -22,6 +21,9 @@ spring:
     activate:
       on-profile: dev
 
+  profiles:
+    include: oauth
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -35,6 +37,9 @@ spring:
   config:
     activate:
       on-profile: prod
+
+  profiles:
+    include: oauth
 
   jpa:
     hibernate:

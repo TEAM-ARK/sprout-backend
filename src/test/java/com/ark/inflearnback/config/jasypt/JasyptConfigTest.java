@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 class JasyptConfigTest {
@@ -21,9 +23,7 @@ class JasyptConfigTest {
         pbeEnc.setPassword(testPassword);
 
         String enc = pbeEnc.encrypt("테스트용 텍스트");
-        System.out.println("enc = " + enc);
-
         String des = pbeEnc.decrypt(enc);
-        System.out.println("des = " + des);
+        assertThat(des).isEqualTo("테스트용 텍스트");
     }
 }

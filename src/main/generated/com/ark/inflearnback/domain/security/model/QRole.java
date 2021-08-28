@@ -21,8 +21,6 @@ public class QRole extends EntityPathBase<Role> {
 
     public final com.ark.inflearnback.domain.QAbstractEntity _super = new com.ark.inflearnback.domain.QAbstractEntity(this);
 
-    public final StringPath authority = createString("authority");
-
     public final BooleanPath deleted = createBoolean("deleted");
 
     public final StringPath description = createString("description");
@@ -35,6 +33,8 @@ public class QRole extends EntityPathBase<Role> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
+
+    public final EnumPath<com.ark.inflearnback.domain.security.type.RoleType> roleType = createEnum("roleType", com.ark.inflearnback.domain.security.type.RoleType.class);
 
     public QRole(String variable) {
         super(Role.class, forVariable(variable));

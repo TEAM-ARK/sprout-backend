@@ -70,7 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .permitAll())
                 .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
-
     }
 
     @Bean

@@ -25,14 +25,15 @@ public class MemberManagementService {
 
     @Transactional
     public void signUp(final SignRequestDto request) throws DuplicateEmailException {
-        log.info(String.format("%s 회원 가입 진행.", request.getEmail()));
+        log.info(String.format("%s 회원 가입 진행", request.getEmail()));
         verifyEmail(request);
         signUpComplete(request);
-        log.info(String.format("%s 회원 가입 완료.", request.getEmail()));
+        log.info(String.format("%s 회원 가입 완료", request.getEmail()));
     }
 
     private void verifyEmail(final SignRequestDto request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
+            log.warn("이미 사용중인 이메일이므로 가입 불가");
             throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
         }
     }

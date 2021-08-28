@@ -56,7 +56,8 @@ dependencies {
             'org.modelmapper:modelmapper:2.4.4',
             'commons-io:commons-io:2.8.0',
             'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
-            'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.17'
+            'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.17',
+            'org.springframework.boot:spring-boot-starter-oauth2-client',
     )
 
     testImplementation(
@@ -72,9 +73,10 @@ dependencies {
         exclude group: 'junit', module: 'junit'
     }
 
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'
+
     compileOnly(
             'org.projectlombok:lombok',
-            'org.springframework.boot:spring-boot-starter-oauth2-client',
     )
 
     testCompileOnly(

@@ -10,23 +10,23 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QRole is a Querydsl query type for Role
+ * QResource is a Querydsl query type for Resource
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QRole extends EntityPathBase<Role> {
+public class QResource extends EntityPathBase<Resource> {
 
-    private static final long serialVersionUID = 1754239234L;
+    private static final long serialVersionUID = -2144162150L;
 
-    public static final QRole role = new QRole("role");
+    public static final QResource resource = new QResource("resource");
 
     public final com.ark.inflearnback.domain.QAbstractEntity _super = new com.ark.inflearnback.domain.QAbstractEntity(this);
 
     public final BooleanPath deleted = createBoolean("deleted");
 
-    public final StringPath description = createString("description");
-
     //inherited
     public final NumberPath<Long> id = _super.id;
+
+    public final StringPath method = createString("method");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
@@ -34,18 +34,18 @@ public class QRole extends EntityPathBase<Role> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
-    public final EnumPath<com.ark.inflearnback.domain.security.type.RoleType> roleType = createEnum("roleType", com.ark.inflearnback.domain.security.type.RoleType.class);
+    public final StringPath url = createString("url");
 
-    public QRole(String variable) {
-        super(Role.class, forVariable(variable));
+    public QResource(String variable) {
+        super(Resource.class, forVariable(variable));
     }
 
-    public QRole(Path<? extends Role> path) {
+    public QResource(Path<? extends Resource> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QRole(PathMetadata metadata) {
-        super(Role.class, metadata);
+    public QResource(PathMetadata metadata) {
+        super(Resource.class, metadata);
     }
 
 }

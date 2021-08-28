@@ -75,25 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .expressionHandler(expressionHandler())
                 )
 
-                .formLogin().disable()
-
-                .addFilterAt(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
-    //
-    //    protected JsonLoginFilter getAuthenticationFilter() {
-    //        JsonLoginFilter filter = new JsonLoginFilter();
-    //        try {
-    //            filter.setFilterProcessesUrl("/api/v1/member/login");
-    //            filter.setAuthenticationManager(this.authenticationManagerBean());
-    //            filter.setUsernameParameter("email");
-    //            filter.setPasswordParameter("password");
-    //            filter.setAuthenticationSuccessHandler(new AuthenticationHandler());
-    //        } catch (Exception e) {
-    //            e.printStackTrace();
-    //        }
-    //        return filter;
-    //    }
 
     @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {

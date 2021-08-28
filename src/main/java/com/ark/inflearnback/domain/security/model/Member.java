@@ -2,6 +2,12 @@ package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;

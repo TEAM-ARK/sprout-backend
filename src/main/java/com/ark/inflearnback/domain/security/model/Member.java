@@ -3,12 +3,17 @@ package com.ark.inflearnback.domain.security.model;
 import com.ark.inflearnback.domain.AbstractEntity;
 
 import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -35,11 +40,13 @@ public class Member extends AbstractEntity {
         return new Member(email, password, role);
     }
 
-    public static Member of(final SignUpRequestDto request, final Role role){
-        return new Member(request.getEmail(), request.getEmail(), role);
+    public static Member of(final SignRequestDto request, final Role role) {
+        return new Member(request.getEmail(), request.getPassword(), role);
     }
 
-    public String role(){
-        return role.get();
+    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
+        return new ArrayList<>() {{
+            add(new SimpleGrantedAuthority(role.get()));
+        }};
     }
 }

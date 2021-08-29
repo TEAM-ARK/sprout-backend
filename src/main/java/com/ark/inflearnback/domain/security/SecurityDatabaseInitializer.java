@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 @Slf4j
@@ -56,18 +56,18 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
         @Transactional
         public void setUp() {
-            final Map<String, Role> roles = createRoles();
+            final Map<RoleType, Role> roles = createRoles();
             final String encryptedPassword = PasswordEncoderFactories
                     .createDelegatingPasswordEncoder()
                     .encode("root");
 
-            roleRepository.save(roles.get("sys"));
-            roleRepository.save(roles.get("admin"));
-            roleRepository.save(roles.get("member"));
+            roleRepository.save(roles.get(RoleType.SYS_ADMIN));
+            roleRepository.save(roles.get(RoleType.ADMIN));
+            roleRepository.save(roles.get(RoleType.MEMBER));
 
-            final Member sysadmin = createMember("sys", encryptedPassword, roles.get("sys"));
-            final Member admin = createMember("admin", encryptedPassword, roles.get("admin"));
-            final Member member = createMember("member", encryptedPassword, roles.get("member"));
+            final Member sysadmin = createMember("sys@test.com", encryptedPassword, roles.get(RoleType.SYS_ADMIN));
+            final Member admin = createMember("admin@test.com", encryptedPassword, roles.get(RoleType.ADMIN));
+            final Member member = createMember("member@test.com", encryptedPassword, roles.get(RoleType.MEMBER));
 
             memberRepository.save(sysadmin);
             memberRepository.save(admin);
@@ -83,17 +83,17 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
             resourceRepository.save(resourceAdmin);
             resourceRepository.save(resourceSysadmin);
 
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceSysadmin));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceAdmin));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceMember));
-            roleResourceRepository.save(createRoleResource(roles.get("sys"), resourceHome));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceSysadmin));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceAdmin));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceHome));
 
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceAdmin));
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceMember));
-            roleResourceRepository.save(createRoleResource(roles.get("admin"), resourceHome));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceAdmin));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceHome));
 
-            roleResourceRepository.save(createRoleResource(roles.get("member"), resourceMember));
-            roleResourceRepository.save(createRoleResource(roles.get("member"), resourceHome));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceHome));
 
             createHierarchy();
             securityResourceService.assembleAuthorityHierarchy();
@@ -101,30 +101,29 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
         }
 
         private void createHierarchy() {
-            roleHierarchiesRepository.save(createRoleHierarchies("ROLE_SYS_ADMIN", 1));
-            roleHierarchiesRepository.save(createRoleHierarchies("ROLE_ADMIN", 2));
-            roleHierarchiesRepository.save(createRoleHierarchies("ROLE_MEMBER", 3));
+            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.SYS_ADMIN, 1));
+            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.ADMIN, 2));
+            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.MEMBER, 3));
         }
 
-        private RoleHierarchies createRoleHierarchies(final String authority, final int orders) {
+        private RoleHierarchies createRoleHierarchies(final RoleType roleType, final int orders) {
             return RoleHierarchies.builder()
-                    .authority(authority)
+                    .authority(roleType.get())
                     .orders(orders)
                     .build();
         }
 
-        private Map<String, Role> createRoles() {
-            return new HashMap<>() {{
-                put("sys", createRole(RoleType.ROLE_SYS_ADMIN, "시스템관리자"));
-                put("admin", createRole(RoleType.ROLE_ADMIN, "관리자"));
-                put("member", createRole(RoleType.ROLE_MEMBER, "사용자"));
-            }};
+        private Map<RoleType, Role> createRoles() {
+            return new EnumMap<>(Map.of(
+                    RoleType.SYS_ADMIN, createRole(RoleType.SYS_ADMIN),
+                    RoleType.ADMIN, createRole(RoleType.ADMIN),
+                    RoleType.MEMBER, createRole(RoleType.MEMBER))
+            );
         }
 
-        private Role createRole(final RoleType roleType, final String description) {
+        private Role createRole(final RoleType roleType) {
             return Role.builder()
                     .roleType(roleType)
-                    .description(description)
                     .deleted(false)
                     .build();
         }

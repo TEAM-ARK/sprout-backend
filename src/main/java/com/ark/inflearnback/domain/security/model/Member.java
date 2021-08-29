@@ -1,8 +1,8 @@
 package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
-
 import com.ark.inflearnback.domain.member.dto.SignRequestDto;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.ark.inflearnback.domain.member.controller;
 
 import com.ark.inflearnback.config.model.HttpResponse;
-import com.ark.inflearnback.domain.member.dto.SignUpRequestDto;
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import com.ark.inflearnback.domain.member.service.MemberManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +22,9 @@ public class MemberManagementApiController {
     private final MemberManagementService memberManagementService;
 
     @PostMapping
-    public ResponseEntity<?> signUp(@Valid @RequestBody final SignUpRequestDto request) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody final SignRequestDto request) {
         memberManagementService.signUp(request);
-        return ResponseEntity.ok(HttpResponse.of(HttpStatus.OK, "회원가입 완료."));
+        return ResponseEntity.ok(HttpResponse.of(HttpStatus.OK, "sign-up successful"));
     }
 }
 

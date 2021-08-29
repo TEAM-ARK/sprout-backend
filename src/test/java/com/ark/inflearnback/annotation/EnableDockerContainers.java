@@ -12,5 +12,5 @@ import org.springframework.test.context.ActiveProfiles;
 @Retention(RetentionPolicy.RUNTIME)
 @ActiveProfiles("test")
 @ExtendWith(MySQL80Extension.class)
-public @interface EnableContainers {
+public @interface EnableDockerContainers {
 }

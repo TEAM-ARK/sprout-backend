@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Order(1)
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -71,7 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .authorizeRequests(
-                        authorize -> authorize.anyRequest().authenticated()
+                        authorize -> authorize.anyRequest()
+                                .authenticated()
                                 .expressionHandler(expressionHandler())
                 )
 

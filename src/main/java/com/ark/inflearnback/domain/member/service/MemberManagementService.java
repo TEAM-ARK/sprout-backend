@@ -44,11 +44,11 @@ public class MemberManagementService {
 
     private Role findRoleMember() {
         try {
-            return roleRepository.findByRoleType(RoleType.ROLE_MEMBER)
+            return roleRepository.findByRoleType(RoleType.MEMBER)
                     .orElseThrow(RoleNotFoundException::new);
         }
         catch (RoleNotFoundException e) {
-            log.error(String.format("%s를 찾을 수 없거나 활성화 돼있지 않습니다. ROLE 테이블을 확인하세요.", RoleType.ROLE_MEMBER));
+            log.error(String.format("%s를 찾을 수 없거나 활성화 돼있지 않습니다. ROLE 테이블을 확인하세요.", RoleType.MEMBER));
             throw new RoleNotFoundException("내부 서버 에러.");
         }
     }

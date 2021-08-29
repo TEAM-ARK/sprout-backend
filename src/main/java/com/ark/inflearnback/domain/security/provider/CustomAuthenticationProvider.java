@@ -21,18 +21,28 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
         final MemberAuthenticationContext context = (MemberAuthenticationContext) userDetailsService.loadUserByUsername(authentication.getName());
         final String encryptedPassword = context.getPassword();
         final String enteredPassword = (String) authentication.getCredentials();
-        verifyCredentials(encryptedPassword, enteredPassword);
-        return new UsernamePasswordAuthenticationToken(context.getMember(), null, context.getAuthorities());
-    }
 
-    private void verifyCredentials(final String encryptedPassword, final String enteredPassword) {
         if (!passwordEncoder.matches(enteredPassword, encryptedPassword)) {
             throw new BadCredentialsException("password not matched !");
         }
+
+        if (isRestAuthenticationToken(authentication.getClass())) {
+            return new RestAuthenticationToken(context.getUsername(), null, context.getAuthorities());
+        }
+
+        return new UsernamePasswordAuthenticationToken(context.getUsername(), null, context.getAuthorities());
     }
 
     @Override
     public boolean supports(final Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication) || RestAuthenticationToken.class.isAssignableFrom(authentication);
+        return isUsernamePasswordAuthenticationToken(authentication) || isRestAuthenticationToken(authentication);
+    }
+
+    private boolean isUsernamePasswordAuthenticationToken(final Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+
+    private boolean isRestAuthenticationToken(final Class<?> authentication) {
+        return RestAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

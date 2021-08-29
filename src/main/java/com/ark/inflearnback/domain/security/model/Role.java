@@ -34,8 +34,8 @@ public class Role extends AbstractEntity {
     }
 
     @Builder
-    public static Role of(final RoleType roleType, final String description, final boolean deleted) {
-        return new Role(roleType, description, deleted);
+    public static Role of(final RoleType roleType, final boolean deleted) {
+        return new Role(roleType, roleType.getDescription(), deleted);
     }
 
     public String get() {

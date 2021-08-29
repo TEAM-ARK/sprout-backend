@@ -1,15 +1,17 @@
 package com.ark.inflearnback.domain.security;
 
 import com.ark.inflearnback.domain.security.factory.UrlResourcesMapFactoryBean;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.ark.inflearnback.domain.security.filter.PermitAllFilter;
+import com.ark.inflearnback.domain.security.filter.RestLoginProcessingFilter;
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
+import com.ark.inflearnback.domain.security.handler.CustomAuthenticationFailureHandler;
+import com.ark.inflearnback.domain.security.handler.CustomAuthenticationSuccessHandler;
 import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.service.CustomOauth2UserService;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -33,6 +35,9 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .defaultSuccessUrl("/")
                                 .permitAll())
                 .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
-
                 .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }

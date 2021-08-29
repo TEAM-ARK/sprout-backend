@@ -1,4 +1,4 @@
-package com.ark.inflearnback.domain.security.model;
+package com.ark.inflearnback.domain.security.dto;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class SessionMember implements Serializable {
     private final String email;
 
-    public SessionMember(final Member member) {
-        this.email = member.getEmail();
+    public SessionMember(final String email) {
+        this.email = email;
     }
 }

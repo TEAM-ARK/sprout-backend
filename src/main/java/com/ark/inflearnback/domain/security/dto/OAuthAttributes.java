@@ -4,7 +4,6 @@ import com.ark.inflearnback.domain.security.exception.Oauth2UserNotVerifiedExcep
 import com.ark.inflearnback.domain.security.type.RoleType;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -12,7 +11,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collections;
 
-@Slf4j
 @Getter
 public class OAuthAttributes {
     private final OAuth2User oAuth2User;
@@ -45,7 +43,6 @@ public class OAuthAttributes {
         boolean isEmailVerified = oAuth2User.getAttribute("email_verified");
 
         if (!isEmailVerified) {
-            log.warn("Oauth2 User Login Error!!");
             throw new Oauth2UserNotVerifiedException("인증되지 않은 사용자입니다.");
         }
 
@@ -60,7 +57,7 @@ public class OAuthAttributes {
     }
 
     public DefaultOAuth2User customDefaultOauth2User() {
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(RoleType.ROLE_MEMBER.get())),
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(RoleType.MEMBER.get())),
                 oAuth2User.getAttributes(), this.userNameAttributeName);
     }
 }

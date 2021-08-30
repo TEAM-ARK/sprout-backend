@@ -20,8 +20,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        OAuthAttributes oAuthAttributes = OAuthAttributes.of(oAuth2User, userRequest, oAuth2User.getAttribute("email_verified"));
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(delegate.loadUser(userRequest), userRequest);
 
         httpSession.setAttribute("Oauth20Authentication", new SessionMember(oAuthAttributes.getEmail()));
 

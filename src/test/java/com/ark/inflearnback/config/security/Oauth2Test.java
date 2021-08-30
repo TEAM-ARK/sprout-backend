@@ -1,31 +1,26 @@
 package com.ark.inflearnback.config.security;
 
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static io.restassured.RestAssured.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class Oauth2Test {
 
-    @BeforeEach
-    public void setup() {
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 8080;
-    }
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     public void google로그인 () throws Exception {
-        given()
-                .when()
-                .redirects().follow(false) // 리다이렉트 방지
-                .get("/")
-                .then()
-                .statusCode(302);
-
-        //FIXME: 바로 이동할 경우에는 이 헤더 테스트를 수행
-        //                .header("Location", containsString("https://accounts.google.com/o/oauth2/auth"));
+        mockMvc.perform(get("http://localhost:8080/"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
     }
 }

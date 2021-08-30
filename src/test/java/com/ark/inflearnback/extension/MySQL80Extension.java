@@ -4,9 +4,13 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+@Testcontainers
 public class MySQL80Extension implements BeforeAllCallback, AfterAllCallback {
-    private MySQLContainer<?> MYSQL;
+    @Container
+    private static MySQLContainer<?> MYSQL;
 
     private static final String DATABASE_NAME = "inflearn_backend";
     private static final String USERNAME = "username";

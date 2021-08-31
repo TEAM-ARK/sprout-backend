@@ -36,10 +36,10 @@
 - Java 11
 - Spring MVC
 - Spring Boot
-- JPA
 - Spring Data JPA
-- Querydsl
 - Spring Security
+- Spring Rest Docs
+- Querydsl
 
 ### 🔧 Build Tool
 - Gradle
@@ -50,22 +50,6 @@
 ### 🔧 AWS
 - EC2
 - S3
-
-------------------------------------------
-## 엔티티 연관 관계
-* user와 review : 단방향 연관관계 1:N 
-	- user테이블에서 review를 알고 있을 필요가 없음(실제로 인프런에 내가 쓴 후기보는 기능은 없음)
-* user와 lecture : 양방향 연관관계 1:N
-
-* review와 lecture : 양방향 연관관계 N:1
-
-* lecture와 video : 단방향 연관관계 1:N
-
-* lecture와 lecture_hashtag : 양방향 연관관계 1:N
-
-* lecture_hashtag와 hashtag : 단방향 연관관계 1:1
-
-
 
 
 

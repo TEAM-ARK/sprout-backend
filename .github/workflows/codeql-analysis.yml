@@ -5,7 +5,7 @@ on:
       - main
       - release
       - develop
-      -
+
   pull_request:
     branches:
       - main

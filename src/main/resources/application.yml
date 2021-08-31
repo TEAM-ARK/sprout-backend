@@ -1,4 +1,13 @@
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
 spring:
+  h2:
+    console:
+      enabled: true
+
   profiles:
     active: dev
     include: oauth
@@ -12,6 +21,15 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(6/Ponyj/US/TvdVEZJfmcsPmvaXwKaeCWyudJyZDkNoTnloH+R4r0dR8MFFrA90SkJag3l4b67WQrIqR9Oz8Y6IK45M9ypW0DMxUGsOFc3rFijwDrAhK2Q==)
+            client-secret: ENC(FoXXYeauW6EKov8iMfbE57X8cV9jEf4WSQ+FFmjnNIakgPv768fkng==)
+            scope: profile, email
 
 logging:
   level:

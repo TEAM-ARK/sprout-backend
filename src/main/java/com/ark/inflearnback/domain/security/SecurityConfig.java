@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .antMatchers("/h2-console/**")
+                .antMatchers("api/open-api-3.0.1.json")
                 .antMatchers("/favicon.ico");
     }
 

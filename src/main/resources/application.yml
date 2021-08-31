@@ -1,9 +1,6 @@
 jasypt:
   encryptor:
     password:
-    property:
-      prefix: "ENC("
-      suffix: ")"
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
 
@@ -30,8 +27,8 @@ spring:
       client:
         registration:
           google:
-            client-id: Mx08IoRgLjF3lytJtl9tJplTu9nPgf0F70rLShHsOLzSdlXCgzzOecakI4rG5VTIYuKouXrJA64tVqrq2AAkW5ryQE1CThQli+jEavVMx87bcUdwYlUSSw==
-            client-secret: W6HKMENoGeAboV/QbY9xhaRbSyt8/Hl2uPr1JaYIjOHUsWbnpC7NyA==
+            client-id: ENC(Mx08IoRgLjF3lytJtl9tJplTu9nPgf0F70rLShHsOLzSdlXCgzzOecakI4rG5VTIYuKouXrJA64tVqrq2AAkW5ryQE1CThQli+jEavVMx87bcUdwYlUSSw==)
+            client-secret: ENC(W6HKMENoGeAboV/QbY9xhaRbSyt8/Hl2uPr1JaYIjOHUsWbnpC7NyA==)
             scope: profile,email
 
 logging:

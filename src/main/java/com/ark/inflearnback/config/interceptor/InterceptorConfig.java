@@ -16,7 +16,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/", "/resources/static/**")
+                .addResourceLocations("/resources/")
                 .setCachePeriod(86400)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());
@@ -26,7 +26,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(httpLogInterceptor)
-                .excludePathPatterns("/images/**", "/js/**", "/css/**")
+                .excludePathPatterns("/images/**", "/js/**", "/css/**", "/json/**")
                 .addPathPatterns("/**");
     }
 }

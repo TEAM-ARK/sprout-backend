@@ -1,6 +1,11 @@
 spring:
+  h2:
+    console:
+      enabled: true
+
   profiles:
     active: dev
+    include: oauth
 
   main:
     allow-bean-definition-overriding: true

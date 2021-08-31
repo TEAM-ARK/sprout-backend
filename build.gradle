@@ -1,8 +1,24 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'com.epages.restdocs-api-spec' version '0.11.3'
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+ext {
+    set('staticsDir', file('src/main/resources/static'))
+    set('reportDir', file('src/main/resources/static/report'))
+
+    testContainersVersion = '1.16.0'
+
+    excludeFilter = [
+            '**/Q*.class',
+            '**/dto/**',
+            '**/exception/**',
+            '**/config/**',
+            '**/test/**',
+    ]
 }
 
 group = 'com.ark'
@@ -35,15 +51,23 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-jpa',
             'org.springframework.boot:spring-boot-starter-validation',
+            'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-oauth2-client',
             'com.querydsl:querydsl-jpa',
             'org.modelmapper:modelmapper:2.4.4',
             'commons-io:commons-io:2.8.0',
-            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
+            'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
+            'com.github.mowedgrass:jasypt-gradle-boot-plugin:0.1.33'
     )
 
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
-            'org.springframework.restdocs:spring-restdocs-mockmvc'
+            'org.springframework.security:spring-security-test',
+            "org.testcontainers:junit-jupiter:$testContainersVersion",
+            "org.testcontainers:mysql:$testContainersVersion",
+            'org.springframework.restdocs:spring-restdocs-webtestclient',
+            'com.epages:restdocs-api-spec-webtestclient:0.11.3'
     )
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -51,6 +75,10 @@ dependencies {
     }
 
     compileOnly(
+            'org.projectlombok:lombok',
+    )
+
+    testCompileOnly(
             'org.projectlombok:lombok'
     )
 
@@ -60,6 +88,7 @@ dependencies {
     )
 
     testRuntimeOnly(
+            'mysql:mysql-connector-java',
             'com.h2database:h2'
     )
 }
@@ -79,18 +108,11 @@ gradle.projectsEvaluated {
     }
 }
 
-build {
-    dependsOn(':jacoco')
-}
-
-ext {
-    set('reportDir', file('src/report'))
-    excludeFilter = [
-            '**/Q*.class',
-            '**/dto/**',
-            '**/exception/**',
-            '**/test/**',
-    ]
+bootJar {
+    dependsOn(
+            ':openapi3',
+            ':jacoco'
+    )
 }
 
 task jacoco(type: Test) {
@@ -133,4 +155,14 @@ jacocoTestCoverageVerification {
 //            excludes = excludeFilter
 //        }
 //    }
+}
+
+openapi3 {
+    server = 'http://3.34.236.174:8080'
+    title = 'Team-ARK Inflearn API Documentation'
+    description '인프런 클론코딩, API 문서 페이지'
+    version = '0.0.1'
+    outputFileNamePrefix = 'open-api-3.0.1'
+    format = 'json'
+    outputDirectory = "$staticsDir/api"
 }

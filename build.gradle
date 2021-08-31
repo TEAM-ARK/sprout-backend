@@ -57,7 +57,8 @@ dependencies {
             'org.modelmapper:modelmapper:2.4.4',
             'commons-io:commons-io:2.8.0',
             'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
-            'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.17',
+            'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
+            'com.github.mowedgrass:jasypt-gradle-boot-plugin:0.1.33'
     )
 
     testImplementation(

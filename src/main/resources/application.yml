@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: dev
+    include: oauth
 
   main:
     allow-bean-definition-overriding: true
@@ -51,3 +52,7 @@ decorator:
   datasource:
     p6spy:
       enable-logging: false
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

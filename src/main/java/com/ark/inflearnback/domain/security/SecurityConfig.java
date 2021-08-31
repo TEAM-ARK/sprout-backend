@@ -8,6 +8,7 @@ import com.ark.inflearnback.domain.security.handler.CustomAuthenticationFailureH
 import com.ark.inflearnback.domain.security.handler.CustomAuthenticationSuccessHandler;
 import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.service.CustomOauth2UserService;
 import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
@@ -48,6 +48,7 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PERMIT_ALL_RESOURCES = {"/api/v1/member,POST"};
 
+    private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
@@ -74,7 +75,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .authenticated()
                                 .expressionHandler(expressionHandler())
                 )
-
+                .formLogin(login ->
+                        login.failureUrl("/login")
+                                .defaultSuccessUrl("/")
+                                .permitAll())
+                .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
                 .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }

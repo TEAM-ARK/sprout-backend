@@ -16,7 +16,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/")
+                .addResourceLocations("/resources/", "/resources/static/**")
                 .setCachePeriod(86400)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());

@@ -7,13 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
     steps:
       - name: Setup CD Environment
         env:
           JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
-        run: echo "ci success"
+        run: echo "JASYPT_PASSWORD = $JASYPT_PASSWORD"
 
       - uses: actions/checkout@v2
       - name: Set up JDK 11

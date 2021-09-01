@@ -13,7 +13,7 @@ jobs:
       - name: Setup CI Environment
         env:
           JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
-        run: echo "ci success"
+        run: echo "JASYPT_PASSWORD = $JASYPT_PASSWORD"
 
       - uses: actions/checkout@v2
       - name: Set up JDK 11

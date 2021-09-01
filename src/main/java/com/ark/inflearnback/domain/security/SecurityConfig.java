@@ -46,7 +46,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/,GET", "/api/v1/member,POST", "/docs/**,GET"};
+    private static final String[] PERMIT_ALL_RESOURCES = {"/,GET", "/api/v1/member,POST", "/static/docs/**,GET"};
 
     private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;

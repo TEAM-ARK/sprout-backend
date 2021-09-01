@@ -125,7 +125,7 @@ public class HttpLog extends AbstractEntity {
     }
 
     private static void removeSecurityInformation(final JsonNode jsonNode) {
-        Iterator<Map.Entry<String, JsonNode>> fields = jsonNode.fields();
+        final Iterator<Map.Entry<String, JsonNode>> fields = jsonNode.fields();
         while (fields.hasNext()) {
             if (fields.next().toString().contains("password")) {
                 fields.remove();

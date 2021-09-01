@@ -14,5 +14,5 @@ else
         sleep 3
 fi
 
-nohup java -jar -Duser.timezone=KST -Djasypt.password=$JASYPT_PASSWORD -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME >> /dev/null &
+nohup java -jar -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME >> /dev/null &
 echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log

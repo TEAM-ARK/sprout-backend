@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final HttpSession httpSession;
     private final OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -21,9 +21,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuthAttributes oAuthAttributes = OAuthAttributes.of(delegate.loadUser(userRequest), userRequest);
-
         httpSession.setAttribute("Oauth20Authentication", new SessionMember(oAuthAttributes.getEmail()));
-
         return oAuthAttributes.customDefaultOauth2User();
     }
 }

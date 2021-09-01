@@ -46,7 +46,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/api/v1/member,POST"};
+    private static final String[] PERMIT_ALL_RESOURCES = {"/,GET", "/api/v1/member,POST", "/docs/**,GET"};
 
     private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;
@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .antMatchers("/h2-console/**")
+                .antMatchers("/docs/**")
                 .antMatchers("/favicon.ico");
     }
 
@@ -78,11 +79,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .authenticated()
                                 .expressionHandler(expressionHandler())
                 )
-                .formLogin(login ->
-                        login.failureUrl("/login")
-                                .defaultSuccessUrl("/")
-                                .permitAll())
-                .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
+
+                .formLogin().disable()
+                .oauth2Login(login -> login.userInfoEndpoint()
+                        .userService(customOauth2UserService)
+                )
+
+                .logout(logout ->
+                        logout.logoutSuccessUrl("/")
+                )
+
                 .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }

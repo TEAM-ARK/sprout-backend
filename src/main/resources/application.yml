@@ -1,26 +1,15 @@
-jasypt:
-  encryptor:
-    password:
-    property:
-      prefix: "ENC("
-      suffix: ")"
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
-
 spring:
+  profiles:
+    active: dev
+
   h2:
     console:
       enabled: true
-
-  profiles:
-    active: dev
 
   main:
     allow-bean-definition-overriding: true
 
   jpa:
-    hibernate:
-      ddl-auto: none
     properties:
       hibernate:
         default_batch_fetch_size: 1000
@@ -30,46 +19,16 @@ spring:
       client:
         registration:
           google:
-            client-id: Mx08IoRgLjF3lytJtl9tJplTu9nPgf0F70rLShHsOLzSdlXCgzzOecakI4rG5VTIYuKouXrJA64tVqrq2AAkW5ryQE1CThQli+jEavVMx87bcUdwYlUSSw==
-            client-secret: W6HKMENoGeAboV/QbY9xhaRbSyt8/Hl2uPr1JaYIjOHUsWbnpC7NyA==
-            scope: profile,email
+            client-id: ENC(6/Ponyj/US/TvdVEZJfmcsPmvaXwKaeCWyudJyZDkNoTnloH+R4r0dR8MFFrA90SkJag3l4b67WQrIqR9Oz8Y6IK45M9ypW0DMxUGsOFc3rFijwDrAhK2Q==)
+            client-secret: ENC(FoXXYeauW6EKov8iMfbE57X8cV9jEf4WSQ+FFmjnNIakgPv768fkng==)
+            scope: profile, email
 
 logging:
   level:
     org.hibernate.SQL: info
----
-spring:
-  config:
-    activate:
-      on-profile: dev
 
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-    hibernate:
-      ddl-auto: create
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-  jpa:
-    hibernate:
-      ddl-auto: none
-
-logging:
-  level:
-    com.zaxxer.hikari.HikariConfig: DEBUG
-    com.zaxxer.hikari: TRACE
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: false
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator

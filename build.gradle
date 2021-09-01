@@ -7,8 +7,8 @@ plugins {
 }
 
 ext {
-    set('staticsDir', file('src/main/resources/static'))
-    set('reportDir', file('src/main/resources/static/report'))
+    set('docsDir', file('src/main/resources/docs'))
+    set('reportDir', file('src/main/resources/docs/report'))
 
     testContainersVersion = '1.16.0'
 
@@ -58,7 +58,6 @@ dependencies {
             'commons-io:commons-io:2.8.0',
             'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
             'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
-            'com.github.mowedgrass:jasypt-gradle-boot-plugin:0.1.33'
     )
 
     testImplementation(
@@ -93,9 +92,14 @@ dependencies {
     )
 }
 
+bootRun {
+    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
+}
+
 test {
     useJUnitPlatform()
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
 }
 
 tasks.withType(JavaCompile) {
@@ -164,5 +168,5 @@ openapi3 {
     version = '0.0.1'
     outputFileNamePrefix = 'open-api-3.0.1'
     format = 'json'
-    outputDirectory = "$staticsDir/api"
+    outputDirectory = "$docsDir/api"
 }

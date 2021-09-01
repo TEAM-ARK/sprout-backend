@@ -85,8 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(customOauth2UserService)
                 )
 
-                .logout(logout ->
-                        logout.logoutSuccessUrl("/")
+                .logout(logout -> logout.logoutUrl("/api/v1/logout")
+                        .logoutSuccessUrl("/")
                 )
 
                 .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)

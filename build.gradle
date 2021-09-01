@@ -96,7 +96,7 @@ dependencies {
 test {
     useJUnitPlatform()
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-    systemProperty "jasypt.encryptor.password", System.getenv("jasypt.encryptor.password")
+    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
 }
 
 tasks.withType(JavaCompile) {

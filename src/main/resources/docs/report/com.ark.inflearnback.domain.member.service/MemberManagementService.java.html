@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemberManagementService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inflearn-clone-back</a> &gt; <a href="index.source.html" class="el_package">com.ark.inflearnback.domain.member.service</a> &gt; <span class="el_source">MemberManagementService.java</span></div><h1>MemberManagementService.java</h1><pre class="source lang-java linenums">package com.ark.inflearnback.domain.member.service;
+
+import com.ark.inflearnback.domain.member.dto.SignRequestDto;
+import com.ark.inflearnback.domain.member.exception.DuplicateEmailException;
+import com.ark.inflearnback.domain.member.exception.RoleNotFoundException;
+import com.ark.inflearnback.domain.security.model.Member;
+import com.ark.inflearnback.domain.security.model.Role;
+import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.repository.RoleRepository;
+import com.ark.inflearnback.domain.security.type.RoleType;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+<span class="fc" id="L18">@Slf4j</span>
+@Service
+<span class="fc" id="L20">@RequiredArgsConstructor</span>
+public class MemberManagementService {
+    private final RoleRepository roleRepository;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public void signUp(final SignRequestDto request) throws DuplicateEmailException {
+<span class="fc" id="L28">        log.info(String.format(&quot;%s 회원 가입 진행&quot;, request.getEmail()));</span>
+<span class="fc" id="L29">        verifyEmail(request);</span>
+<span class="fc" id="L30">        signUpComplete(request);</span>
+<span class="fc" id="L31">        log.info(String.format(&quot;%s 회원 가입 완료&quot;, request.getEmail()));</span>
+<span class="fc" id="L32">    }</span>
+
+    private void verifyEmail(final SignRequestDto request) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (memberRepository.existsByEmail(request.getEmail())) {</span>
+<span class="nc" id="L36">            log.warn(&quot;이미 사용중인 이메일이므로 가입 불가&quot;);</span>
+<span class="nc" id="L37">            throw new DuplicateEmailException(&quot;이미 사용중인 이메일입니다.&quot;);</span>
+        }
+<span class="fc" id="L39">    }</span>
+
+    private void signUpComplete(final SignRequestDto request) {
+<span class="fc" id="L42">        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember()));</span>
+<span class="fc" id="L43">    }</span>
+
+    private Role findRoleMember() {
+        try {
+<span class="fc" id="L47">            return roleRepository.findByRoleType(RoleType.MEMBER)</span>
+<span class="fc" id="L48">                    .orElseThrow(RoleNotFoundException::new);</span>
+        }
+<span class="nc" id="L50">        catch (RoleNotFoundException e) {</span>
+<span class="nc" id="L51">            log.error(String.format(&quot;%s를 찾을 수 없거나 활성화 돼있지 않습니다. ROLE 테이블을 확인하세요.&quot;, RoleType.MEMBER));</span>
+<span class="nc" id="L52">            throw new RoleNotFoundException(&quot;내부 서버 에러.&quot;);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

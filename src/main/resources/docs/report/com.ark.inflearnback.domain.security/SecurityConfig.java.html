@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inflearn-clone-back</a> &gt; <a href="index.source.html" class="el_package">com.ark.inflearnback.domain.security</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package com.ark.inflearnback.domain.security;
+
+import com.ark.inflearnback.domain.security.factory.UrlResourcesMapFactoryBean;
+import com.ark.inflearnback.domain.security.filter.PermitAllFilter;
+import com.ark.inflearnback.domain.security.filter.RestLoginProcessingFilter;
+import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
+import com.ark.inflearnback.domain.security.handler.CustomAuthenticationFailureHandler;
+import com.ark.inflearnback.domain.security.handler.CustomAuthenticationSuccessHandler;
+import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
+import com.ark.inflearnback.domain.security.repository.MemberRepository;
+import com.ark.inflearnback.domain.security.service.CustomOauth2UserService;
+import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
+import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L45">@Slf4j</span>
+@EnableWebSecurity
+<span class="fc" id="L47">@RequiredArgsConstructor</span>
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+<span class="fc" id="L49">    private static final String[] PERMIT_ALL_RESOURCES = {&quot;/,GET&quot;, &quot;/api/v1/member,POST&quot;, &quot;/static/docs/**,GET&quot;};</span>
+
+    private final CustomOauth2UserService customOauth2UserService;
+    private final SecurityResourceService securityResourceService;
+    private final MemberRepository memberRepository;
+    private final ObjectMapper objectMapper;
+
+    @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+<span class="fc" id="L58">        auth.userDetailsService(userDetailsService());</span>
+<span class="fc" id="L59">        auth.authenticationProvider(authenticationProvider());</span>
+<span class="fc" id="L60">    }</span>
+
+    @Override
+    public void configure(final WebSecurity web) {
+<span class="fc" id="L64">        web.ignoring()</span>
+<span class="fc" id="L65">                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())</span>
+<span class="fc" id="L66">                .antMatchers(&quot;/h2-console/**&quot;)</span>
+<span class="fc" id="L67">                .antMatchers(&quot;/static/docs/**&quot;)</span>
+<span class="fc" id="L68">                .antMatchers(&quot;/favicon.ico&quot;);</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+<span class="fc" id="L73">        http</span>
+<span class="fc" id="L74">                .csrf().disable()</span>
+<span class="fc" id="L75">                .httpBasic().disable()</span>
+
+<span class="fc" id="L77">                .authorizeRequests(</span>
+<span class="fc" id="L78">                        authorize -&gt; authorize.anyRequest()</span>
+<span class="fc" id="L79">                                .authenticated()</span>
+<span class="fc" id="L80">                                .expressionHandler(expressionHandler())</span>
+                )
+
+<span class="fc" id="L83">                .formLogin().disable()</span>
+<span class="fc" id="L84">                .oauth2Login(login -&gt; login.userInfoEndpoint()</span>
+<span class="fc" id="L85">                        .userService(customOauth2UserService)</span>
+                )
+
+<span class="fc" id="L88">                .logout(logout -&gt;</span>
+<span class="fc" id="L89">                        logout.logoutSuccessUrl(&quot;/&quot;)</span>
+                )
+
+<span class="fc" id="L92">                .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)</span>
+<span class="fc" id="L93">                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);</span>
+<span class="fc" id="L94">    }</span>
+
+    @Bean
+    public SecurityExpressionHandler&lt;FilterInvocation&gt; expressionHandler() {
+<span class="fc" id="L98">        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();</span>
+<span class="fc" id="L99">        webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());</span>
+<span class="fc" id="L100">        return webSecurityExpressionHandler;</span>
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+<span class="fc" id="L105">        return securityResourceService.assembleAuthorityHierarchy();</span>
+    }
+
+    @Bean
+    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
+<span class="fc" id="L110">        final PermitAllFilter permitAllFilter = new PermitAllFilter(PERMIT_ALL_RESOURCES);</span>
+<span class="fc" id="L111">        permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());</span>
+<span class="fc" id="L112">        permitAllFilter.setAccessDecisionManager(affirmativeBased());</span>
+<span class="fc" id="L113">        permitAllFilter.setAuthenticationManager(authenticationManagerBean());</span>
+<span class="fc" id="L114">        return permitAllFilter;</span>
+    }
+
+    private AccessDecisionManager affirmativeBased() {
+<span class="fc" id="L118">        return new AffirmativeBased(getAccessDecisionVoters());</span>
+    }
+
+    private List&lt;AccessDecisionVoter&lt;?&gt;&gt; getAccessDecisionVoters() {
+<span class="fc" id="L122">        final List&lt;AccessDecisionVoter&lt;?&gt;&gt; accessDecisionVoters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L123">        accessDecisionVoters.add(roleVoter());</span>
+<span class="fc" id="L124">        return accessDecisionVoters;</span>
+    }
+
+    @Bean
+    public AccessDecisionVoter&lt;?&gt; roleVoter() {
+<span class="fc" id="L129">        return new RoleHierarchyVoter(roleHierarchy());</span>
+    }
+
+    @Bean
+    public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() {
+<span class="fc" id="L134">        return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), securityResourceService);</span>
+    }
+
+    private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
+<span class="fc" id="L138">        final UrlResourcesMapFactoryBean urlResourcesMapFactoryBean = new UrlResourcesMapFactoryBean();</span>
+<span class="fc" id="L139">        urlResourcesMapFactoryBean.setSecurityResourceService(securityResourceService);</span>
+<span class="fc" id="L140">        return urlResourcesMapFactoryBean;</span>
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+<span class="fc" id="L145">        return new CustomAuthenticationProvider(passwordEncoder(), userDetailsService());</span>
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+<span class="fc" id="L150">        return new CustomUserDetailsService(memberRepository);</span>
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+<span class="fc" id="L155">        return PasswordEncoderFactories.createDelegatingPasswordEncoder();</span>
+    }
+
+    @Bean
+    public RestLoginProcessingFilter restLoginProcessingFilter() throws Exception {
+<span class="fc" id="L160">        RestLoginProcessingFilter restLoginProcessingFilter = new RestLoginProcessingFilter();</span>
+<span class="fc" id="L161">        restLoginProcessingFilter.setAuthenticationManager(authenticationManagerBean());</span>
+<span class="fc" id="L162">        restLoginProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());</span>
+<span class="fc" id="L163">        restLoginProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler());</span>
+<span class="fc" id="L164">        return restLoginProcessingFilter;</span>
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+<span class="fc" id="L169">        return new CustomAuthenticationSuccessHandler(objectMapper);</span>
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+<span class="fc" id="L174">        return new CustomAuthenticationFailureHandler(objectMapper);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

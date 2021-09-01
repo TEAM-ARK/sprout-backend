@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Role.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inflearn-clone-back</a> &gt; <a href="index.source.html" class="el_package">com.ark.inflearnback.domain.security.model</a> &gt; <span class="el_source">Role.java</span></div><h1>Role.java</h1><pre class="source lang-java linenums">package com.ark.inflearnback.domain.security.model;
+
+import com.ark.inflearnback.domain.AbstractEntity;
+import com.ark.inflearnback.domain.security.type.RoleType;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.util.Objects;
+
+@Entity
+@Getter
+@Where(clause = &quot;deleted = false&quot;)
+<span class="fc" id="L20">@NoArgsConstructor(access = AccessLevel.PROTECTED)</span>
+public class Role extends AbstractEntity {
+    @Enumerated(EnumType.STRING)
+    @Column(unique = true, nullable = false)
+<span class="nc" id="L24">    private RoleType roleType;</span>
+
+<span class="nc" id="L26">    private String description;</span>
+
+<span class="nc" id="L28">    private boolean deleted;</span>
+
+<span class="fc" id="L30">    private Role(final RoleType roleType, final String description, final boolean deleted) {</span>
+<span class="fc" id="L31">        this.roleType = roleType;</span>
+<span class="fc" id="L32">        this.description = description;</span>
+<span class="fc" id="L33">        this.deleted = deleted;</span>
+<span class="fc" id="L34">    }</span>
+
+<span class="pc" id="L36">    @Builder</span>
+    public static Role of(final RoleType roleType, final boolean deleted) {
+<span class="fc" id="L38">        return new Role(roleType, roleType.getDescription(), deleted);</span>
+    }
+
+    public String get() {
+<span class="fc" id="L42">        return roleType.get();</span>
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L48">            return true;</span>
+        }
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L51">            return false;</span>
+        }
+<span class="nc" id="L53">        final Role role = (Role) o;</span>
+<span class="nc" id="L54">        return Objects.equals(roleType, role.roleType);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L59">        return Objects.hash(roleType);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

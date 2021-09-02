@@ -4,7 +4,9 @@
 
 인프런 웹앱을 만들어보는 팀프로젝트
 
-[Inflearn-clone-front repository](https://github.com/MinwooJJ/inflearn-clone-front)
+> [📜 Backend API Documentation](http://ec2-3-34-236-174.ap-northeast-2.compute.amazonaws.com/docs/api/index.html )
+
+> [📦 Front Github Repository](https://github.com/MinwooJJ/inflearn-clone-front)
 
 ---
 
@@ -29,8 +31,9 @@
 
 ## 💻 라이브러리 및 기술 스택(Library & Stack)
 
-![image](https://user-images.githubusercontent.com/60773356/128631429-8ab1d060-b276-4809-ba8b-920f015d2274.png)
 
+### 🔧 Build Tool
+- Gradle
 
 ### 🔧 Core
 - Java 11
@@ -41,17 +44,25 @@
 - Spring Rest Docs
 - Querydsl
 
-### 🔧 Build Tool
-- Gradle
-
 ### 🔧 Database
-- MySQL
+- AWS RDS MySQL
+- H2
 
-### 🔧 AWS
-- EC2
-- S3
+### 🔧 Infra
+- Github Actions (a.k.a worklflows)
+- Docker
+- AWS EC2
+- AWS S3
+- AWS CodeDeploy
+- AWS CloudWatch
 
+### 🔧 Commuication
+- Slack
+- Jira
+- Github Wiki
+- Gather Town
 
+![image](https://user-images.githubusercontent.com/60773356/128631429-8ab1d060-b276-4809-ba8b-920f015d2274.png)
 
 
 

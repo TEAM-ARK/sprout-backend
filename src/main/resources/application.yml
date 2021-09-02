@@ -21,6 +21,7 @@ spring:
           google:
             client-id: ENC(6/Ponyj/US/TvdVEZJfmcsPmvaXwKaeCWyudJyZDkNoTnloH+R4r0dR8MFFrA90SkJag3l4b67WQrIqR9Oz8Y6IK45M9ypW0DMxUGsOFc3rFijwDrAhK2Q==)
             client-secret: ENC(FoXXYeauW6EKov8iMfbE57X8cV9jEf4WSQ+FFmjnNIakgPv768fkng==)
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
             scope: profile, email
 
 logging:

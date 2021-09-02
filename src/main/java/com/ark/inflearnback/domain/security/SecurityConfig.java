@@ -81,8 +81,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
 
                 .formLogin().disable()
-                .oauth2Login(login -> login.userInfoEndpoint()
-                        .userService(customOauth2UserService)
+                .oauth2Login(login ->
+                        login.defaultSuccessUrl("/")
+                                .loginProcessingUrl("/api/v1/login/oauth2/*")
+                                .userInfoEndpoint()
+                                .userService(customOauth2UserService)
                 )
 
                 .logout(logout -> logout.logoutUrl("/api/v1/logout")

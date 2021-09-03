@@ -84,6 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login(login ->
                         login.defaultSuccessUrl("/")
                                 .loginProcessingUrl("/api/v1/login/oauth2/*")
+//                            .failureHandler(authenticationFailureHandler())
+//                            .failureUrl("/")
                                 .userInfoEndpoint()
                                 .userService(customOauth2UserService)
                 )

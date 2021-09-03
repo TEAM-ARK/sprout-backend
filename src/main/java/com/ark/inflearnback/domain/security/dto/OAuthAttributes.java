@@ -25,11 +25,11 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(final OAuth2User oAuth2User, OAuth2UserRequest userRequest) {
-        boolean isEmailVerified = oAuth2User.getAttribute("email_verified");
-
-        if (!isEmailVerified) {
-            throw new Oauth2UserNotVerifiedException("인증되지 않은 사용자입니다.");
-        }
+//        boolean isEmailVerified = oAuth2User.getAttribute("email_verified");
+//
+//        if (!isEmailVerified) {
+//            throw new Oauth2UserNotVerifiedException("인증되지 않은 사용자입니다.");
+//        }
 
         return OAuthAttributes.builder()
                 .oAuth2User(oAuth2User)
@@ -54,7 +54,4 @@ public class OAuthAttributes {
         return oAuth2User.getAttribute("email");
     }
 
-    public boolean isEmailVerified() {
-        return oAuth2User.getAttribute("email_verified");
-    }
 }

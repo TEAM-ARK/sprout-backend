@@ -23,10 +23,6 @@ spring:
             client-secret: ENC(FoXXYeauW6EKov8iMfbE57X8cV9jEf4WSQ+FFmjnNIakgPv768fkng==)
             redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
             scope: profile, email
-          github:
-            client-id: 6384cb2b837888daf770
-            client-secret: 1314fab68e5fc4f3ef0f20b0cdd4581e30cd690c
-            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
           facebook:
             client-id: 3986592298112371
             client-secret: 8e6b34d5dbad3f03c4c70ecd95661530

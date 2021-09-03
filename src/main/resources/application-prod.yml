@@ -7,6 +7,15 @@ spring:
     hibernate:
       ddl-auto: none
 
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 6384cb2b837888daf770
+            client-secret: 1314fab68e5fc4f3ef0f20b0cdd4581e30cd690c
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
+
 logging:
   level:
     com.zaxxer.hikari.HikariConfig: DEBUG

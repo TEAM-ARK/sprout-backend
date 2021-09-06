@@ -30,7 +30,6 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(final OAuth2User oAuth2User, OAuth2UserRequest userRequest) {
-
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
         if ("github".equals(registrationId)) {

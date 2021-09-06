@@ -1,3 +1,9 @@
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
 spring:
   profiles:
     active: dev
@@ -36,9 +42,3 @@ spring:
 logging:
   level:
     org.hibernate.SQL: info
-
-jasypt:
-  encryptor:
-    password: ${JASYPT_PASSWORD:NONE}
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator

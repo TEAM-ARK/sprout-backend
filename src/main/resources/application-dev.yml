@@ -15,8 +15,8 @@ spring:
       client:
         registration:
           github:
-            client-id: ENC(47iwZPN6O+GTeNfqR76EkEp/7eFT1x9R2vtVXUuqS/o=)
-            client-secret: ENC(OhViDhLJgszDGJJjT8uO3RheinOo0vUwSzYvpWYxhu9BbeYKhrEcajxUTw/Qg2zPAd5uSr/BoYI=)
+            client-id: ENC(DW9rSXDpgOG6ofTDvaxjDlsDpwPzDjnVg+Uu2S1SOB0=)
+            client-secret: ENC(g/trcC02UxnAjSd/iWxjeRs38FAfH0jg1ShKQ/iVrXyTKAfXS3XZR6l2OYha4FQiXilXVexpBN8=)
             redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
             scope: user, email
 

@@ -25,16 +25,16 @@ public class MemberManagementService {
 
     @Transactional
     public void signUp(final SignRequestDto request) throws DuplicateEmailException {
-        log.info(String.format("%s 회원 가입 진행", request.getEmail()));
+        log.info("Sign-up request. email: {}", request.getEmail());
         verifyEmail(request);
         signUpComplete(request);
-        log.info(String.format("%s 회원 가입 완료", request.getEmail()));
+        log.info("Sign-up completed.");
     }
 
     private void verifyEmail(final SignRequestDto request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            log.warn("이미 사용중인 이메일이므로 가입 불가");
-            throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
+            log.warn("Cannot sign-up because the email is already in use.");
+            throw new DuplicateEmailException("email is already in use.");
         }
     }
 
@@ -48,8 +48,8 @@ public class MemberManagementService {
                     .orElseThrow(RoleNotFoundException::new);
         }
         catch (RoleNotFoundException e) {
-            log.error(String.format("%s를 찾을 수 없거나 활성화 돼있지 않습니다. ROLE 테이블을 확인하세요.", RoleType.MEMBER));
-            throw new RoleNotFoundException("내부 서버 에러.");
+            log.error("{} not found or not active. please check the ROLE table.", RoleType.MEMBER);
+            throw new RoleNotFoundException("internal server error.");
         }
     }
 }

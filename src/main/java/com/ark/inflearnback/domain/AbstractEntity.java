@@ -30,6 +30,6 @@ public abstract class AbstractEntity implements Serializable {
     protected LocalDateTime modDate;
 
     public boolean isNew() {
-        return Objects.isNull(this);
+        return Objects.isNull(this.id);
     }
 }

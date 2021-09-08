@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -44,8 +45,6 @@ public class Member extends AbstractEntity {
     }
 
     public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
-        return new ArrayList<>() {{
-            add(new SimpleGrantedAuthority(role.get()));
-        }};
+        return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
     }
 }

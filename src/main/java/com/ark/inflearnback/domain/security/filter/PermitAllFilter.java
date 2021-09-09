@@ -50,16 +50,14 @@ public class PermitAllFilter extends FilterSecurityInterceptor {
 
     @Override
     protected InterceptorStatusToken beforeInvocation(final Object object) {
-        boolean permitAll = false;
-        for (RequestMatcher requestMatcher : permitAllRequestMatchers) {
-            if (requestMatcher.matches(((FilterInvocation) object).getRequest())) {
-                permitAll = true;
-                break;
-            }
-        }
-        if (permitAll) {
+        if (isPermit((FilterInvocation) object)) {
             return null;
         }
         return super.beforeInvocation(object);
+    }
+
+    private boolean isPermit(final FilterInvocation object) {
+        return permitAllRequestMatchers.stream()
+                .anyMatch(requestMatcher -> requestMatcher.matches(object.getRequest()));
     }
 }

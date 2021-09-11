@@ -1,5 +1,14 @@
 package com.ark.inflearnback.domain.member.controller;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static com.epages.restdocs.apispec.Schema.schema;
+import static com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
+import static org.springframework.web.reactive.function.BodyInserters.fromProducer;
 import com.ark.inflearnback.config.model.HttpResponse;
 import com.ark.inflearnback.domain.member.dto.SignRequestDto;
 import com.ark.inflearnback.domain.security.model.Member;
@@ -26,37 +35,35 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import reactor.core.publisher.Mono;
 
-import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static com.epages.restdocs.apispec.Schema.schema;
-import static com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
-import static org.springframework.web.reactive.function.BodyInserters.fromProducer;
-
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RestLoginTest {
+
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
+    private WebTestClient webTestClient;
 
-    public RestLoginTest(final ObjectMapper objectMapper, final PasswordEncoder passwordEncoder, final MemberRepository memberRepository, final RoleRepository roleRepository) {
+    public RestLoginTest(
+        final ObjectMapper objectMapper,
+        final PasswordEncoder passwordEncoder,
+        final MemberRepository memberRepository,
+        final RoleRepository roleRepository) {
         this.objectMapper = objectMapper;
         this.passwordEncoder = passwordEncoder;
         this.memberRepository = memberRepository;
         this.roleRepository = roleRepository;
     }
 
-    private WebTestClient webTestClient;
-
     @BeforeEach
     void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
-        webTestClient = MockMvcWebTestClient.bindToApplicationContext(context)
+        webTestClient =
+            MockMvcWebTestClient.bindToApplicationContext(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .configureClient()
-                .filter(documentationConfiguration(restDocumentation).snippets().withEncoding("UTF-8"))
+                .filter(
+                    documentationConfiguration(restDocumentation).snippets().withEncoding("UTF-8"))
                 .build();
     }
 
@@ -70,14 +77,18 @@ class RestLoginTest {
         final Role role = roleRepository.findByRoleType(RoleType.MEMBER).get();
         memberRepository.saveAndFlush(Member.of(email, password, role));
 
-        Mono<String> request = Mono.just(objectMapper.writeValueAsString(
-                SignRequestDto.of("test@email.com", "AASHFKHQWFQYW#qwhfgqwf123!"))
-        );
+        Mono<String> request =
+            Mono.just(
+                objectMapper.writeValueAsString(
+                    SignRequestDto.of("test@email.com", "AASHFKHQWFQYW#qwhfgqwf123!")));
 
-        String expected = objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.OK, "log-in successful"));
+        String expected =
+            objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.OK, "log-in successful"));
 
         // when
-        WebTestClient.ResponseSpec exchange = webTestClient.post()
+        WebTestClient.ResponseSpec exchange =
+            webTestClient
+                .post()
                 .uri("/api/v1/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -85,28 +96,31 @@ class RestLoginTest {
                 .exchange();
 
         // then
-        exchange.expectStatus().isOk()
-                .expectBody().json(expected)
-                .consumeWith(document("로그인",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        resource(
-                                ResourceSnippetParameters.builder()
-                                        .tag("회원")
-                                        .summary("로그인")
-                                        .description("로그인 성공")
-                                        .requestSchema(schema("SignRequestDto"))
-                                        .responseSchema(schema("HttpResponse"))
-                                        .requestFields(
-                                                fieldWithPath("email").description("이메일"),
-                                                fieldWithPath("password").description("비밀번호")
-                                        )
-                                        .responseFields(
-                                                fieldWithPath("responseCode").description("응답코드"),
-                                                fieldWithPath("responseMessage").description("응답메시지"),
-                                                fieldWithPath("responseBody").description("응답바디")
-                                        )
-                                        .build()
-                        )));
+        exchange
+            .expectStatus()
+            .isOk()
+            .expectBody()
+            .json(expected)
+            .consumeWith(
+                document(
+                    "로그인",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    resource(
+                        ResourceSnippetParameters.builder()
+                            .tag("회원")
+                            .summary("로그인")
+                            .description("로그인 성공")
+                            .requestSchema(schema("SignRequestDto"))
+                            .responseSchema(schema("HttpResponse"))
+                            .requestFields(
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("password").description("비밀번호"))
+                            .responseFields(
+                                fieldWithPath("responseCode").description("응답코드"),
+                                fieldWithPath("responseMessage").description("응답메시지"),
+                                fieldWithPath("responseBody").description("응답바디"))
+                            .build())));
     }
+
 }

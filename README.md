@@ -12,7 +12,7 @@
 
 <br />
 
-## 🎯 목표(Objectives) 
+## 🎯 목표(Objectives)
 
 - 팀프로젝트 및 협업 경험
 - Hard skill 및 Soft skill 향상
@@ -31,11 +31,12 @@
 
 ## 💻 라이브러리 및 기술 스택(Library & Stack)
 
-
 ### 🔧 Build Tool
+
 - Gradle
 
 ### 🔧 Core
+
 - Java 11
 - Spring MVC
 - Spring Boot
@@ -45,10 +46,12 @@
 - Querydsl
 
 ### 🔧 Database
+
 - AWS RDS MySQL
 - H2
 
 ### 🔧 Infra
+
 - Github Actions (a.k.a worklflows)
 - Docker
 - AWS EC2
@@ -57,6 +60,7 @@
 - AWS CloudWatch
 
 ### 🔧 Commuication
+
 - Slack
 - Jira
 - Github Wiki

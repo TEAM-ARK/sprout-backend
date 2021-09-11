@@ -63,11 +63,11 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
             roleRepository.save(roles.get(RoleType.SYS_ADMIN));
             roleRepository.save(roles.get(RoleType.ADMIN));
-            roleRepository.save(roles.get(RoleType.MEMBER));
+            roleRepository.save(roles.get(RoleType.USER));
 
             final Member sysadmin = createMember("sys@test.com", encryptedPassword, roles.get(RoleType.SYS_ADMIN));
             final Member admin = createMember("admin@test.com", encryptedPassword, roles.get(RoleType.ADMIN));
-            final Member member = createMember("member@test.com", encryptedPassword, roles.get(RoleType.MEMBER));
+            final Member member = createMember("member@test.com", encryptedPassword, roles.get(RoleType.USER));
 
             memberRepository.save(sysadmin);
             memberRepository.save(admin);
@@ -92,8 +92,8 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
             roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceMember));
             roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceHome));
 
-            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceMember));
-            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceHome));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.USER), resourceMember));
+            roleResourceRepository.save(createRoleResource(roles.get(RoleType.USER), resourceHome));
 
             createHierarchy();
             securityResourceService.assembleAuthorityHierarchy();
@@ -103,7 +103,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
         private void createHierarchy() {
             roleHierarchiesRepository.save(createRoleHierarchies(RoleType.SYS_ADMIN, 1));
             roleHierarchiesRepository.save(createRoleHierarchies(RoleType.ADMIN, 2));
-            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.MEMBER, 3));
+            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.USER, 3));
         }
 
         private RoleHierarchies createRoleHierarchies(final RoleType roleType, final int orders) {
@@ -117,7 +117,7 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
             return new EnumMap<>(Map.of(
                     RoleType.SYS_ADMIN, createRole(RoleType.SYS_ADMIN),
                     RoleType.ADMIN, createRole(RoleType.ADMIN),
-                    RoleType.MEMBER, createRole(RoleType.MEMBER))
+                    RoleType.USER, createRole(RoleType.USER))
             );
         }
 

@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final ObjectMapper objectMapper;
 
-    public CustomAuthenticationSuccessHandler(final ObjectMapper objectMapper) {
+    public RestAuthenticationSuccessHandler(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

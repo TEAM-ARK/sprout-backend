@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final ObjectMapper objectMapper;
 
-    public CustomAuthenticationFailureHandler(final ObjectMapper objectMapper) {
+    public RestAuthenticationFailureHandler(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

@@ -8,11 +8,12 @@ import com.ark.inflearnback.domain.security.model.Role;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
 import com.ark.inflearnback.domain.security.repository.RoleRepository;
 import com.ark.inflearnback.domain.security.type.RoleType;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Slf4j
 @Service
@@ -44,10 +45,10 @@ public class MemberManagementService {
 
     private Role findRoleMember() {
         try {
-            return roleRepository.findByRoleType(RoleType.MEMBER)
+            return roleRepository.findByRoleType(RoleType.USER)
                 .orElseThrow(RoleNotFoundException::new);
         } catch (RoleNotFoundException e) {
-            log.error("{} not found or not active. please check the ROLE table.", RoleType.MEMBER);
+            log.error("{} not found or not active. please check the ROLE table.", RoleType.USER);
             throw new RoleNotFoundException("internal server error.");
         }
     }

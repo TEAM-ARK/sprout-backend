@@ -35,6 +35,10 @@ public class HttpResponse<T> {
         return new HttpResponse<>(parseStr(httpStatus.value()), httpStatus.getReasonPhrase());
     }
 
+    public static <T> HttpResponse<T> of(final HttpStatus httpStatus, final String responseMessage, final T responseBody) {
+        return new HttpResponse<>(parseStr(httpStatus.value()), responseMessage, responseBody);
+    }
+
     public static <T> HttpResponse<T> of(final String responseCode, final String responseMessage, final T responseBody) {
         return new HttpResponse<>(responseCode, responseMessage, responseBody);
     }

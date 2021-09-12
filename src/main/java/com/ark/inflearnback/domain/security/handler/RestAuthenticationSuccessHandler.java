@@ -26,4 +26,5 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.OK, "log-in successful"));
     }
+
 }

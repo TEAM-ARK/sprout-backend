@@ -2,6 +2,10 @@ package com.ark.inflearnback.domain.security.handler;
 
 import com.ark.inflearnback.config.model.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,6 +36,8 @@ public class RestAuthenticationFailureHandler implements AuthenticationFailureHa
             errMsg = "Email or password is invalid.";
         }
 
-        objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
+        objectMapper.writeValue(response.getWriter(),
+            HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
     }
+
 }

@@ -1,15 +1,16 @@
 package com.ark.inflearnback.domain.security.factory;
 
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
+public class UrlResourcesMapFactoryBean
+    implements FactoryBean<LinkedHashMap<RequestMatcher, List<ConfigAttribute>>> {
 
-public class UrlResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<RequestMatcher, List<ConfigAttribute>>> {
     private SecurityResourceService securityResourceService;
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap;
 
@@ -38,4 +39,5 @@ public class UrlResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<Req
     public boolean isSingleton() {
         return true;
     }
+
 }

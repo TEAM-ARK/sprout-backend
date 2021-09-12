@@ -9,8 +9,11 @@ import org.springframework.context.annotation.PropertySource;
 @Getter
 @Configuration
 @Profile("prod")
-@PropertySource(value = "file:${user.home}/team-ark-backend/database-information.properties", ignoreResourceNotFound = true)
+@PropertySource(
+    value = "file:${user.home}/team-ark-backend/database-information.properties",
+    ignoreResourceNotFound = true)
 public class DatabaseProperties {
+
     @Value("${spring.datasource.url}")
     private String url;
 
@@ -19,4 +22,5 @@ public class DatabaseProperties {
 
     @Value("${spring.datasource.password}")
     private String password;
+
 }

@@ -16,8 +16,9 @@ public class RestUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         return MemberAuthenticationContext.of(
-                memberRepository.findByEmail(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("email not found !"))
-        );
+            memberRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("email not found !")));
     }
+
 }

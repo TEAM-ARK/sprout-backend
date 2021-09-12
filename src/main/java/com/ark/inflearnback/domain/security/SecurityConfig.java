@@ -14,6 +14,8 @@ import com.ark.inflearnback.domain.security.repository.RoleRepository;
 import com.ark.inflearnback.domain.security.service.RestUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -42,14 +44,14 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] PERMIT_ALL_RESOURCES = {"/,GET", "/api/v1/member,POST", "/static/docs/**,GET"};
+
+    private static final String[] PERMIT_ALL_RESOURCES = {
+        "/,GET", "/api/v1/member,POST", "/static/docs/**,GET"
+    };
 
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
@@ -65,10 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) {
         web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .antMatchers("/h2-console/**")
-                .antMatchers("/docs/**")
-                .antMatchers("/favicon.ico");
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+            .antMatchers("/h2-console/**")
+            .antMatchers("/docs/**")
+            .antMatchers("/favicon.ico");
     }
 
     @Override
@@ -103,7 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {
-        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler =
+            new DefaultWebSecurityExpressionHandler();
         webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
         return webSecurityExpressionHandler;
     }
@@ -139,7 +142,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() {
-        return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), securityResourceService);
+        return new UrlFilterInvocationSecurityMetadataSource(
+            urlResourcesMapFactoryBean().getObject(), securityResourceService);
     }
 
     private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
@@ -191,4 +195,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler() {
         return new Oauth2AuthenticationFailureHandler();
     }
+
 }

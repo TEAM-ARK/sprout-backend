@@ -2,6 +2,13 @@ package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
 import com.ark.inflearnback.domain.member.dto.SignRequestDto;
+import java.util.Collection;
+import java.util.Collections;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,4 +61,5 @@ public class Member extends AbstractEntity {
     public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
     }
+
 }

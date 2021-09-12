@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class DatabaseConfig {
+
     @Autowired(required = false)
     private DatabaseProperties databaseProperties;
 
@@ -20,19 +21,17 @@ public class DatabaseConfig {
     @Profile("prod")
     public DataSource prodDataSource() {
         return DataSourceBuilder.create()
-                .url(databaseProperties.getUrl())
-                .username(databaseProperties.getUsername())
-                .password(databaseProperties.getPassword())
-                .build();
+            .url(databaseProperties.getUrl())
+            .username(databaseProperties.getUsername())
+            .password(databaseProperties.getPassword())
+            .build();
     }
 
     @Bean
     @Profile("dev")
     public DataSource devDataSource() {
-        return DataSourceBuilder.create()
-                .url("jdbc:h2:mem:test")
-                .username("sa")
-                .password("")
-                .build();
+        return DataSourceBuilder.create().url("jdbc:h2:mem:test").username("sa").password("")
+            .build();
     }
+
 }

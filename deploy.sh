@@ -12,6 +12,9 @@ else
         echo "> Green과 Nginx의 연결을 해제합니다 !" >> /home/ubuntu/deploy.log
         sed -i "s/server 127.0.0.1:8081;/#server 127.0.0.1:8081;/g" $CONF_PATH
 
+        echo "> Nginx Reload !" >> /home/ubuntu/deploy.log
+        sudo systemctl reload nginx
+
         echo "> Connection Time Out까지 30초 대기 중 !" >> /home/ubuntu/deploy.log
         sleep 30
 

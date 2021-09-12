@@ -26,7 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -50,8 +49,9 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
             response.setStatus(HttpStatus.FOUND.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            PrintWriter out = response.getWriter();
-            out.write(jsonObject);
+            final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+            response.getWriter().write(jsonObject);
+            redirectStrategy.sendRedirect(request, response, "/signUp");
             return;
         }
 

@@ -28,3 +28,6 @@ echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log
 
 echo "> Green과 Nginx를 다시 연결합니다 !" >> /home/ubuntu/deploy.log
 sed -i "s/#server 127.0.0.1:8081;/server 127.0.0.1:8081;/g" $CONF_PATH
+
+echo "> Nginx Reload !" >> /home/ubuntu/deploy.log
+sudo systemctl reload nginx

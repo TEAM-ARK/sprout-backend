@@ -22,7 +22,7 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(200);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.OK, "log-in successful"));
     }

@@ -33,8 +33,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    private static final String DEFAULT_LOGIN_SUCCESS_URL = "/";
-
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
 
@@ -46,7 +44,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         if(Objects.isNull(oAuth2User.getAttribute("email"))) {
             String jsonObject = responseData((OAuth2AuthenticationToken) authentication, socialId);
             response.setCharacterEncoding("UTF-8");
-            response.setStatus(HttpStatus.FOUND.value());
+            response.setStatus(302);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
             final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();

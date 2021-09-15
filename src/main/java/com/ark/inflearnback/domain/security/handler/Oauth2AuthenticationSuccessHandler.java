@@ -8,6 +8,14 @@ import com.ark.inflearnback.domain.security.repository.MemberRepository;
 import com.ark.inflearnback.domain.security.repository.RoleRepository;
 import com.ark.inflearnback.domain.security.type.RoleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,17 +30,9 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 @RequiredArgsConstructor
 public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
 
@@ -41,8 +41,8 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         final String socialId = googleOrAnotherId((OAuth2AuthenticationToken) authentication);
         final DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
 
-        if(Objects.isNull(oAuth2User.getAttribute("email"))) {
-            String jsonObject = responseData((OAuth2AuthenticationToken) authentication, socialId);
+        if (Objects.isNull(oAuth2User.getAttribute("email"))) {
+            final String jsonObject = responseData((OAuth2AuthenticationToken) authentication, socialId);
             response.setCharacterEncoding("UTF-8");
             response.setStatus(302);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -55,16 +55,16 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         Optional<Member> optMember = memberRepository.findBySocialId(socialId);
 
-        if(optMember.isEmpty()) {
+        if (optMember.isEmpty()) {
             Optional<Role> optRole = roleRepository.findByRoleType(RoleType.USER);
 
             optRole.ifPresent(role -> {
                 memberRepository.save(
-                        Member.of(SignRequestDto.of(oAuth2User.getAttribute("email"), null),
-                                role,
-                                socialId,
-                                ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),
-                                true));
+                    Member.of(SignRequestDto.of(oAuth2User.getAttribute("email"), null),
+                        role,
+                        socialId,
+                        ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),
+                        true));
             });
         }
 
@@ -72,7 +72,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
         final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-        if(Objects.isNull(savedRequest)) {
+        if (Objects.isNull(savedRequest)) {
             String defaultUrl = "/loginSuccess";
             redirectStrategy.sendRedirect(request, response, defaultUrl);
             return;
@@ -83,7 +83,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private String responseData(final OAuth2AuthenticationToken authentication, final String socialId) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> data = new HashMap<>();
         data.put("registrationId", authentication.getAuthorizedClientRegistrationId());
         data.put("id", socialId);
@@ -96,14 +96,15 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         final String registrationId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
 
-        if(registrationId.equals("google")) {
+        if (registrationId.equals("google")) {
             return oauth2User.getAttribute("sub");
         }
 
-        if(registrationId.equals("facebook")) {
+        if (registrationId.equals("facebook")) {
             return oauth2User.getAttribute("id");
         }
 
         return Integer.toString(oauth2User.getAttribute("id"));
     }
+
 }

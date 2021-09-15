@@ -10,23 +10,25 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 @RequiredArgsConstructor
 public class InterceptorConfig implements WebMvcConfigurer {
-    private final HttpLogInterceptor httpLogInterceptor;
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/")
-                .setCachePeriod(86400)
-                .resourceChain(true)
-                .addResolver(new PathResourceResolver());
-    }
+    private final HttpLogInterceptor httpLogInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry
-                .addInterceptor(httpLogInterceptor)
-                .excludePathPatterns("/docs/**", "images/**", "/js/**", "/css/**", "/favicon.ico")
-                .addPathPatterns("/**");
+            .addInterceptor(httpLogInterceptor)
+            .excludePathPatterns("/docs/**", "images/**", "/js/**", "/css/**", "/favicon.ico")
+            .addPathPatterns("/**");
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+            .addResourceHandler("/resources/**")
+            .addResourceLocations("/resources/")
+            .setCachePeriod(86400)
+            .resourceChain(true)
+            .addResolver(new PathResourceResolver());
+    }
+
 }

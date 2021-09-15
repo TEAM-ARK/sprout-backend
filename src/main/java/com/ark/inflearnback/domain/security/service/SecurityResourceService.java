@@ -6,6 +6,10 @@ import com.ark.inflearnback.domain.security.model.RoleResource;
 import com.ark.inflearnback.domain.security.repository.ResourceRepository;
 import com.ark.inflearnback.domain.security.repository.RoleHierarchiesRepository;
 import com.ark.inflearnback.domain.security.repository.RoleResourceRepository;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.ConfigAttribute;
@@ -16,15 +20,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SecurityResourceService {
+
     private static final String HIERARCHY_DELIMITER = " > ";
     private static final String HIERARCHY_JOIN_STR = " AND ";
 
@@ -44,21 +44,29 @@ public class SecurityResourceService {
         return loggingAuthorizationTable(resourceList);
     }
 
-    private void assemblyConfigAttribute(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList, final List<Resource> resources) {
+    private void assemblyConfigAttribute(
+        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList,
+        final List<Resource> resources) {
         for (Resource resource : resources) {
             List<ConfigAttribute> configAttributes = new ArrayList<>();
             assemblyConfigAttribute(resourceList, resource, configAttributes);
         }
     }
 
-    private void assemblyConfigAttribute(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList, final Resource resource, final List<ConfigAttribute> configAttributes) {
+    private void assemblyConfigAttribute(
+        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList,
+        final Resource resource,
+        final List<ConfigAttribute> configAttributes) {
         for (RoleResource roleResource : roleResourceRepository.findByResource(resource)) {
             configAttributes.add(new SecurityConfig(roleResource.getRole()));
-            resourceList.put(new AntPathRequestMatcher(resource.getUrl(), resource.getMethod()), configAttributes);
+            resourceList.put(
+                new AntPathRequestMatcher(resource.getUrl(), resource.getMethod()),
+                configAttributes);
         }
     }
 
-    private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
+    private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(
+        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
         log.info("#################################################################################");
         log.info("################################# Resource List #################################");
         log.info("#################################################################################");
@@ -76,17 +84,21 @@ public class SecurityResourceService {
 
     private String getRoleHierarchyStringRepresentation() {
         return new StringBuilder()
-                .append(roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_SYS_ADMIN).stream()
-                        .map(RoleHierarchies::getAuthority)
-                        .collect(Collectors.joining(HIERARCHY_DELIMITER)))
-                .append(HIERARCHY_JOIN_STR)
-                .append(roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_ADMIN).stream()
-                        .map(RoleHierarchies::getAuthority)
-                        .collect(Collectors.joining(HIERARCHY_DELIMITER)))
-                .append(HIERARCHY_JOIN_STR)
-                .append(roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_USER).stream()
-                        .map(RoleHierarchies::getAuthority)
-                        .collect(Collectors.joining(HIERARCHY_DELIMITER)))
-                .toString();
+            .append(
+                roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_SYS_ADMIN).stream()
+                    .map(RoleHierarchies::getAuthority)
+                    .collect(Collectors.joining(HIERARCHY_DELIMITER)))
+            .append(HIERARCHY_JOIN_STR)
+            .append(
+                roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_ADMIN).stream()
+                    .map(RoleHierarchies::getAuthority)
+                    .collect(Collectors.joining(HIERARCHY_DELIMITER)))
+            .append(HIERARCHY_JOIN_STR)
+            .append(
+                roleHierarchiesRepository.findRoleHierarchiesByOrders(ORDERS_OF_USER).stream()
+                    .map(RoleHierarchies::getAuthority)
+                    .collect(Collectors.joining(HIERARCHY_DELIMITER)))
+            .toString();
     }
+
 }

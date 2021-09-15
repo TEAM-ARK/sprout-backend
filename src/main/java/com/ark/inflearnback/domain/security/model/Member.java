@@ -2,7 +2,13 @@ package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
 import com.ark.inflearnback.domain.member.dto.SignRequestDto;
-
+import java.util.Collection;
+import java.util.Collections;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,15 +16,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends AbstractEntity {
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -47,4 +49,5 @@ public class Member extends AbstractEntity {
     public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
     }
+
 }

@@ -2,23 +2,23 @@ package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
 import com.ark.inflearnback.domain.security.type.RoleType;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.util.Objects;
-
 @Entity
 @Getter
 @Where(clause = "deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role extends AbstractEntity {
+
     @Enumerated(EnumType.STRING)
     @Column(unique = true, nullable = false)
     private RoleType roleType;
@@ -43,6 +43,11 @@ public class Role extends AbstractEntity {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(roleType);
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -54,8 +59,4 @@ public class Role extends AbstractEntity {
         return Objects.equals(roleType, role.roleType);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(roleType);
-    }
 }

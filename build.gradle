@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'checkstyle'
     id 'com.epages.restdocs-api-spec' version '0.11.3'
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -23,10 +24,7 @@ ext {
 
 group = 'com.ark'
 sourceCompatibility = JavaVersion.VERSION_11
-
-jar {
-    enabled = false
-}
+targetCompatibility = JavaVersion.VERSION_11
 
 configurations {
     compileOnly {
@@ -77,39 +75,18 @@ dependencies {
             'org.projectlombok:lombok',
     )
 
-    testCompileOnly(
-            'org.projectlombok:lombok'
-    )
-
     runtimeOnly(
             'mysql:mysql-connector-java',
             'com.h2database:h2'
     )
+}
 
-    testRuntimeOnly(
-            'mysql:mysql-connector-java',
-            'com.h2database:h2'
-    )
+jar {
+    enabled = false
 }
 
 bootRun {
     systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
-}
-
-test {
-    useJUnitPlatform()
-    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
-}
-
-tasks.withType(JavaCompile) {
-    options.fork = true
-}
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:unchecked"
-    }
 }
 
 bootJar {
@@ -119,6 +96,29 @@ bootJar {
     )
 }
 
+test {
+    useJUnitPlatform()
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
+}
+
+/* -------------------------------
+        javac settings
+------------------------------- */
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.fork = true
+}
+
+
+/* -------------------------------
+        jacoco settings
+------------------------------- */
 task jacoco(type: Test) {
     group 'verification'
     description 'Runs the unit tests and verify coverage using jacoco'
@@ -161,12 +161,44 @@ jacocoTestCoverageVerification {
 //    }
 }
 
+
+/* -------------------------------
+        epages settings
+------------------------------- */
 openapi3 {
-    server = 'http://3.34.236.174:8080'
+    servers = [
+            {
+                url = "http://3.34.236.174"
+            },
+            {
+                url = "http://3.34.236.174:8080"
+            },
+            {
+                url = "http://3.34.236.174:8081"
+            },
+            {
+                url = "http://localhost:8080"
+            },
+            {
+                url = "http://localhost:8081"
+            },
+    ]
     title = 'Team-ARK Inflearn API Documentation'
     description '인프런 클론코딩, API 문서 페이지'
     version = '0.0.1'
     outputFileNamePrefix = 'open-api-3.0.1'
     format = 'json'
     outputDirectory = "$docsDir/api"
+}
+
+
+/* -------------------------------
+        checkstyle settings
+------------------------------- */
+checkstyle {
+    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    configProperties = ["suppressionFile": "${project.rootDir}/config/checkstyle/checkstyle-suppressions.xml"]
+    ignoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
 }

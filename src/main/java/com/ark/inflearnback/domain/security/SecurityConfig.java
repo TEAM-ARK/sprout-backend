@@ -4,12 +4,14 @@ import com.ark.inflearnback.domain.security.factory.UrlResourcesMapFactoryBean;
 import com.ark.inflearnback.domain.security.filter.PermitAllFilter;
 import com.ark.inflearnback.domain.security.filter.RestLoginProcessingFilter;
 import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
-import com.ark.inflearnback.domain.security.handler.CustomAuthenticationFailureHandler;
-import com.ark.inflearnback.domain.security.handler.CustomAuthenticationSuccessHandler;
-import com.ark.inflearnback.domain.security.provider.CustomAuthenticationProvider;
+import com.ark.inflearnback.domain.security.handler.Oauth2AuthenticationFailureHandler;
+import com.ark.inflearnback.domain.security.handler.Oauth2AuthenticationSuccessHandler;
+import com.ark.inflearnback.domain.security.handler.RestAuthenticationFailureHandler;
+import com.ark.inflearnback.domain.security.handler.RestAuthenticationSuccessHandler;
+import com.ark.inflearnback.domain.security.provider.UsernamePasswordAuthenticationProvider;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
-import com.ark.inflearnback.domain.security.service.CustomOauth2UserService;
-import com.ark.inflearnback.domain.security.service.CustomUserDetailsService;
+import com.ark.inflearnback.domain.security.repository.RoleRepository;
+import com.ark.inflearnback.domain.security.service.RestUserDetailsService;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -50,30 +53,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/,GET", "/api/v1/member,POST", "/static/docs/**,GET"
     };
 
-    private final CustomOauth2UserService customOauth2UserService;
     private final SecurityResourceService securityResourceService;
     private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
     private final ObjectMapper objectMapper;
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
-        auth.authenticationProvider(authenticationProvider());
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider(passwordEncoder(), userDetailsService());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService(memberRepository);
+        auth.userDetailsService(restUserDetailsService());
+        auth.authenticationProvider(usernamePasswordAuthenticationProvider());
     }
 
     @Override
@@ -87,20 +75,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf()
-            .disable()
-            .httpBasic()
-            .disable()
-            .authorizeRequests(
-                authorize ->
-                    authorize.anyRequest().authenticated().expressionHandler(expressionHandler()))
-            .formLogin()
-            .disable()
-            .oauth2Login(login -> login.userInfoEndpoint().userService(customOauth2UserService))
-            .logout(logout -> logout.logoutUrl("/api/v1/logout").logoutSuccessUrl("/"))
-            .addFilterBefore(restLoginProcessingFilter(),
-                UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+        http
+                .csrf().disable()
+                .httpBasic().disable()
+
+                .authorizeRequests(
+                        authorize -> authorize.anyRequest()
+                                .authenticated()
+                                .expressionHandler(expressionHandler())
+                )
+
+                .formLogin().disable()
+                .oauth2Login(login ->
+                        login.loginProcessingUrl("/api/v1/login/oauth2/*")
+                                .userInfoEndpoint()
+                                .userService(new DefaultOAuth2UserService())
+                            .and()
+                                .successHandler(oauth2AuthenticationSuccessHandler())
+                                .failureHandler(oauth2AuthenticationFailureHandler())
+                )
+
+                .logout(logout -> logout.logoutUrl("/api/v1/logout")
+                        .logoutSuccessUrl("/")
+                )
+
+                .addFilterBefore(restLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 
     @Bean
@@ -153,22 +153,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public AuthenticationProvider usernamePasswordAuthenticationProvider() {
+        return new UsernamePasswordAuthenticationProvider(passwordEncoder(), restUserDetailsService());
+    }
+
+    @Bean
+    public UserDetailsService restUserDetailsService() {
+        return new RestUserDetailsService(memberRepository);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
     public RestLoginProcessingFilter restLoginProcessingFilter() throws Exception {
         RestLoginProcessingFilter restLoginProcessingFilter = new RestLoginProcessingFilter();
         restLoginProcessingFilter.setAuthenticationManager(authenticationManagerBean());
-        restLoginProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
-        restLoginProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        restLoginProcessingFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler());
+        restLoginProcessingFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler());
         return restLoginProcessingFilter;
     }
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler(objectMapper);
+    public AuthenticationSuccessHandler restAuthenticationSuccessHandler() {
+        return new RestAuthenticationSuccessHandler(objectMapper);
     }
 
     @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler(objectMapper);
+    public AuthenticationFailureHandler restAuthenticationFailureHandler() {
+        return new RestAuthenticationFailureHandler(objectMapper);
+    }
+
+    @Bean
+    public Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
+        return new Oauth2AuthenticationSuccessHandler(memberRepository, roleRepository);
+    }
+
+    @Bean
+    public Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler() {
+        return new Oauth2AuthenticationFailureHandler();
     }
 
 }

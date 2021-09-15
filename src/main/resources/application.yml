@@ -1,3 +1,9 @@
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
 spring:
   profiles:
     active: dev
@@ -21,14 +27,18 @@ spring:
           google:
             client-id: ENC(6/Ponyj/US/TvdVEZJfmcsPmvaXwKaeCWyudJyZDkNoTnloH+R4r0dR8MFFrA90SkJag3l4b67WQrIqR9Oz8Y6IK45M9ypW0DMxUGsOFc3rFijwDrAhK2Q==)
             client-secret: ENC(FoXXYeauW6EKov8iMfbE57X8cV9jEf4WSQ+FFmjnNIakgPv768fkng==)
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
             scope: profile, email
+
+          facebook:
+            client-id: ENC(UbDyMdYJagncr7J1zh81jpNVRdc/vC7RFLIliCwUKnw=)
+            client-secret: ENC(d93ZaoklWTGG3S98yn3hpY2zvpplab1kF3R5EEUdtwPsn/3fltckM4A7n5JIY84u)
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
+            scope: public_profile, email
+            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+            userInfoUri: https://graph.facebook.com/v11.0/me?fields=id,name,email,verified,is_verified
 
 logging:
   level:
     org.hibernate.SQL: info
-
-jasypt:
-  encryptor:
-    password: ${JASYPT_PASSWORD:NONE}
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator

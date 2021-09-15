@@ -25,8 +25,8 @@ class MemberRepositoryTest {
 
     @Test
     void save() throws Exception {
-        Role role = roleRepository.save(Role.of(RoleType.MEMBER, false));
-        Member member = memberRepository.save(Member.of("siro@gmail.com", "password", role));
+        Role role = roleRepository.save(Role.of(RoleType.USER, false));
+        Member member = memberRepository.save(Member.of("siro@gmail.com", "password", role, null, null, false));
         Assertions.assertThat(member.getEmail()).isEqualTo("siro@gmail.com");
         Assertions.assertThat(member.getPassword()).isEqualTo("password");
         Assertions.assertThat(member.getRole()).isEqualTo(role);

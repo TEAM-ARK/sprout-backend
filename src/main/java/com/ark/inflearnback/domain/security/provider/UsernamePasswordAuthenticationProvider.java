@@ -12,13 +12,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
-public final class CustomAuthenticationProvider implements AuthenticationProvider {
+public final class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
 
     @Override
-    public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-        final MemberAuthenticationContext context = (MemberAuthenticationContext) userDetailsService.loadUserByUsername(authentication.getName());
+    public Authentication authenticate(final Authentication authentication)
+        throws AuthenticationException {
+        final MemberAuthenticationContext context =
+            (MemberAuthenticationContext)
+                userDetailsService.loadUserByUsername(authentication.getName());
         final String encryptedPassword = context.getPassword();
         final String enteredPassword = (String) authentication.getCredentials();
 
@@ -27,15 +30,18 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
         }
 
         if (isRestAuthenticationToken(authentication.getClass())) {
-            return new RestAuthenticationToken(context.getUsername(), null, context.getAuthorities());
+            return new RestAuthenticationToken(context.getUsername(), null,
+                context.getAuthorities());
         }
 
-        return new UsernamePasswordAuthenticationToken(context.getUsername(), null, context.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(
+            context.getUsername(), null, context.getAuthorities());
     }
 
     @Override
     public boolean supports(final Class<?> authentication) {
-        return isUsernamePasswordAuthenticationToken(authentication) || isRestAuthenticationToken(authentication);
+        return isUsernamePasswordAuthenticationToken(authentication)
+            || isRestAuthenticationToken(authentication);
     }
 
     private boolean isUsernamePasswordAuthenticationToken(final Class<?> authentication) {
@@ -45,4 +51,5 @@ public final class CustomAuthenticationProvider implements AuthenticationProvide
     private boolean isRestAuthenticationToken(final Class<?> authentication) {
         return RestAuthenticationToken.class.isAssignableFrom(authentication);
     }
+
 }

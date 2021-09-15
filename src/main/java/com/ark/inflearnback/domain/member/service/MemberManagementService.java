@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemberManagementService {
+
     private final RoleRepository roleRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,17 +40,17 @@ public class MemberManagementService {
     }
 
     private void signUpComplete(final SignRequestDto request) {
-        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember()));
+        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember(), null, null, false));
     }
 
     private Role findRoleMember() {
         try {
-            return roleRepository.findByRoleType(RoleType.MEMBER)
-                    .orElseThrow(RoleNotFoundException::new);
-        }
-        catch (RoleNotFoundException e) {
-            log.error("{} not found or not active. please check the ROLE table.", RoleType.MEMBER);
+            return roleRepository.findByRoleType(RoleType.USER)
+                .orElseThrow(RoleNotFoundException::new);
+        } catch (RoleNotFoundException e) {
+            log.error("{} not found or not active. please check the ROLE table.", RoleType.USER);
             throw new RoleNotFoundException("internal server error.");
         }
     }
+
 }

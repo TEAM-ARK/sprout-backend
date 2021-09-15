@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final ObjectMapper objectMapper;
 
-    public CustomAuthenticationSuccessHandler(final ObjectMapper objectMapper) {
+    public RestAuthenticationSuccessHandler(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(200);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.OK, "log-in successful"));
     }
+
 }

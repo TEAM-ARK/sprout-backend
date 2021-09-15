@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resource extends AbstractEntity {
+
     @Column(unique = true, nullable = false)
     private String url;
 
@@ -30,4 +31,5 @@ public class Resource extends AbstractEntity {
     public static Resource of(final String url, final String method, final boolean deleted) {
         return new Resource(url, method, deleted);
     }
+
 }

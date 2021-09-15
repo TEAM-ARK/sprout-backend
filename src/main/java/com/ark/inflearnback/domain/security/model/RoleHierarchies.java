@@ -2,17 +2,17 @@ package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoleHierarchies extends AbstractEntity {
+
     @Column(unique = true, nullable = false)
     private String authority;
 
@@ -27,7 +27,9 @@ public class RoleHierarchies extends AbstractEntity {
     }
 
     @Builder
-    public static RoleHierarchies of(final String authority, final int orders, final boolean deleted) {
+    public static RoleHierarchies of(
+        final String authority, final int orders, final boolean deleted) {
         return new RoleHierarchies(authority, orders, deleted);
     }
+
 }

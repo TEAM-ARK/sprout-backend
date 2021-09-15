@@ -13,17 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final ObjectMapper objectMapper;
 
-    public CustomAuthenticationFailureHandler(final ObjectMapper objectMapper) {
+    public RestAuthenticationFailureHandler(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     @Override
     public void onAuthenticationFailure(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException exception) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(401);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         String errMsg = "Email or password is invalid.";
@@ -32,6 +32,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errMsg = "Email or password is invalid.";
         }
 
-        objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
+        objectMapper.writeValue(response.getWriter(),
+            HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
     }
+
 }

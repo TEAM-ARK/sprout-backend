@@ -74,8 +74,8 @@ class RestLoginTest {
         // given
         final String email = "test@email.com";
         final String password = passwordEncoder.encode("AASHFKHQWFQYW#qwhfgqwf123!");
-        final Role role = roleRepository.findByRoleType(RoleType.MEMBER).get();
-        memberRepository.saveAndFlush(Member.of(email, password, role));
+        final Role role = roleRepository.findByRoleType(RoleType.USER).get();
+        memberRepository.saveAndFlush(Member.of(email, password, role, null, null, false));
 
         Mono<String> request =
             Mono.just(

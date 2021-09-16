@@ -4,7 +4,6 @@ import com.ark.inflearnback.configuration.security.factory.UrlResourcesMapFactor
 import com.ark.inflearnback.configuration.security.filter.PermitAllFilter;
 import com.ark.inflearnback.configuration.security.filter.UrlFilterInvocationSecurityMetadataSource;
 import com.ark.inflearnback.configuration.security.filter.UsernamePasswordLoginProcessingFilter;
-import com.ark.inflearnback.configuration.security.handler.Oauth2AuthenticationFailureHandler;
 import com.ark.inflearnback.configuration.security.handler.Oauth2AuthenticationSuccessHandler;
 import com.ark.inflearnback.configuration.security.handler.UsernamePasswordAuthenticationFailureHandler;
 import com.ark.inflearnback.configuration.security.handler.UsernamePasswordAuthenticationSuccessHandler;
@@ -101,7 +100,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .userService(new DefaultOAuth2UserService())
                     .and()
                     .successHandler(oauth2AuthenticationSuccessHandler())
-                    .failureHandler(oauth2AuthenticationFailureHandler())
             )
 
             .logout(logout -> logout.logoutUrl("/api/v1/logout")
@@ -211,12 +209,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
-        return new Oauth2AuthenticationSuccessHandler(memberRepository, roleRepository);
+        return new Oauth2AuthenticationSuccessHandler(objectMapper, memberRepository, roleRepository);
     }
-
-    @Bean
-    public Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler() {
-        return new Oauth2AuthenticationFailureHandler();
-    }
-
 }

@@ -1,7 +1,7 @@
 package com.ark.inflearnback.domain.member.controller;
 
-import com.ark.inflearnback.configuration.model.HttpResponse;
-import com.ark.inflearnback.domain.member.controller.form.SignForm;
+import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
+import com.ark.inflearnback.domain.member.model.form.SignForm;
 import com.ark.inflearnback.domain.member.service.MemberService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,13 +1,13 @@
 package com.ark.inflearnback.domain.member.service;
 
-import com.ark.inflearnback.domain.member.controller.form.SignForm;
-import com.ark.inflearnback.domain.member.exception.DuplicateEmailException;
-import com.ark.inflearnback.domain.member.exception.RoleNotFoundException;
-import com.ark.inflearnback.domain.security.model.Member;
-import com.ark.inflearnback.domain.security.model.Role;
-import com.ark.inflearnback.domain.security.repository.MemberRepository;
-import com.ark.inflearnback.domain.security.repository.RoleRepository;
-import com.ark.inflearnback.domain.security.type.RoleType;
+import com.ark.inflearnback.domain.member.model.form.SignForm;
+import com.ark.inflearnback.configuration.exception.DuplicateEmailException;
+import com.ark.inflearnback.configuration.exception.RoleNotFoundException;
+import com.ark.inflearnback.configuration.security.model.entity.Member;
+import com.ark.inflearnback.configuration.security.model.entity.Role;
+import com.ark.inflearnback.configuration.security.repository.MemberRepository;
+import com.ark.inflearnback.configuration.security.repository.RoleRepository;
+import com.ark.inflearnback.configuration.security.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

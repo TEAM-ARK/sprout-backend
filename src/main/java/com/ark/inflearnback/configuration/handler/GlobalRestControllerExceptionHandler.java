@@ -1,9 +1,9 @@
 package com.ark.inflearnback.configuration.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import com.ark.inflearnback.configuration.model.HttpResponse;
-import com.ark.inflearnback.domain.member.exception.DuplicateEmailException;
-import com.ark.inflearnback.domain.member.exception.RoleNotFoundException;
+import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
+import com.ark.inflearnback.configuration.exception.DuplicateEmailException;
+import com.ark.inflearnback.configuration.exception.RoleNotFoundException;
 import java.util.Iterator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

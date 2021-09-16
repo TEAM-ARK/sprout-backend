@@ -1,7 +1,7 @@
 package com.ark.inflearnback.configuration.interceptor;
 
-import com.ark.inflearnback.configuration.logger.http.HttpLog;
-import com.ark.inflearnback.configuration.logger.http.HttpLogRepository;
+import com.ark.inflearnback.configuration.http.model.entity.HttpLog;
+import com.ark.inflearnback.configuration.http.repository.HttpLogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

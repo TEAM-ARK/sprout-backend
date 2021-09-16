@@ -44,29 +44,21 @@ public class SecurityResourceService {
         return loggingAuthorizationTable(resourceList);
     }
 
-    private void assemblyConfigAttribute(
-        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList,
-        final List<Resource> resources) {
+    private void assemblyConfigAttribute(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList, final List<Resource> resources) {
         for (Resource resource : resources) {
             List<ConfigAttribute> configAttributes = new ArrayList<>();
             assemblyConfigAttribute(resourceList, resource, configAttributes);
         }
     }
 
-    private void assemblyConfigAttribute(
-        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList,
-        final Resource resource,
-        final List<ConfigAttribute> configAttributes) {
+    private void assemblyConfigAttribute(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList, final Resource resource, final List<ConfigAttribute> configAttributes) {
         for (RoleResource roleResource : roleResourceRepository.findByResource(resource)) {
             configAttributes.add(new SecurityConfig(roleResource.getRole()));
-            resourceList.put(
-                new AntPathRequestMatcher(resource.getUrl(), resource.getMethod()),
-                configAttributes);
+            resourceList.put(new AntPathRequestMatcher(resource.getUrl(), resource.getMethod()), configAttributes);
         }
     }
 
-    private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(
-        final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
+    private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
         log.info("#################################################################################");
         log.info("################################# Resource List #################################");
         log.info("#################################################################################");

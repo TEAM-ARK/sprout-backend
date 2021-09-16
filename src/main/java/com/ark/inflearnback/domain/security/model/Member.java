@@ -1,7 +1,7 @@
 package com.ark.inflearnback.domain.security.model;
 
 import com.ark.inflearnback.domain.AbstractEntity;
-import com.ark.inflearnback.domain.member.dto.SignRequestDto;
+import com.ark.inflearnback.domain.member.controller.form.SignForm;
 import java.util.Collection;
 import java.util.Collections;
 import javax.persistence.Column;
@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Getter
@@ -51,12 +53,20 @@ public class Member extends AbstractEntity {
         return new Member(email, password, role, socialId, registrationId, isSocial);
     }
 
-    public static Member of(final SignRequestDto request, final Role role, final String socialId, final String registrationId, final boolean isSocial) {
+    public static Member of(final SignForm request, final Role role, final String socialId, final String registrationId, final boolean isSocial) {
         return new Member(request.getEmail(), request.getPassword(), role, socialId, registrationId, isSocial);
     }
 
     public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
+    }
+
+    public UserDetails toUserDetails() {
+        return User.builder()
+            .username(email)
+            .password(password)
+            .authorities(getGrantedAuthorities())
+            .build();
     }
 
 }

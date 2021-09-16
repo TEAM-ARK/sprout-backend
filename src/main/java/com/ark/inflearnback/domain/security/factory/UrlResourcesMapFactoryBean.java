@@ -1,9 +1,9 @@
 package com.ark.inflearnback.domain.security.factory;
 
+import static java.util.Objects.isNull;
 import com.ark.inflearnback.domain.security.service.SecurityResourceService;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -20,7 +20,7 @@ public class UrlResourcesMapFactoryBean
 
     @Override
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getObject() {
-        if (Objects.isNull(resourceMap)) {
+        if (isNull(resourceMap)) {
             init();
         }
         return resourceMap;

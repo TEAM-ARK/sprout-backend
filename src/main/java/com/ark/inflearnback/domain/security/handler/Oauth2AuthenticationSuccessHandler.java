@@ -1,7 +1,7 @@
 package com.ark.inflearnback.domain.security.handler;
 
-import com.ark.inflearnback.config.model.HttpResponse;
-import com.ark.inflearnback.domain.member.dto.SignRequestDto;
+import com.ark.inflearnback.configuration.model.HttpResponse;
+import com.ark.inflearnback.domain.member.controller.form.SignForm;
 import com.ark.inflearnback.domain.security.model.Member;
 import com.ark.inflearnback.domain.security.model.Role;
 import com.ark.inflearnback.domain.security.repository.MemberRepository;
@@ -60,7 +60,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
             optRole.ifPresent(role -> {
                 memberRepository.save(
-                    Member.of(SignRequestDto.of(oAuth2User.getAttribute("email"), null),
+                    Member.of(SignForm.of(oAuth2User.getAttribute("email"), null),
                         role,
                         socialId,
                         ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),

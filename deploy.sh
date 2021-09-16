@@ -26,7 +26,7 @@ fi
 
 chmod -x /home/ubuntu/app/build/libs/$JAR_NAME
 
-nohup java -jar -Dserver.port=8081 -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME >> /dev/null &
+nohup java -jar -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME -Dserver.port=8081 >> /dev/null &
 echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log
 
 echo "> Green과 Nginx를 다시 연결합니다 !" >> /home/ubuntu/deploy.log

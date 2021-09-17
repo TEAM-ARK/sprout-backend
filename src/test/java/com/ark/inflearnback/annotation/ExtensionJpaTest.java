@@ -1,6 +1,6 @@
 package com.ark.inflearnback.annotation;
 
-import com.ark.inflearnback.config.persistence.QuerydslConfig;
+import com.ark.inflearnback.configuration.persistence.QuerydslConfiguration;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Inherited
 @DataJpaTest
-@Import(QuerydslConfig.class)
+@Import(QuerydslConfiguration.class)
 public @interface ExtensionJpaTest {
 
 }

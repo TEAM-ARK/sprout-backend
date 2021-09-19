@@ -97,16 +97,14 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private String responseData(final OAuth2AuthenticationToken authentication, final String socialId) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> data = Map.of(
+        return objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.FOUND, "Email is null", Map.of(
             "registrationId", authentication.getAuthorizedClientRegistrationId(),
             "id", socialId,
-            "name", authentication.getPrincipal().getAttribute("name")
-        );
-        return objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.FOUND, "Email is null", data));
+            "name", Objects.requireNonNull(authentication.getPrincipal().getAttribute("name")))
+        ));
     }
 
-    private void emailExistCheckAndThenSignUp(OAuth2AuthenticationToken authentication, String socialId, DefaultOAuth2User oAuth2User) {
+    private void emailExistCheckAndThenSignUp(final OAuth2AuthenticationToken authentication, final String socialId, final DefaultOAuth2User oAuth2User) {
         Optional<Member> optMember = memberRepository.findBySocialId(socialId);
 
         if (optMember.isEmpty()) {

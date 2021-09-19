@@ -1,9 +1,9 @@
 package com.ark.inflearnback.domain;
 
+import static java.util.Objects.isNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -37,7 +37,7 @@ public abstract class AbstractEntity implements Serializable {
     protected LocalDateTime modDate;
 
     public boolean isNew() {
-        return Objects.isNull(this.id);
+        return isNull(this.id);
     }
 
 }

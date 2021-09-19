@@ -17,8 +17,7 @@ public final class UsernamePasswordAuthenticationProvider implements Authenticat
     private final UserDetailsService userDetailsService;
 
     @Override
-    public Authentication authenticate(final Authentication authentication)
-        throws AuthenticationException {
+    public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
         final String encryptedPassword = userDetails.getPassword();
         final String enteredPassword = (String) authentication.getCredentials();
@@ -27,11 +26,7 @@ public final class UsernamePasswordAuthenticationProvider implements Authenticat
             throw new BadCredentialsException("password not matched !");
         }
 
-        return new UsernamePasswordAuthenticationToken(
-            userDetails.getUsername(),
-            null,
-            userDetails.getAuthorities()
-        );
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
     }
 
     @Override

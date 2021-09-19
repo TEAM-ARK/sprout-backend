@@ -1,7 +1,7 @@
 package com.ark.inflearnback.configuration.filter;
 
+import static java.util.Objects.nonNull;
 import java.io.IOException;
-import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +15,9 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 public class ServletWrappingFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(
-        final HttpServletRequest request,
-        final HttpServletResponse response,
-        final FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws IOException, ServletException {
         final String contentType = request.getHeader("Content-Type");
-
-        if (Objects.nonNull(contentType) && contentType.toLowerCase().contains("multipart/form-data")) {
+        if (nonNull(contentType) && contentType.toLowerCase().contains("multipart/form-data")) {
             filterChain.doFilter(request, response);
         } else {
             final ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);

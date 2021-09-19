@@ -19,8 +19,7 @@ public class HttpLogInterceptor implements HandlerInterceptor {
     private final HttpLogRepository httpLogRepository;
 
     @Override
-    public void afterCompletion(
-        HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         logging(request, response);
     }
 

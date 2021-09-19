@@ -27,8 +27,7 @@ public class RoleHierarchies extends AbstractEntity {
     }
 
     @Builder
-    public static RoleHierarchies of(
-        final String authority, final int orders, final boolean deleted) {
+    public static RoleHierarchies of(final String authority, final int orders, final boolean deleted) {
         return new RoleHierarchies(authority, orders, deleted);
     }
 

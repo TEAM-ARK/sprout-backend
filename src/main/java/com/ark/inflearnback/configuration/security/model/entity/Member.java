@@ -57,16 +57,16 @@ public class Member extends AbstractEntity {
         return new Member(request.getEmail(), request.getPassword(), role, socialId, registrationId, isSocial);
     }
 
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
-    }
-
     public UserDetails toUserDetails() {
         return User.builder()
             .username(email)
             .password(password)
             .authorities(getGrantedAuthorities())
             .build();
+    }
+
+    private Collection<? extends GrantedAuthority> getGrantedAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority((role.get())));
     }
 
 }

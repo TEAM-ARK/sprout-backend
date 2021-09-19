@@ -1,9 +1,9 @@
 package com.ark.inflearnback.configuration.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.ark.inflearnback.configuration.exception.DuplicateEmailException;
 import com.ark.inflearnback.configuration.exception.RoleNotFoundException;
+import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import java.util.Iterator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalRestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers,
-        final HttpStatus status, final WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         return ResponseEntity.badRequest().body(HttpResponse.of(BAD_REQUEST, getResultMessage(ex)));
     }
 

@@ -78,13 +78,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+            .cors().and()
+
             .csrf().disable()
 
             .httpBasic().disable()
-
-            .cors().configurationSource(corsConfigurationSource())
-
-            .and()
 
             .authorizeRequests(
                 authorize -> authorize.anyRequest()
@@ -111,25 +109,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(List.of("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {
         final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler =
             new DefaultWebSecurityExpressionHandler();
         webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
         return webSecurityExpressionHandler;
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     @Bean
@@ -163,8 +159,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() {
-        return new UrlFilterInvocationSecurityMetadataSource(
-            urlResourcesMapFactoryBean().getObject(), securityResourceService);
+        return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), securityResourceService);
     }
 
     private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
@@ -211,4 +206,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
         return new Oauth2AuthenticationSuccessHandler(objectMapper, memberRepository, roleRepository);
     }
+
 }

@@ -1,8 +1,5 @@
 package com.ark.inflearnback.configuration.security.handler;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.ark.inflearnback.configuration.security.model.entity.Member;
 import com.ark.inflearnback.configuration.security.model.entity.Role;
@@ -13,12 +10,14 @@ import com.ark.inflearnback.domain.member.model.form.SignForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -42,14 +41,13 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         final String socialId = getSocialId((OAuth2AuthenticationToken) authentication);
         final DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
 
-        if (isNull(oAuth2User.getAttribute("email"))) {
+        if (Objects.isNull(oAuth2User.getAttribute("email"))) {
+            final String jsonObject = responseData((OAuth2AuthenticationToken) authentication, socialId);
             response.setCharacterEncoding("UTF-8");
             response.setStatus(302);
-            response.setContentType(APPLICATION_JSON_VALUE);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.FOUND,
-                parseResponseData((OAuth2AuthenticationToken) authentication, socialId))
-            );
+            objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.FOUND, jsonObject));
             return;
         }
 
@@ -73,12 +71,13 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
         final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-        if (isNull(savedRequest)) {
+        if (Objects.isNull(savedRequest)) {
             objectMapper.writeValue(response.getWriter(), HttpResponse.of(HttpStatus.OK, "Oauth2 Login Success!!"));
             return;
         }
 
-        redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
+        String redirectUrl = savedRequest.getRedirectUrl();
+        redirectStrategy.sendRedirect(request, response, redirectUrl);
     }
 
     private String getSocialId(final OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -97,11 +96,11 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return Integer.toString(oauth2User.getAttribute("id"));
     }
 
-    private String parseResponseData(final OAuth2AuthenticationToken authentication, final String socialId) throws IOException {
+    private String responseData(final OAuth2AuthenticationToken authentication, final String socialId) throws IOException {
         return objectMapper.writeValueAsString(HttpResponse.of(HttpStatus.FOUND, "Email is null", Map.of(
             "registrationId", authentication.getAuthorizedClientRegistrationId(),
             "id", socialId,
-            "name", requireNonNull(authentication.getPrincipal().getAttribute("name")))
+            "name", Objects.requireNonNull(authentication.getPrincipal().getAttribute("name")))
         ));
     }
 

@@ -26,7 +26,11 @@ public final class UsernamePasswordAuthenticationProvider implements Authenticat
             throw new BadCredentialsException("password not matched !");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(
+            userDetails.getUsername(),
+            null, // 인증성공 시 보안상 인증토큰에서 비밀번호 정보 제거
+            userDetails.getAuthorities()
+        );
     }
 
     @Override
@@ -35,10 +39,6 @@ public final class UsernamePasswordAuthenticationProvider implements Authenticat
     }
 
     private boolean isUsernamePasswordAuthenticationToken(final Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-    }
-
-    private boolean isRestAuthenticationToken(final Class<?> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 

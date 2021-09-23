@@ -25,8 +25,7 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     }
 
     @Override
-    public Collection<ConfigAttribute> getAttributes(Object object)
-        throws IllegalArgumentException {
+    public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         if (nonNull(requestMap)) {
             for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : requestMap.entrySet()) {
                 RequestMatcher matcher = entry.getKey();

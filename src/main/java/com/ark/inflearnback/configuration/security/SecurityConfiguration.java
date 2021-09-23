@@ -79,7 +79,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .cors().and()
+            .cors()
+
+            .and()
 
             .csrf().disable()
 
@@ -126,8 +128,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {
-        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler =
-            new DefaultWebSecurityExpressionHandler();
+        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
         return webSecurityExpressionHandler;
     }
@@ -151,9 +152,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
-        final List<AccessDecisionVoter<?>> accessDecisionVoters = new ArrayList<>();
-        accessDecisionVoters.add(roleVoter());
-        return accessDecisionVoters;
+        return List.of(roleVoter());
     }
 
     @Bean

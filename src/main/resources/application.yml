@@ -1,3 +1,8 @@
+server:
+  servlet:
+    session:
+      timeout: 120m
+
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD:NONE}

@@ -14,6 +14,7 @@ import com.ark.inflearnback.configuration.security.service.SecurityResourceServi
 import com.ark.inflearnback.configuration.security.service.UsernamePasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .cors().and()
+            .cors()
+
+            .and()
 
             .csrf().disable()
 
@@ -111,10 +114,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(List.of("x-auth-token"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -122,8 +128,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {
-        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler =
-            new DefaultWebSecurityExpressionHandler();
+        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
         return webSecurityExpressionHandler;
     }
@@ -147,9 +152,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
-        final List<AccessDecisionVoter<?>> accessDecisionVoters = new ArrayList<>();
-        accessDecisionVoters.add(roleVoter());
-        return accessDecisionVoters;
+        return List.of(roleVoter());
     }
 
     @Bean

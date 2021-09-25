@@ -13,7 +13,6 @@ import com.ark.inflearnback.configuration.security.repository.RoleRepository;
 import com.ark.inflearnback.configuration.security.service.SecurityResourceService;
 import com.ark.inflearnback.configuration.security.service.UsernamePasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -79,12 +79,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .cors()
-
-            .and()
-
+            .cors().and()
             .csrf().disable()
-
             .httpBasic().disable()
 
             .authorizeRequests(
@@ -108,7 +104,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             )
 
             .addFilterAt(usernamePasswordLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+            .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class)
+
+            .sessionManagement()
+            .maximumSessions(1)
+            .expiredUrl("/");
     }
 
     @Bean
@@ -208,6 +208,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
         return new Oauth2AuthenticationSuccessHandler(objectMapper, memberRepository, roleRepository);
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 
 }

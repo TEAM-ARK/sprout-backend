@@ -72,7 +72,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
             .antMatchers("/h2-console/**")
-            .antMatchers("/docs/**")
             .antMatchers("/favicon.ico");
     }
 
@@ -89,7 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .expressionHandler(expressionHandler())
             )
 
-            .formLogin().disable()
+            .formLogin().and() // 09-25 한창훈: 커스텀 로그인 페이지 미연동으로 기본 폼로그인 페이지 임시 사용 조치
 
             .oauth2Login(login ->
                 login.loginProcessingUrl("/api/v1/login/oauth2/*")

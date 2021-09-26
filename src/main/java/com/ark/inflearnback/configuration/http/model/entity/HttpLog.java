@@ -1,14 +1,13 @@
 package com.ark.inflearnback.configuration.http.model.entity;
 
-import static java.util.Objects.*;
-import static org.springframework.http.MediaType.*;
+import static java.util.Objects.nonNull;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.domain.AbstractEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;

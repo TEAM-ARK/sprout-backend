@@ -4,7 +4,7 @@
 
 인프런 웹앱을 만들어보는 팀프로젝트
 
-> [📜 Backend API Documentation](http://ec2-3-34-236-174.ap-northeast-2.compute.amazonaws.com/docs/api/index.html )
+> [📜 Backend API Documentation(💥 인증 필요 !)](https://www.ark-inflearn.shop/docs/api/index.html)
 
 > [📦 Front Github Repository](https://github.com/MinwooJJ/inflearn-clone-front)
 

@@ -1,7 +1,8 @@
 package com.ark.inflearnback.configuration.security.handler;
 
-import static java.util.Objects.*;
-import static org.springframework.http.MediaType.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.ark.inflearnback.configuration.security.model.entity.Member;
 import com.ark.inflearnback.configuration.security.model.entity.Role;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;

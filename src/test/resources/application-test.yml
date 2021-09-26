@@ -13,9 +13,3 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
-
-jasypt:
-  encryptor:
-    password: ${JASYPT_PASSWORD:NONE}
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator

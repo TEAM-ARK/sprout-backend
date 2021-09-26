@@ -10,16 +10,6 @@ spring:
     hibernate:
       ddl-auto: create
 
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            client-id: ENC(DW9rSXDpgOG6ofTDvaxjDlsDpwPzDjnVg+Uu2S1SOB0=)
-            client-secret: ENC(g/trcC02UxnAjSd/iWxjeRs38FAfH0jg1ShKQ/iVrXyTKAfXS3XZR6l2OYha4FQiXilXVexpBN8=)
-            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
-            scope: user, email
-
 decorator:
   datasource:
     p6spy:

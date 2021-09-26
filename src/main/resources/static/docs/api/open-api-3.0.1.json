@@ -32,7 +32,7 @@
               },
               "examples" : {
                 "로그인" : {
-                  "value" : "{\r\n  \"email\" : \"test@email.com\",\r\n  \"password\" : \"AASHFKHQWFQYW#qwhfgqwf123!\"\r\n}"
+                  "value" : "{\n  \"email\" : \"test@email.com\",\n  \"password\" : \"AASHFKHQWFQYW#qwhfgqwf123!\"\n}"
                 }
               }
             }
@@ -48,7 +48,7 @@
                 },
                 "examples" : {
                   "로그인" : {
-                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"OK\",\r\n  \"responseBody\" : \"log-in successful\"\r\n}"
+                    "value" : "{\n  \"responseCode\" : \"200\",\n  \"responseMessage\" : \"OK\",\n  \"responseBody\" : \"log-in successful\"\n}"
                   }
                 }
               }
@@ -71,7 +71,7 @@
               },
               "examples" : {
                 "회원가입" : {
-                  "value" : "{\r\n  \"email\" : \"test@email.com\",\r\n  \"password\" : \"AASHFKHQWFQYW#qwhfgqwf123!\"\r\n}"
+                  "value" : "{\n  \"email\" : \"test@email.com\",\n  \"password\" : \"AASHFKHQWFQYW#qwhfgqwf123!\"\n}"
                 }
               }
             }
@@ -87,7 +87,7 @@
                 },
                 "examples" : {
                   "회원가입" : {
-                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"OK\",\r\n  \"responseBody\" : \"sign-up successful\"\r\n}"
+                    "value" : "{\n  \"responseCode\" : \"200\",\n  \"responseMessage\" : \"OK\",\n  \"responseBody\" : \"sign-up successful\"\n}"
                   }
                 }
               }

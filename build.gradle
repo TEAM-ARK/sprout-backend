@@ -168,13 +168,13 @@ jacocoTestCoverageVerification {
 openapi3 {
     servers = [
             {
+                url = "https://www.ark-inflearn.shop"
+            },
+            {
+                url = "https://3.34.236.174"
+            },
+            {
                 url = "http://3.34.236.174"
-            },
-            {
-                url = "http://3.34.236.174:8080"
-            },
-            {
-                url = "http://3.34.236.174:8081"
             },
             {
                 url = "http://localhost:8080"

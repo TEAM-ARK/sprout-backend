@@ -1,19 +1,19 @@
 package com.ark.inflearnback.configuration.security.handler;
 
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 public class UsernamePasswordAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
     private final ObjectMapper objectMapper;
 
     public UsernamePasswordAuthenticationFailureHandler(final ObjectMapper objectMapper) {
@@ -24,7 +24,7 @@ public class UsernamePasswordAuthenticationFailureHandler implements Authenticat
     public void onAuthenticationFailure(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException exception) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(401);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setContentType(APPLICATION_JSON_VALUE);
 
         String errMsg = "Email or password is invalid.";
 
@@ -33,7 +33,7 @@ public class UsernamePasswordAuthenticationFailureHandler implements Authenticat
         }
 
         objectMapper.writeValue(response.getWriter(),
-            HttpResponse.of(HttpStatus.UNAUTHORIZED, errMsg));
+            HttpResponse.of(UNAUTHORIZED, errMsg));
     }
 
 }

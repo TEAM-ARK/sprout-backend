@@ -103,7 +103,7 @@ class MemberApiControllerTest {
                             .tag("회원")
                             .summary("신규 회원 정보 생성")
                             .description("신규 회원 정보를 생성한다")
-                            .requestSchema(schema("SignRequestDto"))
+                            .requestSchema(schema("SignForm"))
                             .responseSchema(schema("HttpResponse"))
                             .requestFields(
                                 fieldWithPath("email").description("이메일"),
@@ -159,7 +159,7 @@ class MemberApiControllerTest {
                             .tag("회원")
                             .summary("로그인")
                             .description("로그인 성공")
-                            .requestSchema(schema("SignRequestDto"))
+                            .requestSchema(schema("SignForm"))
                             .responseSchema(schema("HttpResponse"))
                             .requestFields(
                                 fieldWithPath("email").description("이메일"),

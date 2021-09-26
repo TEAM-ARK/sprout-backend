@@ -13,7 +13,6 @@ import com.ark.inflearnback.configuration.security.repository.RoleRepository;
 import com.ark.inflearnback.configuration.security.service.SecurityResourceService;
 import com.ark.inflearnback.configuration.security.service.UsernamePasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -72,7 +72,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
             .antMatchers("/h2-console/**")
-            .antMatchers("/docs/**")
             .antMatchers("/favicon.ico");
     }
 
@@ -80,9 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
             .cors().and()
-
             .csrf().disable()
-
             .httpBasic().disable()
 
             .authorizeRequests(
@@ -91,7 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .expressionHandler(expressionHandler())
             )
 
-            .formLogin().disable()
+            .formLogin().and() // 09-25 한창훈: 커스텀 로그인 페이지 미연동으로 기본 폼로그인 페이지 임시 사용 조치
 
             .oauth2Login(login ->
                 login.loginProcessingUrl("/api/v1/login/oauth2/*")
@@ -106,7 +103,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             )
 
             .addFilterAt(usernamePasswordLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+            .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class)
+
+            .sessionManagement()
+            .maximumSessions(1)
+            .expiredUrl("/");
     }
 
     @Bean
@@ -126,8 +127,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityExpressionHandler<FilterInvocation> expressionHandler() {
-        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler =
-            new DefaultWebSecurityExpressionHandler();
+        final DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         webSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
         return webSecurityExpressionHandler;
     }
@@ -151,9 +151,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
-        final List<AccessDecisionVoter<?>> accessDecisionVoters = new ArrayList<>();
-        accessDecisionVoters.add(roleVoter());
-        return accessDecisionVoters;
+        return List.of(roleVoter());
     }
 
     @Bean
@@ -209,6 +207,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
         return new Oauth2AuthenticationSuccessHandler(objectMapper, memberRepository, roleRepository);
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 
 }

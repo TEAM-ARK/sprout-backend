@@ -39,6 +39,12 @@ public class Member extends AbstractEntity {
 
     private boolean isSocial;
 
+    private Member(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     private Member(final String email, final String password, final Role role, final String socialId, final String registrationId, final boolean isSocial) {
         this.email = email;
         this.password = password;
@@ -55,6 +61,10 @@ public class Member extends AbstractEntity {
 
     public static Member of(final SignForm request, final Role role, final String socialId, final String registrationId, final boolean isSocial) {
         return new Member(request.getEmail(), request.getPassword(), role, socialId, registrationId, isSocial);
+    }
+
+    public static Member of(final SignForm request, final Role role) {
+        return new Member(request.getEmail(), request.getPassword(), role);
     }
 
     public UserDetails toUserDetails() {

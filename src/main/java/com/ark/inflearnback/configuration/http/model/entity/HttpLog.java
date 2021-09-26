@@ -1,12 +1,13 @@
 package com.ark.inflearnback.configuration.http.model.entity;
 
+import static java.util.Objects.nonNull;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.domain.AbstractEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
@@ -53,22 +54,19 @@ public class HttpLog extends AbstractEntity {
         return new HttpLog(ip, httpMethod, uri, requestBody, responseBody, token, httpStatusCode);
     }
 
-    public static HttpLog of(
-        final HttpServletRequest request,
-        final HttpServletResponse response,
-        final ObjectMapper objectMapper) {
+    public static HttpLog of(final HttpServletRequest request, final HttpServletResponse response, final ObjectMapper objectMapper) {
         return getResponseBody(response, objectMapper)
-            .map(
-                responseBody ->
-                    HttpLog.builder()
-                        .httpMethod(request.getMethod())
-                        .requestUri(request.getRequestURI())
-                        .requestBody(getRequestBody(request, objectMapper))
-                        .responseBody(responseBody.toString())
-                        .clientIp(getClientIp(request))
-                        .token(getToken(request))
-                        .httpStatusCode(response.getStatus())
-                        .build())
+            .map(responseBody ->
+                HttpLog.builder()
+                    .httpMethod(request.getMethod())
+                    .requestUri(request.getRequestURI())
+                    .requestBody(getRequestBody(request, objectMapper))
+                    .responseBody(responseBody.toString())
+                    .clientIp(getClientIp(request))
+                    .token(getToken(request))
+                    .httpStatusCode(response.getStatus())
+                    .build()
+            )
             .orElse(
                 HttpLog.builder()
                     .httpMethod(request.getMethod())
@@ -77,7 +75,8 @@ public class HttpLog extends AbstractEntity {
                     .clientIp(getClientIp(request))
                     .token(getToken(request))
                     .httpStatusCode(response.getStatus())
-                    .build());
+                    .build()
+            );
     }
 
     private static Optional<JsonNode> getResponseBody(final HttpServletResponse response, final ObjectMapper objectMapper) {
@@ -89,17 +88,16 @@ public class HttpLog extends AbstractEntity {
     }
 
     private static boolean isReadableResponse(final ContentCachingResponseWrapper cachingResponse) {
-        return Objects.nonNull(cachingResponse.getContentType())
+        return nonNull(cachingResponse.getContentType())
             && isJson(cachingResponse.getContentType())
             && cachingResponse.getContentAsByteArray().length != 0;
     }
 
     private static boolean isJson(final String contentType) {
-        return contentType.contains("application/json");
+        return contentType.contains(APPLICATION_JSON_VALUE);
     }
 
-    private static Optional<JsonNode> readTree(
-        final ObjectMapper objectMapper, final ContentCachingResponseWrapper cachingResponse) {
+    private static Optional<JsonNode> readTree(final ObjectMapper objectMapper, final ContentCachingResponseWrapper cachingResponse) {
         try {
             return Optional.of(objectMapper.readTree(cachingResponse.getContentAsByteArray()));
         } catch (IOException e) {
@@ -108,8 +106,7 @@ public class HttpLog extends AbstractEntity {
         }
     }
 
-    private static String getRequestBody(
-        final HttpServletRequest request, final ObjectMapper objectMapper) {
+    private static String getRequestBody(final HttpServletRequest request, final ObjectMapper objectMapper) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         if (isReadableRequest(cachingRequest)) {
             return readTree(objectMapper, cachingRequest);
@@ -118,13 +115,12 @@ public class HttpLog extends AbstractEntity {
     }
 
     private static boolean isReadableRequest(final ContentCachingRequestWrapper cachingRequest) {
-        return Objects.nonNull(cachingRequest.getContentType())
+        return nonNull(cachingRequest.getContentType())
             && isJson(cachingRequest.getContentType())
             && cachingRequest.getContentAsByteArray().length != 0;
     }
 
-    private static String readTree(
-        final ObjectMapper objectMapper, final ContentCachingRequestWrapper cachingRequest) {
+    private static String readTree(final ObjectMapper objectMapper, final ContentCachingRequestWrapper cachingRequest) {
         try {
             final JsonNode jsonNode = objectMapper.readTree(cachingRequest.getContentAsByteArray());
             removeSecurityInformation(jsonNode);

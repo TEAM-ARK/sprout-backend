@@ -39,6 +39,9 @@ spring:
             tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
             userInfoUri: https://graph.facebook.com/v11.0/me?fields=id,name,email,verified,is_verified
 
+  session:
+    timeout: 120m
+
 logging:
   level:
     org.hibernate.SQL: info

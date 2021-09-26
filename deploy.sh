@@ -1,5 +1,5 @@
 JAR_NAME="inflearn-clone-back.jar"
-CONF_PATH="/etc/nginx/conf/upstream.conf"
+CONF_PATH="/etc/nginx/nginx.conf"
 
 echo "> Green 애플리케이션 확인 중..." >> /home/ubuntu/deploy.log
 
@@ -10,7 +10,7 @@ if [ -z $CURRENT_PID ]; then
         echo "> 현재 구동중인 애플리케이션이 없습니다 !" >> /home/ubuntu/deploy.log
 else
         echo "> Green과 Nginx의 연결을 해제합니다 !" >> /home/ubuntu/deploy.log
-        sed -i "s/server 127.0.0.1:8081;/#server 127.0.0.1:8081;/g" $CONF_PATH
+        sed -i "s/        server localhost:8081;/#        server localhost:8081;/g" $CONF_PATH
 
         echo "> Nginx Reload !" >> /home/ubuntu/deploy.log
         sudo systemctl reload nginx
@@ -30,10 +30,10 @@ nohup java -jar -Dserver.port=8081 -Djasypt.encryptor.password="$JASYPT_PASSWORD
 echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log
 
 echo "> Green과 Nginx를 다시 연결합니다 !" >> /home/ubuntu/deploy.log
-sed -i "s/#server 127.0.0.1:8081;/server 127.0.0.1:8081;/g" $CONF_PATH
+sed -i "s/#        server localhost:8081;/        server localhost:8081;/g" $CONF_PATH
 
 echo "> Blue와 Nginx의 연결을 해제합니다 !" >> /home/ubuntu/deploy.log
-sed -i "s/server 127.0.0.1:8080;/#server 127.0.0.1:8080;/g" $CONF_PATH
+sed -i "s/        server localhost:8080;/#        server localhost:8080;/g" $CONF_PATH
 
 echo "> Nginx Reload !" >> /home/ubuntu/deploy.log
 sudo systemctl reload nginx

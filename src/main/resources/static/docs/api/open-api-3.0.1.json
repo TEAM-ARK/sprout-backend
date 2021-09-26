@@ -6,11 +6,11 @@
     "version" : "0.0.1"
   },
   "servers" : [ {
+    "url" : "https://www.ark-inflearn.shop"
+  }, {
+    "url" : "https://3.34.236.174"
+  }, {
     "url" : "http://3.34.236.174"
-  }, {
-    "url" : "http://3.34.236.174:8080"
-  }, {
-    "url" : "http://3.34.236.174:8081"
   }, {
     "url" : "http://localhost:8080"
   }, {
@@ -28,7 +28,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/SignRequestDto"
+                "$ref" : "#/components/schemas/SignForm"
               },
               "examples" : {
                 "로그인" : {
@@ -48,7 +48,7 @@
                 },
                 "examples" : {
                   "로그인" : {
-                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"log-in successful\",\r\n  \"responseBody\" : \"\"\r\n}"
+                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"OK\",\r\n  \"responseBody\" : \"log-in successful\"\r\n}"
                   }
                 }
               }
@@ -67,7 +67,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/SignRequestDto"
+                "$ref" : "#/components/schemas/SignForm"
               },
               "examples" : {
                 "회원가입" : {
@@ -87,7 +87,7 @@
                 },
                 "examples" : {
                   "회원가입" : {
-                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"sign-up successful\",\r\n  \"responseBody\" : \"\"\r\n}"
+                    "value" : "{\r\n  \"responseCode\" : \"200\",\r\n  \"responseMessage\" : \"OK\",\r\n  \"responseBody\" : \"sign-up successful\"\r\n}"
                   }
                 }
               }
@@ -99,8 +99,8 @@
   },
   "components" : {
     "schemas" : {
-      "SignRequestDto" : {
-        "title" : "SignRequestDto",
+      "SignForm" : {
+        "title" : "SignForm",
         "type" : "object",
         "properties" : {
           "password" : {

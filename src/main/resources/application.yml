@@ -44,6 +44,15 @@ spring:
   session:
     timeout: 120m
 
+          github:
+            client-id: ENC(KUlAC4d/1CvSfwuMk+kwhUDkuXgI+LVhrKNiCp3Ym8A=)
+            client-secret: ENC(rRDH2gxZJXv/GENPAWfpQnNwEohZpG/oPq1rViX98NflQbHK2UnMlUhqlIdQ+3NhaM0BSR7/wfk=)
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
+            scope: user, email
+
+  session:
+    timeout: 120m
+
 logging:
   level:
     org.hibernate.SQL: info

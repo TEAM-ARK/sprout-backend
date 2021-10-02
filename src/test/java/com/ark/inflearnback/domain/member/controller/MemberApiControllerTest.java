@@ -180,6 +180,7 @@ class MemberApiControllerTest {
 
     @Test
     @DisplayName("이메일 인증키 보내기")
+    @Transactional
     void informationMailTest() throws Exception {
         final String email = "test@email.com";
         final String password = passwordEncoder.encode("AASHFKHQWFQYW#qwhfgqwf123!");

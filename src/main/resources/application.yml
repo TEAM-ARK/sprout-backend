@@ -45,8 +45,14 @@ spring:
             redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
             scope: user, email
 
+  redis:
+    host: ENC(WwKyD0rAnvn9H7UC1lWAPkB5fbGVOczw)
+    password: ENC(afRb1u+3xSg9mvZhZQiK6g09Qo09dQT5yg4Y26rTMW8=)
+    port: 6379
+
   session:
     timeout: 120m
+    store-type: redis
 
 logging:
   level:

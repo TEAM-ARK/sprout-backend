@@ -50,8 +50,20 @@ spring:
           starttls:
             enable: true
 
+          github:
+            client-id: ENC(KUlAC4d/1CvSfwuMk+kwhUDkuXgI+LVhrKNiCp3Ym8A=)
+            client-secret: ENC(rRDH2gxZJXv/GENPAWfpQnNwEohZpG/oPq1rViX98NflQbHK2UnMlUhqlIdQ+3NhaM0BSR7/wfk=)
+            redirect-uri: '{baseUrl}/api/v1/login/oauth2/{registrationId}'
+            scope: user, email
+
+  redis:
+    host: ENC(WwKyD0rAnvn9H7UC1lWAPkB5fbGVOczw)
+    password: ENC(afRb1u+3xSg9mvZhZQiK6g09Qo09dQT5yg4Y26rTMW8=)
+    port: 6379
+
   session:
     timeout: 120m
+    store-type: redis
 
 logging:
   level:

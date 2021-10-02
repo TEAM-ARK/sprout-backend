@@ -1,3 +1,9 @@
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
 spring:
   profiles:
     active: test
@@ -7,15 +13,6 @@ spring:
     console:
       enabled: true
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: Mx08IoRgLjF3lytJtl9tJplTu9nPgf0F70rLShHsOLzSdlXCgzzOecakI4rG5VTIYuKouXrJA64tVqrq2AAkW5ryQE1CThQli+jEavVMx87bcUdwYlUSSw==
-            client-secret: W6HKMENoGeAboV/QbY9xhaRbSyt8/Hl2uPr1JaYIjOHUsWbnpC7NyA==
-            scope: profile,email
-
   main:
     allow-bean-definition-overriding: true
 
@@ -23,6 +20,11 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
+
+  redis:
+    host: ENC(WwKyD0rAnvn9H7UC1lWAPkB5fbGVOczw)
+    password: ENC(afRb1u+3xSg9mvZhZQiK6g09Qo09dQT5yg4Y26rTMW8=)
+    port: 6379
 
 logging:
   level:

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resource extends AbstractEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String url;
 
     @Column(nullable = false)

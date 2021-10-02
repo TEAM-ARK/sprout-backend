@@ -1,10 +1,9 @@
 package com.ark.inflearnback.configuration.security.filter;
 
-import static java.util.Objects.*;
+import static java.util.Objects.nonNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.ServletException;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
 import org.springframework.security.web.FilterInvocation;

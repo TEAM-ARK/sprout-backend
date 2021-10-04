@@ -178,34 +178,4 @@ class MemberApiControllerTest {
                             .build())));
     }
 
-    @Test
-    @DisplayName("이메일 인증키 보내기")
-    @Transactional
-    void informationMailTest() throws Exception {
-        final String email = "test@email.com";
-        final String password = passwordEncoder.encode("AASHFKHQWFQYW#qwhfgqwf123!");
-        final Role role = roleRepository.findByRoleType(RoleType.USER).get();
-        memberRepository.saveAndFlush(Member.of(email, password, role, null, null, false));
-
-        //given
-        Mono<String> request = Mono.just(objectMapper.writeValueAsString(Map.of(
-            "email", "test@email.com"
-        )));
-        String response = objectMapper.writeValueAsString(HttpResponse.of(OK, "mail send successful"));
-
-        //when
-        WebTestClient.ResponseSpec exchange = webTestClient.post()
-            .uri("/api/v1/member/informationMail")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .body(fromProducer(request, String.class))
-            .exchange();
-
-        //then
-        exchange
-            .expectStatus().isOk()
-            .expectBody()
-            .json(response);
-    }
-
 }

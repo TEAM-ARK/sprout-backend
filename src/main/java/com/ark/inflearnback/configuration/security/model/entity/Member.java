@@ -28,7 +28,6 @@ public class Member extends AbstractEntity {
     private String email;
 
     @Column
-    @Setter
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -75,6 +74,10 @@ public class Member extends AbstractEntity {
             .password(password)
             .authorities(getGrantedAuthorities())
             .build();
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
     private Collection<? extends GrantedAuthority> getGrantedAuthorities() {

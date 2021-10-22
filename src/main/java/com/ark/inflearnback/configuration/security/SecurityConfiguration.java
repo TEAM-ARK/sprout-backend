@@ -90,7 +90,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             .formLogin().and() // 09-25 한창훈: 커스텀 로그인 페이지 미연동으로 기본 폼로그인 페이지 임시 사용 조치
 
-            .rememberMe().userDetailsService(usernamePasswordService()).and()
+            .rememberMe()
+            .userDetailsService(usernamePasswordService())
+            .alwaysRemember(true).and()
 
             .oauth2Login(login ->
                 login.loginProcessingUrl("/api/v1/login/oauth2/*")

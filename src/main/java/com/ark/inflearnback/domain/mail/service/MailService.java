@@ -93,7 +93,8 @@ public class MailService {
             .append("&token=")
             .append(createToken())
             .append(
-                "\" style=\"font-size: 15px; letter-spacing: -0.3px; font-weight: bold; background-color: #00c471; color: #fff; display: inline-block; : 180px; : 48px; line-: 48px; text-align: center; text-decoration: none; border-radius: 4px; cursor: default;\" rel=\"noreferrer noopener\" target=\"_blank\">비밀번호 변경하기</a>")
+                "\" style=\"font-size: 15px; letter-spacing: -0.3px; font-weight: bold; background-color: #00c471;")
+            .append("color: #fff; display: inline-block; : 180px; : 48px; line-: 48px; text-align: center; text-decoration: none; border-radius: 4px; cursor: default;\" rel=\"noreferrer noopener\" target=\"_blank\">비밀번호 변경하기</a>")
 
             .append("</td></tr>")
             .append("<tr>")

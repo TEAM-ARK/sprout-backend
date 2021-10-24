@@ -23,8 +23,7 @@ public class Token {
     }
 
     private LocalDateTime setExpiredTime(int seconds) {
-        final LocalDateTime now = LocalDateTime.now();
-        return now.plusSeconds(seconds);
+        return LocalDateTime.now().plusSeconds(seconds);
     }
 
 }

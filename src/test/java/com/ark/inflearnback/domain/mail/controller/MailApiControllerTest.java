@@ -1,8 +1,6 @@
 package com.ark.inflearnback.domain.mail.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 import static org.springframework.web.reactive.function.BodyInserters.fromProducer;
 import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.ark.inflearnback.configuration.security.model.entity.Member;
@@ -84,4 +82,5 @@ class MailApiControllerTest {
             .expectBody()
             .json(response);
     }
+
 }

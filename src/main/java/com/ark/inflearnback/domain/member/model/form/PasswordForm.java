@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PasswordForm {
 
+    private String email;
+
     @NotNull(message = "비밀번호를 입력하세요.")
     @Pattern(
         regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*])(?!.*(.)\\1\\1\\1)[0-9a-zA-Z!@#$%&*]{12,32}$",
@@ -18,12 +20,16 @@ public class PasswordForm {
     )
     private String password;
 
-    private PasswordForm(final String password) {
+    private String apiKey;
+
+    private PasswordForm(final String email, final String password, final String apiKey) {
+        this.email = email;
         this.password = password;
+        this.apiKey = apiKey;
     }
 
-    public static PasswordForm of(final String password) {
-        return new PasswordForm(password);
+    public static PasswordForm of(final String email, final String password, final String apiKey) {
+        return new PasswordForm(email, password, apiKey);
     }
 
     public PasswordForm encodePassword(final PasswordEncoder passwordEncoder) {

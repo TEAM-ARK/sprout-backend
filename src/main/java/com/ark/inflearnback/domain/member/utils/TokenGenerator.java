@@ -15,8 +15,8 @@ public class TokenGenerator {
         return uuid.toString();
     }
 
-    public boolean isExist(String apiKey) {
-        return map.containsKey(apiKey);
+    public boolean isNotExist(String apiKey) {
+        return !map.containsKey(apiKey);
     }
 
     public void cleanUp() {

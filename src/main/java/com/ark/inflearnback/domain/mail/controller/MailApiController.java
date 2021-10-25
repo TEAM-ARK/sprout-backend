@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +34,7 @@ public class MailApiController {
 
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@Valid @RequestBody final PasswordForm passwordForm) {
-        if (!tokenGenerator.isExist(passwordForm.getApiKey())) {
+        if (tokenGenerator.isNotExist(passwordForm.getApiKey())) {
             throw new IsNotExistException("Token is not exist");
         }
         mailService.changePassword(passwordForm);

@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Test;
 class TokenTest {
 
     @Test
-    void expiredTest() throws Exception {
-        Token token = new Token(1);
-        Thread.sleep(2000);
+    void expiredTest() {
+        Token token = new Token(0);
         assertThat(token.isExpired()).isTrue();
     }
 

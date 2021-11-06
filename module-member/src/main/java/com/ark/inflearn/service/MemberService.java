@@ -40,7 +40,8 @@ public class MemberService {
     }
 
     private void signUpComplete(final SignForm request) {
-        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember()));
+        Member member = Member.of(request.encodePassword(passwordEncoder), findRoleMember());
+        memberRepository.save(member);
     }
 
     private Role findRoleMember() {

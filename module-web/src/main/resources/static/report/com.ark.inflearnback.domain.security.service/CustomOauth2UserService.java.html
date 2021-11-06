@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="../jacoco-resources/report.css" rel="stylesheet" type="text/css"/>
+  <link href="../jacoco-resources/report.gif" rel="shortcut icon" type="image/gif"/>
+  <title>CustomOauth2UserService.java</title>
+  <link href="../jacoco-resources/prettify.css" rel="stylesheet" type="text/css"/>
+  <script src="../jacoco-resources/prettify.js" type="text/javascript"></script>
+</head>
+<body onload="window['PR_TAB_WIDTH']=4;prettyPrint()">
+<div class="breadcrumb" id="breadcrumb">
+  <span class="info"><a class="el_session" href="../jacoco-sessions.html">Sessions</a></span>
+  <a class="el_report" href="../index.html">inflearn-clone-back</a> &gt;
+  <a class="el_package" href="index.source.html">com.ark.inflearnback.configuration.security.service</a>
+  &gt;
+  <span class="el_source">CustomOauth2UserService.java</span>
+</div>
+<h1>CustomOauth2UserService.java</h1>
+<pre class="source lang-java linenums">package com.ark.inflearnback.domain.security.service;
+
+import com.ark.inflearnback.domain.security.dto.OAuthAttributes;
+import com.ark.inflearnback.domain.security.dto.SessionMember;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
+
+<span class="fc" id="L15">@RequiredArgsConstructor</span>
+@Service
+public class CustomOauth2UserService implements OAuth2UserService&lt;OAuth2UserRequest, OAuth2User&gt; {
+    private final HttpSession httpSession;
+<span class="fc" id="L19">    private final OAuth2UserService&lt;OAuth2UserRequest, OAuth2User&gt; delegate = new DefaultOAuth2UserService();</span>
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+<span class="nc" id="L23">        OAuthAttributes oAuthAttributes = OAuthAttributes.of(delegate.loadUser(userRequest), userRequest);</span>
+
+<span class="nc" id="L25">        httpSession.setAttribute(&quot;Oauth20Authentication&quot;, new SessionMember(oAuthAttributes.getEmail()));</span>
+
+<span class="nc" id="L27">        return oAuthAttributes.customDefaultOauth2User();</span>
+    }
+}
+</pre>
+<div class="footer">
+  <span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>
+</div>
+</body>
+</html>

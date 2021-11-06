@@ -1,4 +1,4 @@
-package com.ark.inflearn.logger.datasource;
+package com.ark.inflearn.rdb;
 
 import com.p6spy.engine.spy.P6SpyOptions;
 import javax.annotation.PostConstruct;

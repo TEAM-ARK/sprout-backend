@@ -1,4 +1,4 @@
-package com.ark.inflearn.database;
+package com.ark.inflearn.rdb;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

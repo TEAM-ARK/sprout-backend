@@ -1,4 +1,4 @@
-package com.ark.inflearn.logger.datasource;
+package com.ark.inflearn.rdb;
 
 import static java.util.Arrays.stream;
 import static java.util.Objects.isNull;

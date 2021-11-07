@@ -24,7 +24,7 @@ bootJar {
 }
 
 jar {
-    enabled = false;
+    enabled = false
 }
 
 /* -------------------------------
@@ -33,19 +33,19 @@ jar {
 openapi3 {
     servers = [
             {
-                url = "https://www.ark-inflearn.shop"
+                url = 'https://www.ark-inflearn.shop'
             },
             {
-                url = "https://3.34.236.174"
+                url = 'https://3.34.236.174'
             },
             {
-                url = "http://3.34.236.174"
+                url = 'http://3.34.236.174'
             },
             {
-                url = "http://localhost:8080"
+                url = 'http://localhost:8080'
             },
             {
-                url = "http://localhost:8081"
+                url = 'http://localhost:8081'
             },
     ]
     title = 'Team-ARK Inflearn API Documentation'

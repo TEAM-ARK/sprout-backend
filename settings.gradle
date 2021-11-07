@@ -1,18 +1,18 @@
 rootProject.name = 'inflearn'
 
 [
-        "module-common",
-        "module-member",
-        "module-secure",
-        "module-web",
-        "module-lecture",
+        'module-common',
+        'module-member',
+        'module-secure',
+        'module-web',
+        'module-lecture',
 ].each { module ->
     def moduleDir = new File(rootDir, module)
     if (!moduleDir.exists()) {
         moduleDir.mkdirs()
     }
 
-    def buildScript = new File(moduleDir.absolutePath, "build.gradle")
+    def buildScript = new File(moduleDir.absolutePath, 'build.gradle')
     if (!buildScript.exists()) {
         buildScript.text =
                 """
@@ -31,10 +31,10 @@ rootProject.name = 'inflearn'
     }
 
     [
-            "src/main/java/com/ark/inflearn",
-            "src/main/resources",
-            "src/test/java/com/ark/inflearn",
-            "src/test/resources",
+            'src/main/java/com/ark/inflearn',
+            'src/main/resources',
+            'src/test/java/com/ark/inflearn',
+            'src/test/resources',
     ].each { source ->
         def srcDir = new File(moduleDir.absolutePath, source)
         if (!srcDir.exists()) {

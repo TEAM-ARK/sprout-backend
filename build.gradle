@@ -1,206 +1,156 @@
-plugins {
-    id 'java'
-    id 'jacoco'
-    id 'checkstyle'
-    id 'com.epages.restdocs-api-spec' version '0.11.3'
-    id 'org.springframework.boot' version '2.5.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-}
+buildscript {
+    ext {
+        springBootVersion = '2.5.6'
+        springPluginVersion = '1.0.11.RELEASE'
+        querydslVersion = '1.0.10'
+    }
 
-ext {
-    set('docsDir', file('src/main/resources/static/docs/'))
-    set('reportDir', file('src/main/resources/static/docs/report'))
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
 
-    testContainersVersion = '1.16.0'
-
-    excludeFilter = [
-            '**/Q*.class',
-            '**/dto/**',
-            '**/exception/**',
-            '**/config/**',
-            '**/test/**',
-    ]
-}
-
-group = 'com.ark'
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "io.spring.gradle:dependency-management-plugin:$springPluginVersion"
+        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:$querydslVersion"
     }
 }
 
-repositories {
-    mavenCentral()
-}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.ewerk.gradle.plugins.querydsl'
 
-dependencies {
-    annotationProcessor(
-            'org.projectlombok:lombok',
-            'org.springframework.boot:spring-boot-configuration-processor',
-            'jakarta.persistence:jakarta.persistence-api',
-            'jakarta.annotation:jakarta.annotation-api',
-            "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa",
-    )
+    group = 'com.ark'
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
-    implementation(
-            'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-data-jpa',
-            'org.springframework.boot:spring-boot-starter-validation',
-            'org.springframework.boot:spring-boot-starter-security',
-            'org.springframework.boot:spring-boot-starter-oauth2-client',
-            'org.springframework.boot:spring-boot-starter-data-redis',
-            'org.springframework.session:spring-session-data-redis',
-            'com.querydsl:querydsl-jpa',
-            'org.modelmapper:modelmapper:2.4.4',
-            'commons-io:commons-io:2.8.0',
-            'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
-            'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
-    )
-
-    testImplementation(
-            'org.springframework.boot:spring-boot-starter-test',
-            'org.springframework.security:spring-security-test',
-            "org.testcontainers:junit-jupiter:$testContainersVersion",
-            "org.testcontainers:mysql:$testContainersVersion",
-            'org.springframework.restdocs:spring-restdocs-webtestclient',
-            'com.epages:restdocs-api-spec-webtestclient:0.11.3'
-    )
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'junit', module: 'junit'
+    repositories {
+        mavenCentral()
     }
 
-    compileOnly(
-            'org.projectlombok:lombok',
-    )
+    dependencies {
+        annotationProcessor(
+                'org.projectlombok:lombok',
+                'org.springframework.boot:spring-boot-configuration-processor',
+        )
 
-    runtimeOnly(
-            'mysql:mysql-connector-java',
-            'com.h2database:h2'
-    )
-}
+        implementation(
+                'org.springframework.boot:spring-boot-starter-web',
+                'org.springframework.boot:spring-boot-starter-data-jpa',
+                'org.springframework.boot:spring-boot-starter-validation',
+                'com.querydsl:querydsl-jpa',
+                'org.modelmapper:modelmapper:2.4.4',
+                'commons-io:commons-io:2.8.0',
+                'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
+                'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
+        )
 
-jar {
-    enabled = false
-}
+        testImplementation(
+                'org.springframework.boot:spring-boot-starter-test',
+        )
 
-bootRun {
-    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
-}
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'junit', module: 'junit'
+        }
 
-bootJar {
-    dependsOn(
-            ':openapi3',
-            ':jacoco'
-    )
-}
+        compileOnly(
+                'org.projectlombok:lombok',
+        )
 
-test {
-    useJUnitPlatform()
-    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-    systemProperty "jasypt.encryptor.password", System.getenv("JASYPT_PASSWORD")
-}
+        runtimeOnly(
+                'mysql:mysql-connector-java',
+                'com.h2database:h2'
+        )
+    }
 
-/* -------------------------------
-        javac settings
-------------------------------- */
-gradle.projectsEvaluated {
+    test {
+        useJUnitPlatform()
+    }
+
+    ext {
+        querydslDir = "$buildDir/generated/querydsl"
+        set('snippetsDir', file('build/generated-snippets'))
+    }
+
+    bootRun {
+        systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
+    }
+
+    test {
+        useJUnitPlatform()
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+        systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
+    }
+
+    /* -------------------------------
+            querydsl settings
+    ------------------------------- */
+    querydsl {
+        jpa = true
+        querydslSourcesDir = querydslDir
+    }
+
+    sourceSets {
+        main.java.srcDir querydslDir
+    }
+
+    configurations {
+        querydsl.extendsFrom compileClasspath
+    }
+
+    compileQuerydsl {
+        options.annotationProcessorPath = configurations.querydsl
+    }
+
+    /* -------------------------------
+            javac settings
+    ------------------------------- */
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << '-Xlint:unchecked'
+        }
+    }
+
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:unchecked"
+        options.fork = true
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.fork = true
-}
-
-
-/* -------------------------------
-        jacoco settings
-------------------------------- */
-task jacoco(type: Test) {
-    group 'verification'
-    description 'Runs the unit tests and verify coverage using jacoco'
-
-
-    dependsOn(
-            ':jacocoTestReport',
-            ':jacocoTestCoverageVerification'
-    )
-
-    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
-}
-
-jacocoTestReport {
-    reports {
-        html.enabled true
-        html.destination file("$reportDir/")
-    }
-
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: excludeFilter)
-        }))
+project(':module-member') {
+    dependencies {
+        implementation project(':module-common')
+        testImplementation project(':module-common')
     }
 }
 
-jacocoTestCoverageVerification {
-//    테스트 코드 작성에 익숙해질 때까지 임시 비활성화
-//    violationRules {
-//        rule {
-//            element = 'CLASS'
-//
-//            limit {
-//                counter = 'LINE'
-//                value = 'COVEREDRATIO'
-//                minimum = 0.20
-//            }
-//            excludes = excludeFilter
-//        }
-//    }
+[
+        'module-secure',
+        'module-lecture',
+].each {
+    project(it) {
+        dependencies {
+            implementation project(':module-common')
+            implementation project(':module-member')
+            testImplementation project(':module-common')
+            testImplementation project(':module-member')
+        }
+    }
 }
 
-
-/* -------------------------------
-        epages settings
-------------------------------- */
-openapi3 {
-    servers = [
-            {
-                url = "https://www.ark-inflearn.shop"
-            },
-            {
-                url = "https://3.34.236.174"
-            },
-            {
-                url = "http://3.34.236.174"
-            },
-            {
-                url = "http://localhost:8080"
-            },
-            {
-                url = "http://localhost:8081"
-            },
-    ]
-    title = 'Team-ARK Inflearn API Documentation'
-    description '인프런 클론코딩, API 문서 페이지'
-    version = '0.0.1'
-    outputFileNamePrefix = 'open-api-3.0.1'
-    format = 'json'
-    outputDirectory = "$docsDir/api"
-}
-
-
-/* -------------------------------
-        checkstyle settings
-------------------------------- */
-checkstyle {
-    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-    configProperties = ["suppressionFile": "${project.rootDir}/config/checkstyle/checkstyle-suppressions.xml"]
-    ignoreFailures = false
-    maxErrors = 0
-    maxWarnings = 0
+project(':module-web') {
+    dependencies {
+        implementation project(':module-secure')
+        implementation project(':module-member')
+        implementation project(':module-lecture')
+        implementation project(':module-common')
+        testImplementation project(':module-secure')
+        testImplementation project(':module-member')
+        testImplementation project(':module-lecture')
+        testImplementation project(':module-common')
+    }
 }

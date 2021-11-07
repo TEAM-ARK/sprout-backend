@@ -1,0 +1,57 @@
+plugins {
+    id 'com.epages.restdocs-api-spec' version '0.14.1'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    testImplementation(
+            'org.springframework.security:spring-security-test',
+            'org.springframework.restdocs:spring-restdocs-webtestclient',
+            'com.epages:restdocs-api-spec-webtestclient:0.14.1'
+    )
+}
+
+ext {
+    set('docsDir', file('src/main/resources/static/docs/'))
+}
+
+bootJar {
+    dependsOn(
+            'openapi3',
+    )
+}
+
+jar {
+    enabled = false
+}
+
+/* -------------------------------
+        epages settings
+------------------------------- */
+openapi3 {
+    servers = [
+            {
+                url = 'https://www.ark-inflearn.shop'
+            },
+            {
+                url = 'https://3.34.236.174'
+            },
+            {
+                url = 'http://3.34.236.174'
+            },
+            {
+                url = 'http://localhost:8080'
+            },
+            {
+                url = 'http://localhost:8081'
+            },
+    ]
+    title = 'Team-ARK Inflearn API Documentation'
+    description '인프런 클론코딩, API 문서 페이지'
+    version = '0.0.1'
+    outputFileNamePrefix = 'open-api-3.0.1'
+    format = 'json'
+    outputDirectory = "$docsDir/api"
+}

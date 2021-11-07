@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="../jacoco-resources/report.css" rel="stylesheet" type="text/css"/>
+  <link href="../jacoco-resources/report.gif" rel="shortcut icon" type="image/gif"/>
+  <title>SecurityDatabaseInitializer.java</title>
+  <link href="../jacoco-resources/prettify.css" rel="stylesheet" type="text/css"/>
+  <script src="../jacoco-resources/prettify.js" type="text/javascript"></script>
+</head>
+<body onload="window['PR_TAB_WIDTH']=4;prettyPrint()">
+<div class="breadcrumb" id="breadcrumb">
+  <span class="info"><a class="el_session" href="../jacoco-sessions.html">Sessions</a></span>
+  <a class="el_report" href="../index.html">inflearn-clone-back</a> &gt;
+  <a class="el_package" href="index.source.html">com.ark.inflearnback.configuration.security</a>
+  &gt;
+  <span class="el_source">SecurityDatabaseInitializer.java</span>
+</div>
+<h1>SecurityDatabaseInitializer.java</h1>
+<pre class="source lang-java linenums">package com.ark.inflearnback.domain.security;
+
+import com.ark.inflearnback.domain.security.filter.UrlFilterInvocationSecurityMetadataSource;
+import com.ark.inflearnback.domain.security.model.*;
+import com.ark.inflearnback.domain.security.repository.*;
+import com.ark.inflearnback.domain.security.service.SecurityResourceService;
+import com.ark.inflearnback.domain.security.type.RoleType;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+<span class="fc" id="L23">@Slf4j</span>
+@Component
+@Profile(&quot;dev&quot;)
+<span class="fc" id="L26">@RequiredArgsConstructor</span>
+public class SecurityDatabaseInitializer implements ApplicationListener&lt;ContextRefreshedEvent&gt; {
+    private final InitService initService;
+
+<span class="fc" id="L30">    private boolean alreadySetup = false;</span>
+
+    @Override
+<span class="pc bpc" id="L33"
+      title="1 of 2 branches missed.">    public void onApplicationEvent(@NonNull final ContextRefreshedEvent event) {</span>
+<span class="fc" id="L34">        log.info(&quot;onApplicationEvent start&quot;);</span>
+
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (alreadySetup) {</span>
+<span class="nc" id="L37">            return;</span>
+        }
+
+<span class="fc" id="L40">        log.info(&quot;Application setup...&quot;);</span>
+
+<span class="fc" id="L42">        initService.setUp();</span>
+<span class="fc" id="L43">        alreadySetup = true;</span>
+<span class="fc" id="L44">    }</span>
+
+    @Service
+<span class="fc" id="L47">    @RequiredArgsConstructor</span>
+    private static class InitService {
+        private final RoleRepository roleRepository;
+        private final MemberRepository memberRepository;
+        private final ResourceRepository resourceRepository;
+        private final RoleResourceRepository roleResourceRepository;
+        private final SecurityResourceService securityResourceService;
+        private final RoleHierarchiesRepository roleHierarchiesRepository;
+        private final FilterInvocationSecurityMetadataSource metadataSource;
+
+        @Transactional
+        public void setUp() {
+<span class="fc" id="L59">            final Map&lt;RoleType, Role&gt; roles = createRoles();</span>
+            final String encryptedPassword = PasswordEncoderFactories
+<span class="fc" id="L61">                    .createDelegatingPasswordEncoder()</span>
+<span class="fc" id="L62">                    .encode(&quot;root&quot;);</span>
+
+<span class="fc" id="L64">            roleRepository.save(roles.get(RoleType.SYS_ADMIN));</span>
+<span class="fc" id="L65">            roleRepository.save(roles.get(RoleType.ADMIN));</span>
+<span class="fc" id="L66">            roleRepository.save(roles.get(RoleType.MEMBER));</span>
+
+<span class="fc" id="L68">            final Member sysadmin = createMember(&quot;sys@test.com&quot;, encryptedPassword, roles.get(RoleType.SYS_ADMIN));</span>
+<span class="fc"
+      id="L69">            final Member admin = createMember(&quot;admin@test.com&quot;, encryptedPassword, roles.get(RoleType.ADMIN));</span>
+<span class="fc"
+      id="L70">            final Member member = createMember(&quot;member@test.com&quot;, encryptedPassword, roles.get(RoleType.MEMBER));</span>
+
+<span class="fc" id="L72">            memberRepository.save(sysadmin);</span>
+<span class="fc" id="L73">            memberRepository.save(admin);</span>
+<span class="fc" id="L74">            memberRepository.save(member);</span>
+
+<span class="fc" id="L76">            final Resource resourceHome = createResource(&quot;/&quot;, &quot;GET&quot;);</span>
+<span class="fc" id="L77">            final Resource resourceMember = createResource(&quot;/member&quot;, &quot;GET&quot;);</span>
+<span class="fc" id="L78">            final Resource resourceAdmin = createResource(&quot;/admin&quot;, &quot;GET&quot;);</span>
+<span class="fc" id="L79">            final Resource resourceSysadmin = createResource(&quot;/sys&quot;, &quot;GET&quot;);</span>
+
+<span class="fc" id="L81">            resourceRepository.save(resourceHome);</span>
+<span class="fc" id="L82">            resourceRepository.save(resourceMember);</span>
+<span class="fc" id="L83">            resourceRepository.save(resourceAdmin);</span>
+<span class="fc" id="L84">            resourceRepository.save(resourceSysadmin);</span>
+
+<span class="fc" id="L86">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceSysadmin));</span>
+<span class="fc" id="L87">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceAdmin));</span>
+<span class="fc" id="L88">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceMember));</span>
+<span class="fc" id="L89">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.SYS_ADMIN), resourceHome));</span>
+
+<span class="fc" id="L91">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceAdmin));</span>
+<span class="fc" id="L92">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceMember));</span>
+<span class="fc" id="L93">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.ADMIN), resourceHome));</span>
+
+<span class="fc" id="L95">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceMember));</span>
+<span class="fc" id="L96">            roleResourceRepository.save(createRoleResource(roles.get(RoleType.MEMBER), resourceHome));</span>
+
+<span class="fc" id="L98">            createHierarchy();</span>
+<span class="fc" id="L99">            securityResourceService.assembleAuthorityHierarchy();</span>
+<span class="fc" id="L100">            ((UrlFilterInvocationSecurityMetadataSource) this.metadataSource).reload();</span>
+<span class="fc" id="L101">        }</span>
+
+        private void createHierarchy() {
+<span class="fc" id="L104">            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.SYS_ADMIN, 1));</span>
+<span class="fc" id="L105">            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.ADMIN, 2));</span>
+<span class="fc" id="L106">            roleHierarchiesRepository.save(createRoleHierarchies(RoleType.MEMBER, 3));</span>
+<span class="fc" id="L107">        }</span>
+
+        private RoleHierarchies createRoleHierarchies(final RoleType roleType, final int orders) {
+<span class="fc" id="L110">            return RoleHierarchies.builder()</span>
+<span class="fc" id="L111">                    .authority(roleType.get())</span>
+<span class="fc" id="L112">                    .orders(orders)</span>
+<span class="fc" id="L113">                    .build();</span>
+        }
+
+        private Map&lt;RoleType, Role&gt; createRoles() {
+<span class="fc" id="L117">            return new EnumMap&lt;&gt;(Map.of(</span>
+<span class="fc"
+      id="L118">                    RoleType.SYS_ADMIN, createRole(RoleType.SYS_ADMIN),</span>
+<span class="fc" id="L119">                    RoleType.ADMIN, createRole(RoleType.ADMIN),</span>
+<span class="fc" id="L120">                    RoleType.MEMBER, createRole(RoleType.MEMBER))</span>
+            );
+        }
+
+        private Role createRole(final RoleType roleType) {
+<span class="fc" id="L125">            return Role.builder()</span>
+<span class="fc" id="L126">                    .roleType(roleType)</span>
+<span class="fc" id="L127">                    .deleted(false)</span>
+<span class="fc" id="L128">                    .build();</span>
+        }
+
+        private Member createMember(final String email, final String password, final Role role) {
+<span class="fc" id="L132">            return Member.builder()</span>
+<span class="fc" id="L133">                    .email(email)</span>
+<span class="fc" id="L134">                    .password(password)</span>
+<span class="fc" id="L135">                    .role(role)</span>
+<span class="fc" id="L136">                    .build();</span>
+        }
+
+        private RoleResource createRoleResource(final Role role, final Resource resource) {
+<span class="fc" id="L140">            return RoleResource.builder()</span>
+<span class="fc" id="L141">                    .role(role)</span>
+<span class="fc" id="L142">                    .resource(resource)</span>
+<span class="fc" id="L143">                    .deleted(false)</span>
+<span class="fc" id="L144">                    .build();</span>
+        }
+
+        private Resource createResource(final String url, final String method) {
+<span class="fc" id="L148">            return Resource.builder()</span>
+<span class="fc" id="L149">                    .url(url)</span>
+<span class="fc" id="L150">                    .method(method)</span>
+<span class="fc" id="L151">                    .deleted(false)</span>
+<span class="fc" id="L152">                    .build();</span>
+        }
+    }
+}
+</pre>
+<div class="footer">
+  <span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>
+</div>
+</body>
+</html>

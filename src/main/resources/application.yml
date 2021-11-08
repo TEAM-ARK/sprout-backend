@@ -65,6 +65,9 @@ spring:
     timeout: 120m
     store-type: redis
 
+  session:
+    timeout: 120m
+
 logging:
   level:
     org.hibernate.SQL: info

@@ -1,16 +1,15 @@
 package com.ark.inflearnback.configuration.security.handler;
 
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ark.inflearnback.configuration.http.model.form.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 public class UsernamePasswordAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -24,7 +23,7 @@ public class UsernamePasswordAuthenticationSuccessHandler implements Authenticat
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(200);
-        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         objectMapper.writeValue(response.getWriter(),
             HttpResponse.of(OK, "log-in successful"));

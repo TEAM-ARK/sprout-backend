@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TokenGenerator {
+public class TokenGenerator implements Runnable {
     private final Map<String, Token> map = new HashMap<>();
 
     public String generate() {
@@ -29,4 +29,8 @@ public class TokenGenerator {
         }
     }
 
+    @Override
+    public void run() {
+        cleanUp();
+    }
 }

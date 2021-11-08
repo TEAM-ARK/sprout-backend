@@ -16,6 +16,6 @@ public class TokenScheduler {
     @Scheduled(fixedDelay = 1000 * 60)
     public void cleanUp() {
         log.info("Clean up expired token");
-        tokenGenerator.cleanUp();
+        new Thread(tokenGenerator).start();
     }
 }

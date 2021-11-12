@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.naver.com
+    port: 25
+    username: ENC(bnKdZfNHULr3FCJtv3aYfoBAdGpxBIaKHD0IxrlWQvM=)
+    password: ENC(8mUdmb7l51yp6Ke+QADt/kUjcZpAJwOw)
+    properties:
+      mail:
+        smtp:
+          timeout: 5000
+          starttls:
+            enable: true
+
+hibernate:
+  dialect: org.hibernate.dialect.MySQL8Dialect
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

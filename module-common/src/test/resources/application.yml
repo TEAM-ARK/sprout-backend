@@ -1,0 +1,36 @@
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+spring:
+  profiles:
+    active: test
+    include: dev
+
+  h2:
+    console:
+      enabled: true
+
+  main:
+    allow-bean-definition-overriding: true
+
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+
+  redis:
+    host: ENC(WwKyD0rAnvn9H7UC1lWAPkB5fbGVOczw)
+    password: ENC(afRb1u+3xSg9mvZhZQiK6g09Qo09dQT5yg4Y26rTMW8=)
+    port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: info
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

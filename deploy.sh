@@ -1,4 +1,5 @@
-JAR_NAME="inflearn-clone-back.jar"
+JAR_NAME="sprout.jar"
+BUILD_PATH="/home/ubuntu/app/module-web/build/libs"
 CONF_PATH="/etc/nginx/nginx.conf"
 
 echo "> Green 애플리케이션 확인 중..." >> /home/ubuntu/deploy.log
@@ -24,9 +25,9 @@ else
         sleep 3
 fi
 
-chmod -x /home/ubuntu/app/build/libs/$JAR_NAME
+chmod -x $BUILD_PATH/$JAR_NAME
 
-nohup java -jar -Dserver.port=8081 -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod /home/ubuntu/app/build/libs/$JAR_NAME >> /dev/null &
+nohup java -jar -Dserver.port=8081 -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod $BUILD_PATH/$JAR_NAME >> /dev/null &
 echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log
 
 echo "> Green과 Nginx를 다시 연결합니다 !" >> /home/ubuntu/deploy.log

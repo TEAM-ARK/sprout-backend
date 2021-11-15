@@ -1,8 +1,8 @@
-# 📚 Inflearn-Clone-Backend
+# 📚 SPROUT
 
 ## 📖 개요(Summary)
 
-인프런 웹앱을 만들어보는 팀프로젝트
+개발자들의 스터디 플랫폼
 
 > [📜 Backend API Documentation(💥 인증 필요 !)](https://www.ark-inflearn.shop/docs/api/index.html)
 

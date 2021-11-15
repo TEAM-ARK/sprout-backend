@@ -2,6 +2,8 @@ plugins {
     id 'com.epages.restdocs-api-spec' version '0.14.1'
 }
 
+archivesBaseName = 'sprout'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

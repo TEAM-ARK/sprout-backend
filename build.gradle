@@ -128,17 +128,12 @@ project(':module-member') {
     }
 }
 
-[
-        'module-secure',
-        'module-lecture',
-].each {
-    project(it) {
-        dependencies {
-            implementation project(':module-common')
-            implementation project(':module-member')
-            testImplementation project(':module-common')
-            testImplementation project(':module-member')
-        }
+project(':module-secure') {
+    dependencies {
+        implementation project(':module-common')
+        implementation project(':module-member')
+        testImplementation project(':module-common')
+        testImplementation project(':module-member')
     }
 }
 
@@ -146,11 +141,9 @@ project(':module-web') {
     dependencies {
         implementation project(':module-secure')
         implementation project(':module-member')
-        implementation project(':module-lecture')
         implementation project(':module-common')
         testImplementation project(':module-secure')
         testImplementation project(':module-member')
-        testImplementation project(':module-lecture')
         testImplementation project(':module-common')
     }
 }

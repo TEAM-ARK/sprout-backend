@@ -14,7 +14,7 @@ dependencies {
 }
 
 ext {
-    set('docsDir', file('src/main/resources/static/docs/'))
+    set('apiDir', file('src/main/resources/static/docs/'))
 }
 
 bootJar {
@@ -53,5 +53,5 @@ openapi3 {
     version = '0.0.1'
     outputFileNamePrefix = 'open-api-3.0.1'
     format = 'json'
-    outputDirectory = "$docsDir/api"
+    outputDirectory = "$apiDir/api"
 }

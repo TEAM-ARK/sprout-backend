@@ -23,6 +23,9 @@ bootJar {
     dependsOn(
             'openapi3',
     )
+    from("$apiDir/open-api-3.0.1.json") {
+        into 'BOOT-INF/classes/static/docs/api'
+    }
 }
 
 jar {
@@ -33,7 +36,6 @@ jar {
         epages settings
 ------------------------------- */
 openapi3 {
-    delete "$apiDir/open-api-3.0.1.json"
     servers = [
             {
                 url = 'https://www.ark-inflearn.shop'

@@ -1,11 +1,10 @@
-rootProject.name = 'inflearn'
+rootProject.name = 'sprout'
 
 [
         'module-common',
         'module-member',
         'module-secure',
         'module-web',
-        'module-lecture',
 ].each { module ->
     def moduleDir = new File(rootDir, module)
     if (!moduleDir.exists()) {
@@ -31,9 +30,9 @@ rootProject.name = 'inflearn'
     }
 
     [
-            'src/main/java/com/ark/inflearn',
+            'src/main/java/com/ark/sprout',
             'src/main/resources',
-            'src/test/java/com/ark/inflearn',
+            'src/test/java/com/ark/sprout',
             'src/test/resources',
     ].each { source ->
         def srcDir = new File(moduleDir.absolutePath, source)

@@ -2,6 +2,8 @@ plugins {
     id 'com.epages.restdocs-api-spec' version '0.14.1'
 }
 
+archivesBaseName = 'sprout'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -14,7 +16,7 @@ dependencies {
 }
 
 ext {
-    set('docsDir', file('src/main/resources/static/docs/'))
+    set('apiDir', file('src/main/resources/static/docs/'))
 }
 
 bootJar {
@@ -48,10 +50,10 @@ openapi3 {
                 url = 'http://localhost:8081'
             },
     ]
-    title = 'Team-ARK Inflearn API Documentation'
-    description '인프런 클론코딩, API 문서 페이지'
-    version = '0.0.1'
+    title = 'TEAM ARK SPROUT API Documentation'
+    description 'SPROUT API 문서 페이지'
+    version = '0.0.7'
     outputFileNamePrefix = 'open-api-3.0.1'
     format = 'json'
-    outputDirectory = "$docsDir/api"
+    outputDirectory = "$apiDir/api"
 }

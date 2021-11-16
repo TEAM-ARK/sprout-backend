@@ -16,7 +16,7 @@ dependencies {
 }
 
 ext {
-    set('apiDir', file('src/main/resources/static/docs/'))
+    set('apiDir', file('src/main/resources/static/docs/api/'))
 }
 
 bootJar {
@@ -33,6 +33,7 @@ jar {
         epages settings
 ------------------------------- */
 openapi3 {
+    delete "$apiDir/open-api-3.0.1.json"
     servers = [
             {
                 url = 'https://www.ark-inflearn.shop'
@@ -52,8 +53,8 @@ openapi3 {
     ]
     title = 'TEAM ARK SPROUT API Documentation'
     description 'SPROUT API 문서 페이지'
-    version = '0.0.7'
+    version = '0.0.1'
     outputFileNamePrefix = 'open-api-3.0.1'
     format = 'json'
-    outputDirectory = "$apiDir/api"
+    outputDirectory = "$apiDir"
 }

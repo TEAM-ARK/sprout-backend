@@ -1,6 +1,11 @@
 # 📚 SPROUT
 
-## 📖 개요(Summary)
+[![GitHub issues](https://img.shields.io/github/issues/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/issues)
+[![GitHub forks](https://img.shields.io/github/forks/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/network)
+[![GitHub stars](https://img.shields.io/github/stars/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/stargazers)
+[![GitHub license](https://img.shields.io/github/license/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend)
+
+## 📖 Summary
 
 개발자들의 스터디 플랫폼
 
@@ -12,7 +17,7 @@
 
 <br />
 
-## 🎯 목표(Objectives)
+## 🎯 Objectives
 
 - 팀프로젝트 및 협업 경험
 - Hard skill 및 Soft skill 향상
@@ -21,7 +26,7 @@
 
 <br />
 
-## 📆 개발기간(Develop period)
+## 📆 Develop period
 
 2021.07.05 ~ 진행중
 
@@ -29,7 +34,7 @@
 
 <br />
 
-## 💻 라이브러리 및 기술 스택(Library & Stack)
+## 💻 Library & Stack
 
 ### 🔧 Build Tool
 
@@ -59,7 +64,7 @@
 - AWS CodeDeploy
 - AWS CloudWatch
 
-### 🔧 Commuication
+### 🔧 Communication
 
 - Slack
 - Jira

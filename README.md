@@ -1,4 +1,6 @@
-# 📚 SPROUT
+# 📚 SPROUT 
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=TEAM-ARK_sprout-backend)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/7f8f650bdabcc7467f10/maintainability)](https://codeclimate.com/github/TEAM-ARK/sprout-backend/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7f8f650bdabcc7467f10/test_coverage)](https://codeclimate.com/github/TEAM-ARK/sprout-backend/test_coverage)

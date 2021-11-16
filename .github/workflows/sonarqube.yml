@@ -6,10 +6,13 @@ on:
       - develop
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: SornarQube
     runs-on: ubuntu-latest
+    env:
+      JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
         with:

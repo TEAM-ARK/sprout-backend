@@ -1,13 +1,13 @@
 # 📚 SPROUT 
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=TEAM-ARK_sprout-backend)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/7f8f650bdabcc7467f10/maintainability)](https://codeclimate.com/github/TEAM-ARK/sprout-backend/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7f8f650bdabcc7467f10/test_coverage)](https://codeclimate.com/github/TEAM-ARK/sprout-backend/test_coverage)
 [![GitHub issues](https://img.shields.io/github/issues/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/issues)
 [![GitHub forks](https://img.shields.io/github/forks/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/network)
 [![GitHub stars](https://img.shields.io/github/stars/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/stargazers)
 [![GitHub license](https://img.shields.io/github/license/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend)
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=TEAM-ARK_sprout-backend)
 
 ## 📖 Summary
 

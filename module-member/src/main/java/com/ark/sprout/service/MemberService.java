@@ -9,6 +9,7 @@ import com.ark.sprout.form.SignForm;
 import com.ark.sprout.repository.MemberRepository;
 import com.ark.sprout.repository.RoleRepository;
 import com.ark.sprout.type.RoleType;
+import com.ark.sprout.util.LogUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,15 +27,15 @@ public class MemberService {
 
     @Transactional
     public void signUp(final SignForm request) throws DuplicateEmailException {
-        log.info("Sign-up request. email: {}", request.getEmail());
+        log.info(LogUtils.info("Sign-up request", request));
         verifyEmail(request);
         signUpComplete(request);
-        log.info("Sign-up completed.");
+        log.info(LogUtils.info("Sign-up completed."));
     }
 
     private void verifyEmail(final SignForm request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            log.warn("Cannot sign-up because the email is already in use.");
+            log.warn(LogUtils.warn("Cannot sign-up because the email is already in use."));
             throw new DuplicateEmailException("email is already in use.");
         }
     }
@@ -49,7 +50,7 @@ public class MemberService {
             return roleRepository.findByRoleType(RoleType.USER)
                 .orElseThrow(RoleNotFoundException::new);
         } catch (RoleNotFoundException e) {
-            log.error("{} not found or not active. please check the ROLE table.", RoleType.USER);
+            log.error(LogUtils.error(RoleType.USER + " not found or not active. please check the ROLE table."));
             throw new RoleNotFoundException("internal server error.");
         }
     }

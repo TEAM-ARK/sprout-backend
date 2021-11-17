@@ -102,15 +102,15 @@ class LogUtilsTest {
 
     private static class Dummy {
 
-        private Long id;
-        private String name;
+        private final Long id;
+        private final String name;
 
-        private Dummy(Long id, String name) {
+        private Dummy(final Long id, final String name) {
             this.id = id;
             this.name = name;
         }
 
-        public static Dummy of(Long id, String name) {
+        public static Dummy of(final Long id, final String name) {
             return new Dummy(id, name);
         }
 

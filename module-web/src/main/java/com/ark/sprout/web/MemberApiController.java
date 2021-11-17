@@ -22,7 +22,7 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<HttpResponse> signUp(@Valid @RequestBody final SignForm request) {
+    public ResponseEntity<HttpResponse<String>> signUp(@Valid @RequestBody final SignForm request) {
         memberService.signUp(request);
         return ResponseEntity.ok(HttpResponse.of(OK, "sign-up successful"));
     }

@@ -14,6 +14,8 @@ public abstract class LogUtils {
     private static final String ERROR_FORMAT = "--❌> [{0}] {1} {2}";
     private static final String CUSTOM_FORMAT = "--{0}> [{1}] {2} {3}";
 
+    private static final int INVOKER = 2;
+
     public LogUtils() {}
 
     /**
@@ -24,7 +26,7 @@ public abstract class LogUtils {
      */
     public static String info(final String message) {
         Objects.requireNonNull(message);
-        return MessageFormat.format(INFO_FORMAT, extractBeforeMethodName(), message, "");
+        return MessageFormat.format(INFO_FORMAT, invokerMethodName(), message, "");
     }
 
     /**
@@ -37,7 +39,7 @@ public abstract class LogUtils {
     public static String info(final String message, final Object param) {
         Objects.requireNonNull(message);
         Objects.requireNonNull(param);
-        return MessageFormat.format(INFO_FORMAT, extractBeforeMethodName(), message, toJsonString(param));
+        return MessageFormat.format(INFO_FORMAT, invokerMethodName(), message, toJsonString(param));
     }
 
     /**
@@ -48,7 +50,7 @@ public abstract class LogUtils {
      */
     public static String warn(final String message) {
         Objects.requireNonNull(message);
-        return MessageFormat.format(WARN_FORMAT, extractBeforeMethodName(), message, "");
+        return MessageFormat.format(WARN_FORMAT, invokerMethodName(), message, "");
     }
 
     /**
@@ -61,7 +63,7 @@ public abstract class LogUtils {
     public static String warn(final String message, final Object param) {
         Objects.requireNonNull(message);
         Objects.requireNonNull(param);
-        return MessageFormat.format(WARN_FORMAT, extractBeforeMethodName(), message, toJsonString(param));
+        return MessageFormat.format(WARN_FORMAT, invokerMethodName(), message, toJsonString(param));
     }
 
     /**
@@ -72,7 +74,7 @@ public abstract class LogUtils {
      */
     public static String error(final String message) {
         Objects.requireNonNull(message);
-        return MessageFormat.format(ERROR_FORMAT, extractBeforeMethodName(), message, "");
+        return MessageFormat.format(ERROR_FORMAT, invokerMethodName(), message, "");
     }
 
     /**
@@ -85,7 +87,7 @@ public abstract class LogUtils {
     public static String error(final String message, final Object param) {
         Objects.requireNonNull(message);
         Objects.requireNonNull(param);
-        return MessageFormat.format(ERROR_FORMAT, extractBeforeMethodName(), message, toJsonString(param));
+        return MessageFormat.format(ERROR_FORMAT, invokerMethodName(), message, toJsonString(param));
     }
 
     /**
@@ -98,7 +100,7 @@ public abstract class LogUtils {
     public static String custom(final String emoji, final String message) {
         Objects.requireNonNull(emoji);
         Objects.requireNonNull(message);
-        return MessageFormat.format(CUSTOM_FORMAT, emoji, extractBeforeMethodName(), message, "");
+        return MessageFormat.format(CUSTOM_FORMAT, emoji, invokerMethodName(), message, "");
     }
 
     /**
@@ -113,11 +115,11 @@ public abstract class LogUtils {
         Objects.requireNonNull(emoji);
         Objects.requireNonNull(message);
         Objects.requireNonNull(param);
-        return MessageFormat.format(CUSTOM_FORMAT, emoji, extractBeforeMethodName(), message, toJsonString(param));
+        return MessageFormat.format(CUSTOM_FORMAT, emoji, invokerMethodName(), message, toJsonString(param));
     }
 
-    private static String extractBeforeMethodName() {
-        return new Throwable().getStackTrace()[2].getMethodName();
+    private static String invokerMethodName() {
+        return new Throwable().getStackTrace()[INVOKER].getMethodName();
     }
 
     private static String toJsonString(final Object param) {

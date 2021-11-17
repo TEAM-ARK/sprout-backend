@@ -41,7 +41,6 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberApiControllerTest {
 
-
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired

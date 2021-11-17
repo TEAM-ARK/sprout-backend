@@ -13,6 +13,7 @@ import com.ark.sprout.repository.RoleRepository;
 import com.ark.sprout.repository.RoleResourceRepository;
 import com.ark.sprout.service.SecurityResourceService;
 import com.ark.sprout.type.RoleType;
+import com.ark.sprout.util.LogUtils;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
@@ -39,13 +40,13 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
     @Override
     public void onApplicationEvent(@NonNull final ContextRefreshedEvent event) {
-        log.info("onApplicationEvent start");
+        log.info(LogUtils.info("start"));
 
         if (alreadySetup) {
             return;
         }
 
-        log.info("Application setup...");
+        log.info(LogUtils.info("Application setup..."));
 
         initService.setUp();
         alreadySetup = true;

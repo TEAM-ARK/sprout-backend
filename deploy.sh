@@ -25,7 +25,7 @@ else
         sleep 3
 fi
 
-chmod -x $BUILD_PATH/$JAR_NAME
+chmod +x $BUILD_PATH/$JAR_NAME
 
 nohup java -jar -Dserver.port=8081 -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles.active=prod $BUILD_PATH/$JAR_NAME >> /dev/null &
 echo "[$(date)] 배포 완료 !" >> /home/ubuntu/deploy.log

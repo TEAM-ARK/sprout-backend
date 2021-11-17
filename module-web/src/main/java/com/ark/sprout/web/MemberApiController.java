@@ -1,8 +1,8 @@
 package com.ark.sprout.web;
 
 import static org.springframework.http.HttpStatus.OK;
-import com.ark.sprout.form.SignForm;
 import com.ark.sprout.form.HttpResponse;
+import com.ark.sprout.form.SignForm;
 import com.ark.sprout.service.MemberService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,9 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<?> signUp(@Valid @RequestBody final SignForm request) {
+    public ResponseEntity<HttpResponse<String>> signUp(@Valid @RequestBody final SignForm request) {
         memberService.signUp(request);
-        return ResponseEntity.ok(
-            HttpResponse.of(OK, "sign-up successful"));
+        return ResponseEntity.ok(HttpResponse.of(OK, "sign-up successful"));
     }
 
 }

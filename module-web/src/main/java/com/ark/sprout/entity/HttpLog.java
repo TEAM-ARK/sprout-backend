@@ -26,6 +26,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HttpLog extends AbstractEntity {
 
+    public static final String UNKNOWN = "unknown";
     private String clientIp;
     private String httpMethod;
     private String requestUri;
@@ -141,19 +142,19 @@ public class HttpLog extends AbstractEntity {
 
     private static String getClientIp(final HttpServletRequest request) {
         String clientIp = request.getHeader("X-Forwarded-For");
-        if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
+        if (!StringUtils.hasLength(clientIp) || UNKNOWN.equalsIgnoreCase(clientIp)) {
             clientIp = request.getHeader("Proxy-Client-IP");
         }
-        if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
+        if (!StringUtils.hasLength(clientIp) || UNKNOWN.equalsIgnoreCase(clientIp)) {
             clientIp = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
+        if (!StringUtils.hasLength(clientIp) || UNKNOWN.equalsIgnoreCase(clientIp)) {
             clientIp = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
+        if (!StringUtils.hasLength(clientIp) || UNKNOWN.equalsIgnoreCase(clientIp)) {
             clientIp = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (!StringUtils.hasLength(clientIp) || "unknown".equalsIgnoreCase(clientIp)) {
+        if (!StringUtils.hasLength(clientIp) || UNKNOWN.equalsIgnoreCase(clientIp)) {
             clientIp = request.getRemoteAddr();
         }
         return clientIp;

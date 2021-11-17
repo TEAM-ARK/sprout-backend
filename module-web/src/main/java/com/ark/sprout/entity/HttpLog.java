@@ -2,6 +2,7 @@ package com.ark.sprout.entity;
 
 import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import com.ark.sprout.util.LogUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -101,7 +102,7 @@ public class HttpLog extends AbstractEntity {
         try {
             return Optional.of(objectMapper.readTree(cachingResponse.getContentAsByteArray()));
         } catch (IOException e) {
-            log.warn("ContentCachingResponseWrapper parse error! returns null. info : {}", e.getMessage());
+            log.warn(LogUtils.warn("ContentCachingResponseWrapper parse error! returns null.", e.getMessage()));
             return Optional.empty();
         }
     }
@@ -126,7 +127,7 @@ public class HttpLog extends AbstractEntity {
             removeSecurityInformation(jsonNode);
             return jsonNode.toString();
         } catch (IOException e) {
-            log.warn("ContentCachingRequestWrapper parse error! returns null. info : {}", e.getMessage());
+            log.warn(LogUtils.warn("ContentCachingRequestWrapper parse error! returns null.", e.getMessage()));
             return "";
         }
     }

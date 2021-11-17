@@ -35,7 +35,7 @@ public class MemberService {
 
     private void verifyEmail(final SignForm request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            log.warn(LogUtils.error("Cannot sign-up because the email is already in use."));
+            log.warn(LogUtils.warn("Cannot sign-up because the email is already in use."));
             throw new DuplicateEmailException("email is already in use.");
         }
     }

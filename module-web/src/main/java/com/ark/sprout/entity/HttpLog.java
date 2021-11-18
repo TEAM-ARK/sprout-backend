@@ -102,7 +102,7 @@ public class HttpLog extends AbstractEntity {
         try {
             return Optional.of(objectMapper.readTree(cachingResponse.getContentAsByteArray()));
         } catch (IOException e) {
-            log.warn(LogUtils.warn("ContentCachingResponseWrapper parse error! returns null.", e.getMessage()));
+            LogUtils.warn(log, "ContentCachingResponseWrapper parse error! returns null.", e.getMessage());
             return Optional.empty();
         }
     }
@@ -127,7 +127,7 @@ public class HttpLog extends AbstractEntity {
             removeSecurityInformation(jsonNode);
             return jsonNode.toString();
         } catch (IOException e) {
-            log.warn(LogUtils.warn("ContentCachingRequestWrapper parse error! returns null.", e.getMessage()));
+            LogUtils.warn(log, "ContentCachingRequestWrapper parse error! returns null.", e.getMessage());
             return "";
         }
     }

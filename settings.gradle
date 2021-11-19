@@ -5,6 +5,7 @@ rootProject.name = 'sprout'
         'module-member',
         'module-secure',
         'module-web',
+        'module-community-study',
 ].each { module ->
     def moduleDir = new File(rootDir, module)
     if (!moduleDir.exists()) {
@@ -30,9 +31,9 @@ rootProject.name = 'sprout'
     }
 
     [
-            'src/main/java/com/ark/sprout',
+            "src/main/java/com/ark/$rootProject.name",
             'src/main/resources',
-            'src/test/java/com/ark/sprout',
+            "src/test/java/com/ark/$rootProject.name",
             'src/test/resources',
     ].each { source ->
         def srcDir = new File(moduleDir.absolutePath, source)

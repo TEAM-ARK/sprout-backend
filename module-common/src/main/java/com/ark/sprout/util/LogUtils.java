@@ -11,11 +11,11 @@ public abstract class LogUtils {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static final String INFO_FORMAT = "--✅> [{}] {} {}";
-    private static final String WARN_FORMAT = "--⚠> [{}] {} {}";
+    private static final String WARN_FORMAT = "--⚠️> [{}] {} {}";
     private static final String ERROR_FORMAT = "--❌> [{}] {} {}";
     private static final String CUSTOM_FORMAT = "--{}> [{}] {} {}";
 
-    private static final int INVOKER = 2;
+    private static final int INVOKER_INDEX = 2;
 
     public LogUtils() {}
 
@@ -118,7 +118,7 @@ public abstract class LogUtils {
     }
 
     private static String invokerMethodName() {
-        return new Throwable().getStackTrace()[INVOKER].getMethodName();
+        return new Throwable().getStackTrace()[INVOKER_INDEX].getMethodName();
     }
 
     private static String toJsonString(final Object param) {

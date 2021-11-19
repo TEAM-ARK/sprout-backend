@@ -57,7 +57,7 @@ class LogUtilsTest {
 
         // then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠> [warn_1] warnMessage ");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_1] warnMessage ");
     }
 
     @Test
@@ -67,7 +67,7 @@ class LogUtilsTest {
 
         // then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠> [warn_2] warnMessage Dummy{id=1, name='dummy class'}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_2] warnMessage Dummy{id=1, name='dummy class'}");
     }
 
     @Test

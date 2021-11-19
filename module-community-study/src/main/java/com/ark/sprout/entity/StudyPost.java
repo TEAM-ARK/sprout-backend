@@ -1,6 +1,6 @@
 package com.ark.sprout.entity;
 
-import com.ark.sprout.form.NewPostForm;
+import com.ark.sprout.form.StudyPostForm;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -28,7 +28,7 @@ public class StudyPost {
 
     private boolean deleted;
 
-    public static StudyPost newPost(@NotNull final Member writer, @NotNull final NewPostForm postForm) {
+    public static StudyPost newPost(@NotNull final Member writer, @NotNull final StudyPostForm postForm) {
         return StudyPost.builder()
             .title(postForm.getTitle())
             .content(postForm.getContent())
@@ -42,7 +42,7 @@ public class StudyPost {
         return writer.equals(loginUser);
     }
 
-    public List<EditHistory> edit(@NotNull final Member loginUser, @NotNull final NewPostForm postForm) {
+    public List<EditHistory> edit(@NotNull final Member loginUser, @NotNull final StudyPostForm postForm) {
         if (isOwner(loginUser)) {
             List<EditHistory> editHistories = this.editHistories.edit(EditHistory.of(this.title, this.content));
             updatePost(postForm);
@@ -51,7 +51,7 @@ public class StudyPost {
         throw new BadCredentialsException("Only the owner can !");
     }
 
-    private void updatePost(final NewPostForm postForm) {
+    private void updatePost(final StudyPostForm postForm) {
         this.title = postForm.getTitle();
         this.content = postForm.getContent();
     }

@@ -2,94 +2,77 @@ package com.ark.sprout.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import com.ark.sprout.form.NewPostForm;
+import com.ark.sprout.form.StudyPostForm;
 import com.ark.sprout.type.RoleType;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 
 class StudyPostTest {
 
-    private Member FM1; // fakeMember1
-    private Member FM2; // fakeMember2
-    private NewPostForm PF1; // postForm1
-    private NewPostForm PF2; // postForm2
+    private static final Member FM1 = getMember("fakeMember1@test.com"); // fakeMember1
+    private static final Member FM2 = getMember("fakeMember2@test.com"); // fakeMember2
+    private static final StudyPostForm SPF1 = StudyPostForm.of("D2om1y", "s3I9AlN5FPjfuEGJzpw94nmL2EIyy64T2"); // studyPostForm1
+    private static final StudyPostForm SPF2 = StudyPostForm.of("AGJAG125", "78Yh5ivdO07v1cREGL0132XpMGX53P8udv5f6r473"); // studyPostForm2
 
-    @BeforeEach
-    void setUp() {
-        // given
-        PF1 = NewPostForm.of("D2om1y", "s3I9AlN5FPjfuEGJzpw94nmL2EIyy64T2");
-
-        PF2 = NewPostForm.of("AGJAG125", "78Yh5ivdO07v1cREGL0132XpMGX53P8udv5f6r473");
-
-        FM1 = Member.builder()
-            .email("fakeMember1@test.com")
+    private static Member getMember(final String email) {
+        return Member.builder()
+            .email(email)
             .password("1234")
-            .socialId("sUcaYN8j02udIqOuU")
-            .registrationId("k76jI0Xake11M4mLgF")
-            .role(
-                Role.builder()
-                    .roleType(RoleType.USER)
-                    .deleted(false)
-                    .build()
-            )
+            .socialId("")
+            .registrationId("")
+            .role(getRole())
             .isSocial(true)
             .build();
+    }
 
-        FM2 = Member.builder()
-            .email("fakeMember2@test.com")
-            .password("1234")
-            .socialId("mCfNfCoRjqlog")
-            .registrationId("sB1I76FgY5s82xzNWL")
-            .role(
-                Role.builder()
-                    .roleType(RoleType.USER)
-                    .deleted(false)
-                    .build()
-            )
-            .isSocial(true)
+    private static Role getRole() {
+        return Role.builder()
+            .roleType(RoleType.USER)
+            .deleted(false)
             .build();
-
     }
 
     @Test
     void newPost() throws Exception {
-        // when
-        StudyPost newPost = StudyPost.newPost(FM1, PF1);
+        // given, when
+        StudyPost studyPost = StudyPost.newPost(FM1, SPF1);
 
         // then
-        assertThat(newPost.getTitle()).isEqualTo(PF1.getTitle());
-        assertThat(newPost.getContent()).isEqualTo(PF1.getContent());
-        assertThat(newPost.getWriter()).isEqualTo(FM1);
+        assertThat(studyPost)
+            .extracting("title", "content", "writer")
+            .contains(SPF1.getTitle(), SPF1.getContent(), FM1);
     }
 
     @Test
     void edit() throws Exception {
         // given
-        StudyPost studyPost = StudyPost.newPost(FM1, PF1);
+        StudyPost studyPost = StudyPost.newPost(FM1, SPF1);
 
         // when
-        List<EditHistory> editHistories = studyPost.edit(FM1, PF2);
+        List<EditHistory> editHistories = studyPost.edit(FM1, SPF2);
 
         // then
-        assertThat(studyPost.getTitle()).isEqualTo(PF2.getTitle());
-        assertThat(studyPost.getContent()).isEqualTo(PF2.getContent());
-
-        EditHistory editHistory = editHistories.get(0);
         assertThat(editHistories.size()).isEqualTo(1);
-        assertThat(editHistory.getTitle()).isEqualTo(PF1.getTitle());
-        assertThat(editHistory.getContent()).isEqualTo(PF1.getContent());
+
+        assertThat(studyPost)
+            .extracting("title", "content")
+            .contains(SPF2.getTitle(), SPF2.getContent());
+
+        assertThat(editHistories)
+            .extracting("title", "content")
+            .contains(Tuple.tuple(SPF1.getTitle(), SPF1.getContent()));
     }
 
     @Test
     void edit_exception() throws Exception {
         // given
-        StudyPost studyPost = StudyPost.newPost(FM1, PF1);
+        StudyPost studyPost = StudyPost.newPost(FM1, SPF1);
 
         // when, then
         assertThatThrownBy(() -> {
-            studyPost.edit(FM2, PF2);
+            studyPost.edit(FM2, SPF2);
         }).isInstanceOf(BadCredentialsException.class)
             .hasMessage("Only the owner can !");
     }

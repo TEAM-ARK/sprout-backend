@@ -6,6 +6,7 @@ import com.ark.sprout.entity.RoleResource;
 import com.ark.sprout.repository.ResourceRepository;
 import com.ark.sprout.repository.RoleHierarchiesRepository;
 import com.ark.sprout.repository.RoleResourceRepository;
+import com.ark.sprout.util.LogUtils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,11 +60,11 @@ public class SecurityResourceService {
     }
 
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> loggingAuthorizationTable(final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceList) {
-        log.info("#################################################################################");
-        log.info("################################# Resource List #################################");
-        log.info("#################################################################################");
-        resourceList.forEach((key, value) -> log.info(key + " : " + value));
-        log.info("#################################################################################");
+        LogUtils.info(log, "#################################################################################");
+        LogUtils.info(log, "################################# Resource List #################################");
+        LogUtils.info(log, "#################################################################################");
+        resourceList.forEach((key, value) -> LogUtils.info(log, key + " : " + value));
+        LogUtils.info(log, "#################################################################################");
         return resourceList;
     }
 

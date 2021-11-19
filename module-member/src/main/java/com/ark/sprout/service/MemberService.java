@@ -27,22 +27,21 @@ public class MemberService {
 
     @Transactional
     public void signUp(final SignForm request) throws DuplicateEmailException {
-        log.info(LogUtils.info("Sign-up request", request));
+        LogUtils.info(log, "Sign-up request. email = ", request.getEmail());
         verifyEmail(request);
         signUpComplete(request);
-        log.info(LogUtils.info("Sign-up completed."));
+        LogUtils.info(log, "Sign-up completed.");
     }
 
     private void verifyEmail(final SignForm request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            log.warn(LogUtils.warn("Cannot sign-up because the email is already in use."));
+            LogUtils.warn(log, "Cannot sign-up because the email is already in use.");
             throw new DuplicateEmailException("email is already in use.");
         }
     }
 
     private void signUpComplete(final SignForm request) {
-        Member member = Member.of(request.encodePassword(passwordEncoder), findRoleMember());
-        memberRepository.save(member);
+        memberRepository.save(Member.of(request.encodePassword(passwordEncoder), findRoleMember()));
     }
 
     private Role findRoleMember() {
@@ -50,7 +49,7 @@ public class MemberService {
             return roleRepository.findByRoleType(RoleType.USER)
                 .orElseThrow(RoleNotFoundException::new);
         } catch (RoleNotFoundException e) {
-            log.error(LogUtils.error(RoleType.USER + " not found or not active. please check the ROLE table."));
+            LogUtils.error(log, RoleType.USER + " not found or not active. please check the ROLE table.");
             throw new RoleNotFoundException("internal server error.");
         }
     }

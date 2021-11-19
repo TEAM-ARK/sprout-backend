@@ -40,13 +40,13 @@ public class SecurityDatabaseInitializer implements ApplicationListener<ContextR
 
     @Override
     public void onApplicationEvent(@NonNull final ContextRefreshedEvent event) {
-        log.info(LogUtils.info("start"));
+        LogUtils.info(log, "start");
 
         if (alreadySetup) {
             return;
         }
 
-        log.info(LogUtils.info("Application setup..."));
+        LogUtils.info(log, "Application setup...");
 
         initService.setUp();
         alreadySetup = true;

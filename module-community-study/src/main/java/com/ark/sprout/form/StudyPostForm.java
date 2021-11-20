@@ -9,12 +9,12 @@ public class StudyPostForm {
 
     private String content;
 
-    private StudyPostForm(String title, String content) {
+    private StudyPostForm(final String title, final String content) {
         this.title = title;
         this.content = content;
     }
 
-    public static StudyPostForm of(String title, String content) {
+    public static StudyPostForm of(final String title, final String content) {
         return new StudyPostForm(title, content);
     }
 

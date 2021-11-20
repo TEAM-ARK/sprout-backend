@@ -22,14 +22,15 @@ buildscript {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
     apply plugin: 'org.sonarqube'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.ewerk.gradle.plugins.querydsl'
 
     group = 'com.ark'
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 
     repositories {
         mavenCentral()
@@ -76,21 +77,39 @@ subprojects {
         )
     }
 
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "TEAM-ARK_sprout-backend"
-            property "sonar.organization", "team-ark"
-            property "sonar.host.url", "https://sonarcloud.io"
+    jacocoTestReport {
+        reports {
+            html.enabled true
+            xml.enabled false
+            csv.enabled false
         }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: excludeFilter)
+            }))
+        }
+    }
+
+    /* -------------------------------
+                 extensions
+    ------------------------------- */
+    ext {
+        querydslDir = "$buildDir/generated/querydsl"
+        set('snippetsDir', file('build/generated-snippets'))
+
+        excludeFilter = [
+                '**/form/**',
+                '**/dto/**',
+                '**/*Application.*',
+                '**/Q*.class',
+                '**/test/**',
+        ]
     }
 
     test {
         useJUnitPlatform()
-    }
-
-    ext {
-        querydslDir = "$buildDir/generated/querydsl"
-        set('snippetsDir', file('build/generated-snippets'))
+        finalizedBy 'jacocoTestReport'
     }
 
     bootRun {
@@ -101,6 +120,17 @@ subprojects {
         useJUnitPlatform()
         maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
         systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
+    }
+
+    /* -------------------------------
+            sonarqube settings
+    ------------------------------- */
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "TEAM-ARK_sprout-backend"
+            property "sonar.organization", "team-ark"
+            property "sonar.host.url", "https://sonarcloud.io"
+        }
     }
 
     /* -------------------------------
@@ -137,6 +167,9 @@ subprojects {
     }
 }
 
+/* -------------------------------
+        modules settings
+------------------------------- */
 project(':module-member') {
     dependencies {
         implementation project(':module-common')

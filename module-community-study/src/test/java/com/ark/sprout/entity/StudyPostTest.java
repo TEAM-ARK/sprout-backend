@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.ark.sprout.form.StudyPostForm;
 import com.ark.sprout.type.RoleType;
-import java.util.List;
+import java.util.Set;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,7 +51,7 @@ class StudyPostTest {
         StudyPost studyPost = StudyPost.newPost(FM1, SPF1);
 
         // when
-        List<EditHistory> editHistories = studyPost.edit(FM1, SPF2);
+        Set<EditHistory> editHistories = studyPost.edit(FM1, SPF2);
 
         // then
         assertThat(editHistories.size()).isEqualTo(1);

@@ -30,8 +30,8 @@ public class EditHistories {
         return editHistories.size();
     }
 
-    public int newVersion() {
-        if (editHistories.size() == 0) {
+    public int generateNewVersion() {
+        if (editHistories.size() < 1) {
             return 1;
         }
         return editHistories.stream()

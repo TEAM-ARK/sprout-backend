@@ -18,7 +18,7 @@ class EditHistoriesTest {
     @Test
     void edit() throws Exception {
         // given
-        int newVersion = editHistories.newVersion();
+        int newVersion = editHistories.generateNewVersion();
         EditHistory editHistory = EditHistory.of("title", "content", newVersion);
 
         // when
@@ -43,7 +43,7 @@ class EditHistoriesTest {
         editHistories.edit(EditHistory.of("title", "content", 1));
 
         // when
-        int version = editHistories.newVersion();
+        int version = editHistories.generateNewVersion();
 
         // then
         assertThat(version).isEqualTo(6);

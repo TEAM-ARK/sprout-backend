@@ -22,19 +22,19 @@ public class DeleteHistory {
 
     private LocalDateTime deleteAt;
 
-    public static DeleteHistory ofQuestion(final ContentType contentType, final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
+    public static DeleteHistory ofQuestion(final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
         return new DeleteHistory(ContentType.QUESTION, contentId, deleteBy, deleteAt);
     }
 
-    public static DeleteHistory ofFree(final ContentType contentType, final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
+    public static DeleteHistory ofFree(final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
         return new DeleteHistory(ContentType.FREE, contentId, deleteBy, deleteAt);
     }
 
-    public static DeleteHistory ofStudy(final ContentType contentType, final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
+    public static DeleteHistory ofStudy(final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
         return new DeleteHistory(ContentType.STUDY, contentId, deleteBy, deleteAt);
     }
 
-    public static DeleteHistory ofComment(final ContentType contentType, final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
+    public static DeleteHistory ofComment(final long contentId, final Member deleteBy, final LocalDateTime deleteAt) {
         return new DeleteHistory(ContentType.COMMENT, contentId, deleteBy, deleteAt);
     }
 

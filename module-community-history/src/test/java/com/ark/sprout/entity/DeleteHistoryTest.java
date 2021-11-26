@@ -39,18 +39,17 @@ class DeleteHistoryTest {
             .contains(contentType, 1L, deletedBy, deleteAt);
     }
 
-
     private DeleteHistory deleteHistoryOf(final ContentType contentType) {
         if (ContentType.QUESTION == contentType) {
-            return DeleteHistory.ofQuestion(contentType, 1L, deletedBy, deleteAt);
+            return DeleteHistory.ofQuestion(1L, deletedBy, deleteAt);
         }
         if (ContentType.STUDY == contentType) {
-            return DeleteHistory.ofStudy(contentType, 1L, deletedBy, deleteAt);
+            return DeleteHistory.ofStudy(1L, deletedBy, deleteAt);
         }
         if (ContentType.FREE == contentType) {
-            return DeleteHistory.ofFree(contentType, 1L, deletedBy, deleteAt);
+            return DeleteHistory.ofFree(1L, deletedBy, deleteAt);
         }
-        return DeleteHistory.ofComment(contentType, 1L, deletedBy, deleteAt);
+        return DeleteHistory.ofComment(1L, deletedBy, deleteAt);
     }
 
 }

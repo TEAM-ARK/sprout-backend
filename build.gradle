@@ -153,6 +153,17 @@ project(':module-secure') {
     }
 }
 
+project(':module-community-history') {
+    dependencies {
+        implementation project(':module-secure')
+        implementation project(':module-member')
+        implementation project(':module-common')
+        testImplementation project(':module-secure')
+        testImplementation project(':module-member')
+        testImplementation project(':module-common')
+    }
+}
+
 project(':module-web') {
     dependencies {
         implementation project(':module-secure')

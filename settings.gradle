@@ -5,6 +5,7 @@ rootProject.name = 'sprout'
         'module-member',
         'module-secure',
         'module-web',
+        'module-community-history',
 ].each { module ->
     def moduleDir = new File(rootDir, module)
     if (!moduleDir.exists()) {

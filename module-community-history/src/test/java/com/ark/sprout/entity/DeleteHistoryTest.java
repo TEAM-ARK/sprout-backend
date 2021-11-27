@@ -33,7 +33,7 @@ class DeleteHistoryTest {
 
     @ParameterizedTest
     @EnumSource(ContentType.class)
-    void ofQuestion(final ContentType contentType) {
+    void staticFactories(final ContentType contentType) {
         assertThat(deleteHistoryOf(contentType))
             .extracting("contentType", "contentId", "deleteBy", "deleteAt")
             .contains(contentType, 1L, deletedBy, deleteAt);

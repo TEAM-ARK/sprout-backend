@@ -3,11 +3,13 @@ package com.ark.sprout.entity;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class EditHistories {
@@ -23,7 +25,7 @@ public class EditHistories {
         return new TreeSet<>(editHistories);
     }
 
-    public int nextVersion() {
+    public final int nextVersion() {
         if (editHistories.size() < 1) {
             return 1;
         }

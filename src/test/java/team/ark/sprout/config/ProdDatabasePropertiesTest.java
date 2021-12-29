@@ -13,13 +13,6 @@ class ProdDatabasePropertiesTest {
     @Autowired
     DatabaseProperties properties;
 
-//    @Test
-//    @DisplayName("데이터베이스 개발환경")
-//    @IfProfileValue(name = "spring.profiles.active", value = "dev")
-//    void ifDev() throws Exception {
-//        assertThat(properties.getUrl()).isEqualTo("jdbc:h2:mem:test");
-//    }
-
     @Test
     @DisplayName("데이터베이스 운영환경")
     void ifProd() throws Exception {

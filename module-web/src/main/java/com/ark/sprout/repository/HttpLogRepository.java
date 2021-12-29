@@ -1,8 +1,0 @@
-package com.ark.sprout.repository;
-
-import com.ark.sprout.entity.HttpLog;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface HttpLogRepository extends JpaRepository<HttpLog, Long>, HttpLogQueryRepository {
-
-}

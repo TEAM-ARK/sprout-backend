@@ -1,176 +1,68 @@
-buildscript {
-    ext {
-        springBootVersion = '2.5.6'
-        springPluginVersion = '1.0.11.RELEASE'
-        querydslVersion = '1.0.10'
-    }
+plugins {
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.sonarqube' version '3.3'
+    id 'java'
+}
 
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
+group = 'team.ark'
 
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-        classpath "io.spring.gradle:dependency-management-plugin:$springPluginVersion"
-        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:$querydslVersion"
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'org.sonarqube'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'com.ewerk.gradle.plugins.querydsl'
-
-    group = 'com.ark'
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        annotationProcessor(
-                'org.projectlombok:lombok',
-                'org.springframework.boot:spring-boot-configuration-processor',
-        )
-
-        implementation(
-                'org.springframework.boot:spring-boot-starter-web',
-                'org.springframework.boot:spring-boot-starter-data-jpa',
-                'org.springframework.boot:spring-boot-starter-validation',
-                'com.querydsl:querydsl-jpa',
-                'org.modelmapper:modelmapper:2.4.4',
-                'commons-io:commons-io:2.8.0',
-                'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1',
-                'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3',
-                'org.springframework.boot:spring-boot-starter-data-redis',
-                'org.springframework.session:spring-session-data-redis',
-        )
-
-        testImplementation(
-                'org.springframework.boot:spring-boot-starter-test',
-        )
-
-        testImplementation('org.springframework.boot:spring-boot-starter-test') {
-            exclude group: 'junit', module: 'junit'
-        }
-
-        compileOnly(
-                'org.projectlombok:lombok',
-        )
-
-        testCompileOnly(
-                'org.projectlombok:lombok',
-        )
-
-        runtimeOnly(
-                'mysql:mysql-connector-java',
-                'com.h2database:h2'
-        )
-    }
-
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "TEAM-ARK_sprout-backend"
-            property "sonar.organization", "team-ark"
-            property "sonar.host.url", "https://sonarcloud.io"
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    ext {
-        querydslDir = "$buildDir/generated/querydsl"
-        set('snippetsDir', file('build/generated-snippets'))
-    }
-
-    bootRun {
-        systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
-    }
-
-    test {
-        useJUnitPlatform()
-        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-        systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
-    }
-
-    /* -------------------------------
-            querydsl settings
-    ------------------------------- */
-    querydsl {
-        jpa = true
-        querydslSourcesDir = querydslDir
-    }
-
-    sourceSets {
-        main.java.srcDir querydslDir
-    }
-
-    configurations {
-        querydsl.extendsFrom compileClasspath
-    }
-
-    compileQuerydsl {
-        options.annotationProcessorPath = configurations.querydsl
-    }
-
-    /* -------------------------------
-            javac settings
-    ------------------------------- */
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << '-Xlint:unchecked'
-        }
-    }
-
+gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
-        options.fork = true
+        options.compilerArgs << '-Xlint:unchecked'
     }
 }
 
-project(':module-member') {
-    dependencies {
-        implementation project(':module-common')
-        testImplementation project(':module-common')
+tasks.withType(JavaCompile) {
+    options.fork = true
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
-project(':module-secure') {
-    dependencies {
-        implementation project(':module-common')
-        implementation project(':module-member')
-        testImplementation project(':module-common')
-        testImplementation project(':module-member')
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://plugins.gradle.org/m2/'
     }
 }
 
-project(':module-community-history') {
-    dependencies {
-        implementation project(':module-secure')
-        implementation project(':module-member')
-        implementation project(':module-common')
-        testImplementation project(':module-secure')
-        testImplementation project(':module-member')
-        testImplementation project(':module-common')
-    }
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
-project(':module-web') {
-    dependencies {
-        implementation project(':module-secure')
-        implementation project(':module-member')
-        implementation project(':module-common')
-        testImplementation project(':module-secure')
-        testImplementation project(':module-member')
-        testImplementation project(':module-common')
+bootRun {
+    systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
+}
+
+test {
+    useJUnitPlatform()
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "TEAM-ARK_sprout-backend"
+        property "sonar.organization", "team-ark"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }

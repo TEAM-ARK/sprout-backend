@@ -3,6 +3,7 @@ package team.ark.sprout.config;
 import com.p6spy.engine.spy.P6SpyOptions;
 import javax.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
+import team.ark.sprout.config.extension.P6spyPrettySqlFormatter;
 
 @Configuration
 public class P6SpyConfig {

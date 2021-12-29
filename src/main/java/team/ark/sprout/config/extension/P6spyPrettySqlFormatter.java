@@ -1,4 +1,4 @@
-package team.ark.sprout.config;
+package team.ark.sprout.config.extension;
 
 import static java.util.Arrays.stream;
 import static java.util.Objects.isNull;

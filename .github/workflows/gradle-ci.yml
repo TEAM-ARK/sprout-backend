@@ -26,10 +26,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Upload to S3
+      - name: Download dev-datasource from S3
         run: aws s3 cp s3://team-ark/server/sprout-database-dev.properties ~/team-ark-backend/
         
-      - name: Upload to S3
+      - name: Download prod-datasource from S3
         run: aws s3 cp s3://team-ark/server/sprout-database-prod.properties ~/team-ark-backend/
 
       - name: Cache Gradle packages

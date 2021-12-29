@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: dev
+
+  main:
+    allow-bean-definition-overriding: true
+
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:NONE}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+logging:
+  level:
+    org.hibernate.SQL: info

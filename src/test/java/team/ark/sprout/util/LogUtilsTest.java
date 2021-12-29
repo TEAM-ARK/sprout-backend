@@ -49,7 +49,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--✅> [info_2] infoMessage Dummy{id=1, name='dummy class'}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--✅> [info_2] infoMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -71,7 +71,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_2] warnMessage Dummy{id=1, name='dummy class'}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_2] warnMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -93,7 +93,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❌> [error_2] errorMessage Dummy{id=1, name='dummy class'}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❌> [error_2] errorMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -115,7 +115,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❤> [custom_2] customMessage Dummy{id=1, name='dummy class'}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❤> [custom_2] customMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test

@@ -19,6 +19,19 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Set up AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload to S3
+        run: aws s3 cp s3://team-ark/server/sprout-database-dev.properties ~/team-ark-backend/
+        
+      - name: Upload to S3
+        run: aws s3 cp s3://team-ark/server/sprout-database-prod.properties ~/team-ark-backend/
+
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:

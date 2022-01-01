@@ -9,7 +9,7 @@
 
 == 소개
 
-TEAM ARK의 SPROUT 프로젝트 API 문서입니다.
+TEAM ARK SPROUT API 문서입니다.
 
 == 환경
 

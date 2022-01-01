@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest
+@DisplayName("데이터베이스 - 개발")
+@SpringBootTest(classes = DatabaseProperties.class)
 @TestPropertySource("file:${user.home}/team-ark-backend/sprout-database-dev.properties")
 class DevDatabasePropertiesTest {
     @Autowired

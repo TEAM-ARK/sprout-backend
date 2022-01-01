@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
+@DisplayName("LogUtils 테스트")
 class LogUtilsTest {
     Logger logger;
     ListAppender<ILoggingEvent> listAppender;

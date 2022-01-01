@@ -1,0 +1,23 @@
+=== 가입 실패 (400)
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+==== 설명
+
+입력 파라미터가 유효하지 않아 회원가입에 실패한 경우입니다.
+
+CAUTION: `Nullable` 응답 상세의 경우 값이 NULL이면 JSON에서 해당 필드가 제거됩니다.
+
+==== 응답
+
+===== 응답 예시
+
+include::{snippets}/account/post-email-400/http-response.adoc[]
+
+include::{snippets}/account/post-nickname-400/http-response.adoc[]
+
+include::{snippets}/account/post-password-400/http-response.adoc[]

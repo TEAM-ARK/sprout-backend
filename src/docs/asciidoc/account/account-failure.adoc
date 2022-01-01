@@ -1,0 +1,31 @@
+=== 가입 실패
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+==== 설명
+
+회원가입에 실패하는 경우입니다.
+
+CAUTION: `Nullable` 응답 상세의 경우 값이 NULL이면 JSON에서 해당 필드가 제거됩니다.
+
+==== 응답
+
+===== 응답 상세
+
+include::{snippets}/account/post-200/response-fields.adoc[]
+
+===== 응답 예시
+
+include::{snippets}/account/post-email-400-1/http-response.adoc[]
+
+include::{snippets}/account/post-email-400-2/http-response.adoc[]
+
+include::{snippets}/account/post-nickname-400-1/http-response.adoc[]
+
+include::{snippets}/account/post-nickname-400-2/http-response.adoc[]
+
+include::{snippets}/account/post-password-400/http-response.adoc[]

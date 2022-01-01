@@ -1,0 +1,25 @@
+== 공통 타입
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+---
+
+=== PostType
+
+|===
+| Field | Type | Description
+
+| STUDY
+| String
+| `스터디 게시판`
+
+| FREE
+| String
+| `자유 게시판`
+
+| QNA
+| String
+| `질답 게시판`
+|===

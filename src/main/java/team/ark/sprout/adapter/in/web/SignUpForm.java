@@ -19,13 +19,13 @@ public class SignUpForm {
 
     @Pattern(
         regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9_-]{3,15}$",
-        message = "닉네임은 언더바, 하이픈을 제외한 문자로 이루어진 3~15자리의 문자열이여야 합니다"
+        message = "닉네임은 공백 없이 영문 or 숫자 or _ or - 으로 이루어진 3~15 자리의 문자열이여야 합니다"
     )
     private String nickname;
 
     @Pattern(
         regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*])(?!.*(.)\\1\\1\\1)[0-9a-zA-Z!@#$%&*]{12,32}$",
-        message = "비밀번호는 공백 없이 영문/숫자/특수문자로 이루어진 12~32자리의 문자열이어야 합니다"
+        message = "비밀번호는 공백 없이 영문/숫자/특수문자로 이루어진 12~32 자리의 문자열이어야 합니다"
     )
     private String password;
 

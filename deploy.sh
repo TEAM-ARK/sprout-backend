@@ -1,5 +1,5 @@
 JAR_NAME="sprout.jar"
-BUILD_PATH="/home/ubuntu/app/module-web/build/libs"
+BUILD_PATH="/home/ubuntu/app/build/libs"
 CONF_PATH="/etc/nginx/nginx.conf"
 
 echo "> Green 애플리케이션 확인 중..." >> /home/ubuntu/deploy.log

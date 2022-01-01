@@ -10,7 +10,7 @@ import java.util.Stack;
 import java.util.function.Predicate;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
 
-public class P6spyPrettySqlFormatter implements MessageFormattingStrategy {
+public class P6SpyPrettySqlFormatter implements MessageFormattingStrategy {
     private static final String NEW_LINE = System.lineSeparator();
     private static final String P6SPY_FORMATTER = "P6spyPrettySqlFormatter";
     private static final String PACKAGE = "com.ark";

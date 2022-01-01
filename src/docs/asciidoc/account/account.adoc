@@ -1,4 +1,4 @@
-== 회원
+== 회원 API
 :basedir: {docdir}/../../../
 :snippets: {basedir}/build/generated-snippets
 :icons: font
@@ -8,8 +8,8 @@
 
 ---
 
-include::./post-200.adoc[]
+include::./account-success.adoc[]
 
 ---
 
-include::./post-400.adoc[]
+include::./account-failure.adoc[]

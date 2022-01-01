@@ -70,7 +70,7 @@ class AccountApiControllerTest extends ControllerTests {
     void regist3() throws Exception {
         // ...given
         SignUpForm request = SignUpForm.create("test@email.com", "nn", "passwordPassword123!");
-        String expected = objectMapper.writeValueAsString(ResponseData.create(BAD_REQUEST, "[nickname] 닉네임은 언더바, 하이픈을 제외한 문자로 이루어진 3~15자리의 문자열이여야 합니다"));
+        String expected = objectMapper.writeValueAsString(ResponseData.create(BAD_REQUEST, "[nickname] 닉네임은 공백 없이 영문 or 숫자 or _ or - 으로 이루어진 3~15 자리의 문자열이여야 합니다"));
 
         // ...when
         ResultActions resultActions = post(request);
@@ -102,7 +102,7 @@ class AccountApiControllerTest extends ControllerTests {
     void regist4() throws Exception {
         // ...given
         SignUpForm request = SignUpForm.create("test@email.com", "nickname123", "passwordPassword123");
-        String expected = objectMapper.writeValueAsString(ResponseData.create(BAD_REQUEST, "[password] 비밀번호는 공백 없이 영문/숫자/특수문자로 이루어진 12~32자리의 문자열이어야 합니다"));
+        String expected = objectMapper.writeValueAsString(ResponseData.create(BAD_REQUEST, "[password] 비밀번호는 공백 없이 영문/숫자/특수문자로 이루어진 12~32 자리의 문자열이어야 합니다"));
 
         // ...when
         ResultActions resultActions = post(request);

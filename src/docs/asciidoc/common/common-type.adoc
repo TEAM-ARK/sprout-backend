@@ -6,6 +6,8 @@
 
 ---
 
+NOTE: `Nullable` 필드의 값이 `NULL` 이면 `JSON` 에서 해당 필드가 제거된 후 반환됩니다.
+
 === PostType
 
 |===

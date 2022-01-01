@@ -1,0 +1,15 @@
+== 회원
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+---
+
+include::./post-200.adoc[]
+
+---
+
+include::./post-400.adoc[]

@@ -1,0 +1,42 @@
+= TEAM ARK SPROUT
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks: /build/asciidoc/html5/
+:sectnums:
+
+== 소개
+
+TEAM ARK의 SPROUT 프로젝트 API 문서입니다.
+
+== 환경
+
+서비스의 각종 환경에 대한 정보를 표시합니다.
+
+NOTE: 해당 부분에 대한 문의는 백엔드팀에 해주세요.
+
+=== 도메인
+
+서비스의 도메인 호스트는 다음과 같습니다.
+
+|===
+| 환경 | URI
+
+| 운영
+| `ark.sprout.io`
+|===
+
+=== 포트
+
+|===
+| 환경 | 포트
+
+| 운영
+| `8080`
+|===
+
+include::./common/common-type.adoc[]
+
+include::./account/account.adoc[]

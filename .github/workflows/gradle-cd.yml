@@ -27,6 +27,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Set up AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Download dev-datasource from S3
+        run: aws s3 cp s3://team-ark/server/sprout-database-dev.properties ~/team-ark-backend/
+
+      - name: Download prod-datasource from S3
+        run: aws s3 cp s3://team-ark/server/sprout-database-prod.properties ~/team-ark-backend/
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -44,13 +57,6 @@ jobs:
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
-
-      - name: Set up AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
 
       - name: S3 upload
         run: aws deploy push --application-name team-ark-inflearn-back --description "team-ark-inflearn-back" --s3-location s3://team-ark/server/build.zip --source .

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Getter
 @Configuration
-@PropertySource(value = "file:${user.home}/team-ark-backend/sprout-database-${spring.profiles.active}.properties")
+@PropertySource("file:${user.home}/team-ark-backend/sprout-database-${spring.profiles.active}.properties")
 public class DatabaseProperties {
     @Value("${spring.datasource.url}")
     private String url;

@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Nationalized;
 import team.ark.sprout.common.config.extension.ExtensionTimesEntity;
 
 @Entity
@@ -24,7 +23,6 @@ public class AccountEntity extends ExtensionTimesEntity {
     @Column(unique = true)
     private String nickname;
 
-    @Nationalized
     @Column(nullable = false, length = 50)
     private String password;
 

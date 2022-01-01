@@ -19,4 +19,6 @@ jasypt:
 
 logging:
   level:
-    org.hibernate.SQL: info
+    org.hibernate.SQL: INFO
+    com.zaxxer.hikari: TRACE
+    com.zaxxer.hikari.HikariConfig: DEBUG

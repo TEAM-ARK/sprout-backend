@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
 
-  <property name="LOG_PATH" value="${user.home}/sprout/logs"/>
-  <property name="LOG_LEVEL" value="DEBUG"/>
+  <property name="LOG_PATH" value="${user.home}/logs/sprout"/>
+  <property name="LOG_LEVEL" value="INFO"/>
   <property name="LOG_FILE_NAME" value="sprout"/>
   <property name="ERR_LOG_FILE_NAME" value="sprout-err"/>
-  <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %highlight(%-5level) %boldMagenta(%thread) %boldCyan(%logger{15}) - %msg %n"/>
+  <property name="FILE_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %thread %logger{15} - %msg %n"/>
+  <property name="CONSOLE_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %highlight(%-5level) %boldMagenta(%thread) %boldCyan(%logger{15}) - %msg %n"/>
 
   <!-- Console Appender -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>${LOG_PATTERN}</Pattern>
+      <Pattern>${CONSOLE_PATTERN}</Pattern>
     </layout>
   </appender>
 
@@ -18,14 +19,14 @@
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${LOG_PATTERN}</pattern>
+      <pattern>${FILE_PATTERN}</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.gz</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>10MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
-      <maxHistory>30</maxHistory>
+      <maxHistory>365</maxHistory>
     </rollingPolicy>
   </appender>
 
@@ -38,14 +39,14 @@
     </filter>
     <file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${LOG_PATTERN}</pattern>
+      <pattern>${FILE_PATTERN}</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.gz</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>10MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
-      <maxHistory>30</maxHistory>
+      <maxHistory>365</maxHistory>
     </rollingPolicy>
   </appender>
 

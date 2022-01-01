@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(value = "file:${user.home}/team-ark-backend/sprout-database-dev.properties")
+@TestPropertySource("file:${user.home}/team-ark-backend/sprout-database-dev.properties")
 class DevDatabasePropertiesTest {
     @Autowired
     DatabaseProperties properties;

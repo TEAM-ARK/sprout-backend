@@ -51,6 +51,11 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
+// Not create sprout-plain.jar
+jar {
+    enabled = false
+}
+
 bootRun {
     systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
 }

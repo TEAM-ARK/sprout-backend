@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import team.ark.sprout.adapter.in.web.SignUpForm;
-import team.ark.sprout.adapter.out.persistence.AccountRepository;
+import team.ark.sprout.port.out.AccountRepository;
 
 @Component
 @RequiredArgsConstructor

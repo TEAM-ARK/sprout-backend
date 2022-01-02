@@ -1,4 +1,4 @@
-package team.ark.sprout.adapter.out.persistence;
+package team.ark.sprout.port.out;
 
 import team.ark.sprout.domain.account.Account;
 

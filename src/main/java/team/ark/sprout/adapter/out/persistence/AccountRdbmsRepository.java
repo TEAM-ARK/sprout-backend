@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import team.ark.sprout.domain.account.Account;
+import team.ark.sprout.port.out.AccountRepository;
 
 @Repository
 @RequiredArgsConstructor

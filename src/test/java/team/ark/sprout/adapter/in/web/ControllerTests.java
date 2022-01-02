@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @Import(HttpEncodingAutoConfiguration.class)
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = SCHEME, uriHost = HOST)
-public class ControllerTests {
+public abstract class ControllerTests {
     public static final String SCHEME = "https";
     public static final String HOST = "ark.sprout.io";
     public static final String ATTRIBUTE_FORMAT = "format";

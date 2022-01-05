@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
-import team.ark.sprout.common.util.LogUtils;
 
 @DisplayName("LogUtils 테스트")
 class LogUtilsTest {
@@ -40,7 +39,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--✅> [info_1] infoMessage ");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟢> [info_1] infoMessage ");
     }
 
     @Test
@@ -51,7 +50,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--✅> [info_2] infoMessage {\"id\":1,\"name\":\"dummy class\"}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟢> [info_2] infoMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -62,7 +61,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_1] warnMessage ");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟡> [warn_1] warnMessage ");
     }
 
     @Test
@@ -73,7 +72,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--⚠️> [warn_2] warnMessage {\"id\":1,\"name\":\"dummy class\"}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟡> [warn_2] warnMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -84,7 +83,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❌> [error_1] errorMessage ");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟠> [error_1] errorMessage ");
     }
 
     @Test
@@ -95,7 +94,7 @@ class LogUtilsTest {
 
         // ...then
         List<ILoggingEvent> list = listAppender.list;
-        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--❌> [error_2] errorMessage {\"id\":1,\"name\":\"dummy class\"}");
+        assertThat(list.get(0).getFormattedMessage()).isEqualTo("--🟠> [error_2] errorMessage {\"id\":1,\"name\":\"dummy class\"}");
     }
 
     @Test
@@ -178,7 +177,7 @@ class LogUtilsTest {
         );
     }
 
-    private Dummy createDummy() {
+    private static Dummy createDummy() {
         return Dummy.of(1L, "dummy class");
     }
 
@@ -191,16 +190,8 @@ class LogUtilsTest {
             this.name = name;
         }
 
-        public static Dummy of(final Long id, final String name) {
+        private static Dummy of(final Long id, final String name) {
             return new Dummy(id, name);
-        }
-
-        @Override
-        public String toString() {
-            return "Dummy{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
         }
     }
 }

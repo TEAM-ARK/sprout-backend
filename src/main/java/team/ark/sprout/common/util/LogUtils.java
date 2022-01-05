@@ -20,9 +20,9 @@ public abstract class LogUtils {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    private static final String INFO_FORMAT = "--✅> [{}] {} {}";
-    private static final String WARN_FORMAT = "--⚠️> [{}] {} {}";
-    private static final String ERROR_FORMAT = "--❌> [{}] {} {}";
+    private static final String INFO_FORMAT = "--🟢> [{}] {} {}";
+    private static final String WARN_FORMAT = "--🟡> [{}] {} {}";
+    private static final String ERROR_FORMAT = "--🟠> [{}] {} {}";
     private static final String CUSTOM_FORMAT = "--{}> [{}] {} {}";
 
     private static final int INVOKER_INDEX = 2;

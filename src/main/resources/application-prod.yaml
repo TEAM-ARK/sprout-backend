@@ -7,11 +7,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-logging:
-  level:
-    com.zaxxer.hikari.HikariConfig: DEBUG
-    com.zaxxer.hikari: TRACE
-
 decorator:
   datasource:
     p6spy:

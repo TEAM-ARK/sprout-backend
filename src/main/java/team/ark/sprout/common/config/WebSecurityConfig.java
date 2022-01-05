@@ -1,28 +1,43 @@
 package team.ark.sprout.common.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import team.ark.sprout.common.config.extension.GitHubOAuth2UserService;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final GitHubOAuth2UserService gitHubOAuth2UserService;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/h2-console/**");
+        web.ignoring()
+            .requestMatchers(
+                PathRequest.toH2Console(),
+                PathRequest.toStaticResources().atCommonLocations()
+            );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-        http.httpBasic().disable();
-        http.csrf().disable();
-        http.cors().disable();
-
-        http.authorizeRequests()
-            .mvcMatchers(HttpMethod.GET, "/docs/index.html").permitAll()
-            .mvcMatchers(HttpMethod.POST, "/login", "/api/v1/accounts").permitAll()
-            .anyRequest().authenticated();
+        http
+            .cors(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers
+                .frameOptions().disable()
+            )
+            .authorizeRequests(requests -> requests
+                .mvcMatchers(HttpMethod.GET, "/docs/index.html").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2Login(login -> login
+                .userInfoEndpoint()
+                .userService(gitHubOAuth2UserService)
+            );
     }
 }

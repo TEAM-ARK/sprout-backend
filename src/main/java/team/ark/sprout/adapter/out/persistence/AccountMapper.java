@@ -2,56 +2,48 @@ package team.ark.sprout.adapter.out.persistence;
 
 import org.springframework.stereotype.Component;
 import team.ark.sprout.domain.account.Account;
-import team.ark.sprout.domain.account.AccountBasic;
 import team.ark.sprout.domain.account.AccountDetails;
-import team.ark.sprout.domain.account.Flags;
+import team.ark.sprout.domain.account.Alarm;
 
 @Component
-class AccountMapper {
-    Account mapToDomain(AccountEntity entity) {
-        return Account.from(
-            entity.getId(),
-            AccountBasic.of(
-                entity.getEmail(),
-                entity.getNickname(),
-                entity.getPassword()
-            ),
-            AccountDetails.of(
-                entity.getBiography(),
-                entity.getSiteUrl(),
-                entity.getOccupation(),
-                entity.getLocation(),
-                entity.getProfileImage(),
-                Flags.of(
-                    entity.isEmailVerified(),
-                    entity.isStudyCreatedByWeb(),
-                    entity.isStudyEnrollmentResultByWeb(),
-                    entity.isStudyUpdatedByWeb()
-                )
-            ),
-            entity.getCreatedAt(),
-            entity.getUpdatedAt()
-        );
+public class AccountMapper {
+    public Account mapToDomain(AccountEntity entity) {
+        return Account.builder()
+            .id(entity.getId())
+            .details(
+                AccountDetails.builder()
+                    .username(entity.getUsername())
+                    .profileImage(entity.getProfileImage())
+                    .siteUrl(entity.getSiteUrl())
+                    .location(entity.getLocation())
+                    .email(entity.getEmail())
+                    .bio(entity.getBio())
+                    .build()
+            )
+            .alarm(
+                Alarm.builder()
+                    .studyCreatedByWeb(entity.isStudyCreatedByWeb())
+                    .studyEnrollmentResultByWeb(entity.isStudyEnrollmentResultByWeb())
+                    .studyUpdatedByWeb(entity.isStudyUpdatedByWeb())
+                    .build()
+            )
+            .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .build();
     }
 
-    AccountEntity mapToJpaEntity(Account account) {
-        AccountBasic basic = account.getBasic();
-        AccountDetails details = account.getDetails();
-        Flags flags = details.getFlags();
+    public AccountEntity mapToEntity(Account account) {
         return AccountEntity.builder()
             .id(account.getId())
-            .email(basic.getEmail())
-            .nickname(basic.getNickname())
-            .password(basic.getPassword())
-            .biography(details.getBiography())
-            .siteUrl(details.getSiteUrl())
-            .occupation(details.getOccupation())
-            .location(details.getLocation())
-            .profileImage(details.getProfileImage())
-            .emailVerified(flags.isEmailVerified())
-            .studyCreatedByWeb(flags.isStudyCreatedByWeb())
-            .studyEnrollmentResultByWeb(flags.isStudyEnrollmentResultByWeb())
-            .studyUpdatedByWeb(flags.isStudyUpdatedByWeb())
+            .username(account.getUsername())
+            .profileImage(account.getUsername())
+            .siteUrl(account.getDetails().getSiteUrl())
+            .location(account.getDetails().getLocation())
+            .email(account.getDetails().getEmail())
+            .bio(account.getDetails().getBio())
+            .studyCreatedByWeb(account.getAlarm().isStudyCreatedByWeb())
+            .studyEnrollmentResultByWeb(account.getAlarm().isStudyEnrollmentResultByWeb())
+            .studyUpdatedByWeb(account.getAlarm().isStudyUpdatedByWeb())
             .build();
     }
 }

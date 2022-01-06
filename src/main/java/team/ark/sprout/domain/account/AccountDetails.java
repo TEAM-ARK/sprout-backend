@@ -1,18 +1,48 @@
 package team.ark.sprout.domain.account;
 
+import lombok.Builder;
 import lombok.Value;
+import team.ark.sprout.port.in.AccountExtractor;
 
-@Value(staticConstructor = "of")
+@Value
+@Builder
 public class AccountDetails {
-    String biography;
-    String siteUrl;
-    String occupation;
-    String location;
+    String username;
     String profileImage;
-    Flags flags;
+    String siteUrl;
+    String location;
+    String email;
+    String bio;
 
-    public static AccountDetails create() {
-        Flags flags = Flags.of(false, false, false, false);
-        return new AccountDetails(null, null, null, null, null, flags);
+    public static AccountDetails from(AccountExtractor extractor) {
+        return AccountDetails.builder()
+            .username(extractor.getUsername())
+            .profileImage(extractor.getProfileImage())
+            .siteUrl(extractor.getSiteUrl())
+            .location(extractor.getLocation())
+            .email(extractor.getEmail())
+            .bio(extractor.getBio())
+            .build();
+    }
+
+    public AccountDetails update(AccountExtractor extractor) {
+        return AccountDetails.builder()
+            .username(compare(username, extractor.getUsername()))
+            .profileImage(compare(profileImage, extractor.getProfileImage()))
+            .siteUrl(compare(siteUrl, extractor.getSiteUrl()))
+            .location(compare(location, extractor.getLocation()))
+            .email(compare(email, extractor.getEmail()))
+            .bio(compare(bio, extractor.getBio()))
+            .build();
+    }
+
+    private String compare(String beforeValue, String afterValue) {
+        if (beforeValue == null) {
+            return afterValue;
+        }
+        if (beforeValue.equals(afterValue)) {
+            return beforeValue;
+        }
+        return afterValue;
     }
 }

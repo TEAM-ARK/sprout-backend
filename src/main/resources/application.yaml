@@ -11,6 +11,15 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
 
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ENC(XiSaJchRrKscl04MbWkITuRJSXNoSkUEdHwBexW/GC4=)
+            client-secret: ENC(qJkGCzj826OgFis5FQxX+/+KsSkuwqmd9kFq7kSH3R8vXbO+DVagckoXIBBjQs0C7dYMswI08hY=)
+            scope: user, email
+
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD:NONE}

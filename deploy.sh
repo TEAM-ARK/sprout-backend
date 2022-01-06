@@ -1,4 +1,4 @@
-BUILD_PATH="~/app/build/libs"
+BUILD_PATH="/home/ubuntu/sprout/build/libs"
 JAR_NAME="sprout.jar"
 
 echo "> 배포를 시작합니다." >>/home/ubuntu/deploy.log

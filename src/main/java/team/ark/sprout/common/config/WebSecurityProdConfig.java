@@ -20,10 +20,7 @@ public class WebSecurityProdConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-            .requestMatchers(
-                PathRequest.toH2Console(),
-                PathRequest.toStaticResources().atCommonLocations()
-            );
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override

@@ -37,14 +37,16 @@ public class GitHubOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private void updateOrSave(OAuth2User oAuth2User) {
-        GitHubAttributes gitHubAttributes =
-            objectMapper.convertValue(getAttributes(oAuth2User), GitHubAttributes.class);
-
+        GitHubAttributes gitHubAttributes = attributesFrom(oAuth2User);
         accountRepository.save(
             accountRepository.findByUsername(gitHubAttributes.getUsername())
                 .orElse(Account.from(gitHubAttributes))
                 .update(gitHubAttributes)
         );
+    }
+
+    private GitHubAttributes attributesFrom(OAuth2User oAuth2User) {
+        return objectMapper.convertValue(getAttributes(oAuth2User), GitHubAttributes.class);
     }
 
     private Map<String, Object> getAttributes(OAuth2User oAuth2User) {

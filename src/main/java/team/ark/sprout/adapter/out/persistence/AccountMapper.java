@@ -36,7 +36,7 @@ public class AccountMapper {
         return AccountEntity.builder()
             .id(account.getId())
             .username(account.getUsername())
-            .profileImage(account.getUsername())
+            .profileImage(account.getDetails().getProfileImage())
             .siteUrl(account.getDetails().getSiteUrl())
             .location(account.getDetails().getLocation())
             .email(account.getDetails().getEmail())

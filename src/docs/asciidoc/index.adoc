@@ -25,7 +25,7 @@ NOTE: 해당 부분에 대한 문의는 백엔드팀에 해주세요.
 | 환경 | URI
 
 | 운영
-| `ark.sprout.io`
+| `sprout.or.kr`
 |===
 
 === 포트
@@ -37,6 +37,17 @@ NOTE: 해당 부분에 대한 문의는 백엔드팀에 해주세요.
 | `8080`
 |===
 
-include::./common/common-type.adoc[]
+=== 인증
 
-include::./account/account.adoc[]
+|===
+| 인터페이스 | 끝점
+
+| 로그인
+| `/login`
+
+| 로그아웃
+| `/logout`
+
+|===
+
+include::./common/common-type.adoc[]

@@ -1,7 +1,7 @@
-package team.ark.sprout.adapter.in.web;
+package team.ark.sprout.adapter.account.in.web;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import team.ark.sprout.port.in.AccountExtractor;
+import team.ark.sprout.port.account.in.AccountExtractor;
 
 public class GitHubAttributes implements AccountExtractor {
     @JsonProperty("login")

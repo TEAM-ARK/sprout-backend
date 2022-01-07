@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import team.ark.sprout.port.in.AccountExtractor;
+import team.ark.sprout.port.account.in.AccountExtractor;
 
 @Value
 @Builder

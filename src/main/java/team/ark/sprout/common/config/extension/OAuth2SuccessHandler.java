@@ -15,9 +15,9 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import team.ark.sprout.adapter.in.web.GitHubAttributes;
+import team.ark.sprout.adapter.account.in.web.GitHubAttributes;
 import team.ark.sprout.domain.account.Account;
-import team.ark.sprout.port.out.AccountRepository;
+import team.ark.sprout.port.account.out.AccountRepository;
 
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

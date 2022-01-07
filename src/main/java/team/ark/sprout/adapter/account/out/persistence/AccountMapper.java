@@ -1,4 +1,4 @@
-package team.ark.sprout.adapter.out.persistence;
+package team.ark.sprout.adapter.account.out.persistence;
 
 import org.springframework.stereotype.Component;
 import team.ark.sprout.domain.account.Account;

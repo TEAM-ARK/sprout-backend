@@ -1,4 +1,4 @@
-package team.ark.sprout.adapter.out.persistence;
+package team.ark.sprout.adapter.account.out.persistence;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

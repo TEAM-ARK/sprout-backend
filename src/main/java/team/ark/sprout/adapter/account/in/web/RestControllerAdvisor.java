@@ -1,4 +1,4 @@
-package team.ark.sprout.adapter.in.web;
+package team.ark.sprout.adapter.account.in.web;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import java.util.Iterator;

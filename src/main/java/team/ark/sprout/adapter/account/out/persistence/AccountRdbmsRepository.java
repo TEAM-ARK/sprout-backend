@@ -1,11 +1,11 @@
-package team.ark.sprout.adapter.out.persistence;
+package team.ark.sprout.adapter.account.out.persistence;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import team.ark.sprout.domain.account.Account;
-import team.ark.sprout.port.out.AccountRepository;
+import team.ark.sprout.port.account.out.AccountRepository;
 
 @Repository
 @RequiredArgsConstructor

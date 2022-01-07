@@ -1,4 +1,4 @@
-package team.ark.sprout.adapter.in.web;
+package team.ark.sprout.adapter.account.in.web;
 
 import lombok.Value;
 import org.springframework.http.HttpStatus;

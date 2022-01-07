@@ -2,7 +2,7 @@ package team.ark.sprout.domain.account;
 
 import lombok.Builder;
 import lombok.Value;
-import team.ark.sprout.port.in.AccountExtractor;
+import team.ark.sprout.port.account.in.AccountExtractor;
 
 @Value
 @Builder

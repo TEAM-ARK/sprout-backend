@@ -1,4 +1,4 @@
-package team.ark.sprout.port.in;
+package team.ark.sprout.port.account.in;
 
 public interface AccountExtractor {
     String getUsername();

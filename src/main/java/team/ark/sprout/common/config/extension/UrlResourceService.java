@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import team.ark.sprout.adapter.out.persistence.UrlResourcesRepository;
+import team.ark.sprout.adapter.account.out.persistence.UrlResourcesRepository;
 import team.ark.sprout.common.util.LogUtils;
 
 @Slf4j

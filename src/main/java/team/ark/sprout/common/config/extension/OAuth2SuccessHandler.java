@@ -16,16 +16,19 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import team.ark.sprout.adapter.in.web.GitHubAttributes;
+import team.ark.sprout.common.util.SlackBot;
 import team.ark.sprout.domain.account.Account;
 import team.ark.sprout.port.out.AccountRepository;
 
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private final SlackBot slackBot;
     private final ObjectMapper objectMapper;
-    private final AccountRepository accountRepository;
     private final RequestCache requestCache;
+    private final AccountRepository accountRepository;
 
-    public OAuth2SuccessHandler(ObjectMapper objectMapper, AccountRepository accountRepository) {
+    public OAuth2SuccessHandler(SlackBot slackBot, ObjectMapper objectMapper, AccountRepository accountRepository) {
+        this.slackBot = slackBot;
         this.objectMapper = objectMapper;
         this.accountRepository = accountRepository;
         this.requestCache = new HttpSessionRequestCache();
@@ -44,15 +47,23 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private void updateOrSave(OAuth2User oAuth2User) {
         GitHubAttributes gitHubAttributes = convertToGitHubAttributesFrom(oAuth2User);
-        accountRepository.save(
-            accountRepository.findByUsername(gitHubAttributes.getUsername())
-                .orElse(Account.from(gitHubAttributes))
-                .update(gitHubAttributes)
-        );
+
+        String username = gitHubAttributes.getUsername();
+        Account account = accountRepository.findByUsername(username)
+            .orElseGet(() -> {
+                slackBot.sendMessage(getSignUpMessage(gitHubAttributes, username));
+                return Account.from(gitHubAttributes);
+            }).update(gitHubAttributes);
+
+        accountRepository.save(account);
     }
 
     private GitHubAttributes convertToGitHubAttributesFrom(OAuth2User oAuth2User) {
         return objectMapper.convertValue(oAuth2User.getAttributes(), GitHubAttributes.class);
+    }
+
+    private String getSignUpMessage(GitHubAttributes gitHubAttributes, String username) {
+        return String.format("> 🟢 <%s|%s> 님이 가입하셨습니다.", gitHubAttributes.getSiteUrl(), username);
     }
 
     private void redirectToOriginDestination(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

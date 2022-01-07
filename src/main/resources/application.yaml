@@ -22,3 +22,6 @@ logging:
     org.hibernate.SQL: INFO
     com.zaxxer.hikari: TRACE
     com.zaxxer.hikari.HikariConfig: DEBUG
+
+slack:
+  subscription-notification: ENC(dfdaw83QivKfAmHIN66q8jLzXiw+g54PmRv1TFEb0Zru0Ev/cZGxKln+L41bT5Ou7iTCyCK1kfUx9kF8jtmZUMOC+jxf+XBF1nmeIE0NtFwdLuGl9lijmgsmjrmZmc3j)

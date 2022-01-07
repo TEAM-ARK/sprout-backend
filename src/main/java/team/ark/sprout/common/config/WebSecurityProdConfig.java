@@ -9,13 +9,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import team.ark.sprout.common.config.extension.GitHubOAuth2UserService;
+import team.ark.sprout.common.config.extension.OAuth2SuccessHandler;
 
 @Profile("prod")
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityProdConfig extends WebSecurityConfigurerAdapter {
-    private final GitHubOAuth2UserService gitHubOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -31,12 +31,11 @@ public class WebSecurityProdConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions().disable()
             )
             .authorizeRequests(requests -> requests
-                .mvcMatchers(HttpMethod.GET, "/docs/index.html").permitAll()
-                .anyRequest().authenticated()
+                .mvcMatchers(HttpMethod.GET, "/docs/index.html").hasRole("ADMIN")
+                .anyRequest().permitAll()
             )
             .oauth2Login(login -> login
-                .userInfoEndpoint()
-                .userService(gitHubOAuth2UserService)
+                .successHandler(oAuth2SuccessHandler)
             );
     }
 }

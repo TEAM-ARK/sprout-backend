@@ -12,29 +12,31 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource {
-    private final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap;
+    private final LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap;
 
     public UrlMetadataSource(UrlResourcesMapFactoryBean urlResourcesMapFactoryBean) {
-        this.requestMap = urlResourcesMapFactoryBean.getObject();
+        this.resourceMap = urlResourcesMapFactoryBean.getObject();
     }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        if (requestMap != null) {
-            for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : requestMap.entrySet()) {
+        if (resourceMap != null) {
+            for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : resourceMap.entrySet()) {
                 RequestMatcher matcher = entry.getKey();
                 if (matcher.matches(((FilterInvocation) object).getRequest())) {
                     return entry.getValue();
                 }
             }
         }
+
+        // Never executed
         return null;
     }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         Set<ConfigAttribute> allAttributes = new HashSet<>();
-        for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : requestMap.entrySet()) {
+        for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : resourceMap.entrySet()) {
             allAttributes.addAll(entry.getValue());
         }
         return allAttributes;

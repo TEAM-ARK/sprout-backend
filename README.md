@@ -9,6 +9,8 @@
 [![Github CI](https://github.com/TEAM-ARK/sprout-backend/actions/workflows/gradle-ci.yml/badge.svg)](https://github.com/TEAM-ARK/sprout-backend/actions/workflows/gradle-ci.yml)
 [![Github CD](https://github.com/TEAM-ARK/sprout-backend/actions/workflows/gradle-cd.yml/badge.svg)](https://github.com/TEAM-ARK/sprout-backend/actions/workflows/gradle-cd.yml)
 
+<br />
+
 ## 📖 Summary
 
 ---
@@ -16,12 +18,4 @@
 개발자들의 스터디 커뮤니티
 
 <br />
-
-## 📜 Documentation
-
----
-
-- `/docs/index.html`
-
-
 

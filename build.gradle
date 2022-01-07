@@ -75,13 +75,6 @@ task copyDocument(type: Copy) {
     into file('src/main/resources/static/docs')
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/html5/index.html") {
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
-
 bootRun {
     systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
 }

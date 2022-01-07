@@ -1,7 +1,6 @@
 package team.ark.sprout.common.config.extension;
 
 import static java.util.Arrays.stream;
-import static java.util.Objects.isNull;
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 import java.text.MessageFormat;
@@ -24,14 +23,12 @@ public class P6SpyPrettySqlFormatter implements MessageFormattingStrategy {
     }
 
     private String sqlFormatToUpper(String sql, String category, String message) {
-        if (isNull(sql.trim()) || sql.trim().isEmpty()) {
+        if (sql.trim().isEmpty()) {
             return "";
         }
-        return new StringBuilder()
-            .append(NEW_LINE)
-            .append(sqlFormatToUpper(sql, category))
-            .append(message)
-            .toString();
+        return NEW_LINE
+            + sqlFormatToUpper(sql, category)
+            + message;
     }
 
     private String sqlFormatToUpper(String sql, String category) {
@@ -64,23 +61,20 @@ public class P6SpyPrettySqlFormatter implements MessageFormattingStrategy {
     }
 
     private String getMessage(int connectionId, long elapsed, StringBuilder callStackBuilder) {
-        return new StringBuilder()
-            .append(NEW_LINE)
-            .append(NEW_LINE)
-            .append("\t")
-            .append(String.format("Connection ID: %s", connectionId))
-            .append(NEW_LINE)
-            .append("\t")
-            .append(String.format("Execution Time: %s ms", elapsed))
-            .append(NEW_LINE)
-            .append(NEW_LINE)
-            .append("\t")
-            .append(String.format("Call Stack (number 1 is entry point): %s", callStackBuilder))
-            .append(NEW_LINE)
-            .append(NEW_LINE)
-            .append(
-                "----------------------------------------------------------------------------------------------------")
-            .toString();
+        return NEW_LINE
+            + NEW_LINE
+            + "\t"
+            + String.format("Connection ID: %s", connectionId)
+            + NEW_LINE
+            + "\t"
+            + String.format("Execution Time: %s ms", elapsed)
+            + NEW_LINE
+            + NEW_LINE
+            + "\t"
+            + String.format("Call Stack (number 1 is entry point): %s", callStackBuilder)
+            + NEW_LINE
+            + NEW_LINE
+            + "----------------------------------------------------------------------------------------------------";
     }
 
     private StringBuilder getStackBuilder() {

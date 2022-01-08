@@ -68,13 +68,6 @@ asciidoctor {
     dependsOn test
 }
 
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-
-    from file('build/asciidoc/html5/index.html')
-    into file('src/main/resources/static/docs')
-}
-
 bootRun {
     systemProperty 'jasypt.encryptor.password', System.getenv('JASYPT_PASSWORD')
 }
@@ -92,8 +85,4 @@ sonarqube {
         property "sonar.organization", "team-ark"
         property "sonar.host.url", "https://sonarcloud.io"
     }
-}
-
-build {
-    dependsOn copyDocument
 }

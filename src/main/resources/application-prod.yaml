@@ -14,6 +14,7 @@ spring:
           github:
             client-id: ENC(XiSaJchRrKscl04MbWkITuRJSXNoSkUEdHwBexW/GC4=)
             client-secret: ENC(qJkGCzj826OgFis5FQxX+/+KsSkuwqmd9kFq7kSH3R8vXbO+DVagckoXIBBjQs0C7dYMswI08hY=)
+            redirect-uri: http://sprout.or.kr/login/oauth2/code/github
             scope: user, email
 
 decorator:

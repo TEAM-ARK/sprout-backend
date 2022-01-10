@@ -19,6 +19,7 @@ jasypt:
 
 logging:
   level:
+    web: DEBUG
     org.hibernate.SQL: INFO
     com.zaxxer.hikari: TRACE
     com.zaxxer.hikari.HikariConfig: DEBUG

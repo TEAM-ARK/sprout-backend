@@ -1,5 +1,7 @@
 # 📚 SPROUT 
 
+![Java_11](https://img.shields.io/badge/java-11-red?logo=java)
+![Spring_Boot](https://img.shields.io/badge/Spring_Boot-v2.6.2-green.svg?logo=spring)
 [![GitHub license](https://img.shields.io/github/license/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend)
 [![GitHub stars](https://img.shields.io/github/stars/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TEAM-ARK/sprout-backend)](https://github.com/TEAM-ARK/sprout-backend/issues)

@@ -31,8 +31,8 @@ import team.ark.sprout.common.config.extension.UrlResourceService;
 import team.ark.sprout.common.config.extension.UrlResourcesMapFactoryBean;
 
 @Profile("prod")
-@EnableWebSecurity
 @RequiredArgsConstructor
+@EnableWebSecurity(debug = true)
 public class WebSecurityProdConfig extends WebSecurityConfigurerAdapter {
     private final UrlResourceService urlResourceService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -120,3 +120,4 @@ public class WebSecurityProdConfig extends WebSecurityConfigurerAdapter {
         return urlResourcesMapFactoryBean;
     }
 }
+

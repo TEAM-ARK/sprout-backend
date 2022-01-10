@@ -21,7 +21,7 @@ nohup java -jar -Djasypt.encryptor.password="$JASYPT_PASSWORD" -Dspring.profiles
 
 CURRENT_PID=$(ps -ef | grep $JAR_NAME | grep -v grep | awk '{print $2}')
 if [ -z $CURRENT_PID ]; then
-  echo ">[$(date)] 실행에 성공했습니다 ! PID: $CURRENT_PID" >>/home/ubuntu/deploy.log
-else
   echo ">[$(date)] 실행에 실패했습니다 ! 실행 로그를 확인하십시오 !" >>/home/ubuntu/deploy.log
+else
+  echo ">[$(date)] 실행에 성공했습니다 ! PID: $CURRENT_PID" >>/home/ubuntu/deploy.log
 fi
